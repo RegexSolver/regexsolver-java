@@ -1,4 +1,4 @@
-name: Deploy to Maven Central
+name: Publish to Maven Central
 
 on:
   push:
@@ -23,5 +23,5 @@ jobs:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
-          echo $GPG_PRIVATE_KEY | base64 --decode | gpg --import
+          echo $GPG_PRIVATE_KEY | base64 --decode | gpg --import --batch --yes --pinentry-mode loopback --passphrase "$GPG_SIGNING_PASSPHRASE"
           mvn clean deploy -P release --settings .github/settings.xml
