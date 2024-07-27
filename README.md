@@ -4,3 +4,49 @@ This repository contains the source code of the Java library for [RegexSolver](h
 
 RegexSolver is a powerful regular expression manipulation toolkit, that gives you the power to manipulate regex as if
 they were sets.
+
+## Installation
+
+### Requirements
+
+- Java >=11
+
+### Maven
+
+```xml
+
+<dependency>
+    <groupId>com.regexsolver.api</groupId>
+    <artifactId>RegexSolver</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+### Gradle
+
+```groovy
+implementation "com.regexsolver.api:RegexSolver:1.0.0"
+```
+
+## Usage
+
+In order to use the library you need to generate an API Token on our [Developer Console](https://regexsolver.com/).
+
+```java
+public class Main {
+    public static void main(String[] args) throws IOException, ApiError {
+        RegexSolverApiWrapper.initialize(/* Your API token here -> */"");
+
+        Term term1 = Term.Regex.of("(abc|de|fg){2,}");
+        Term term2 = Term.Regex.of("de.*");
+        Term term3 = Term.Regex.of(".*abc");
+
+        Term term4 = Term.Regex.of(".+(abc|de).+");
+
+        Term result = term1.intersection(term2, term3)
+                .subtraction(term4);
+
+        System.out.println(result);
+    }
+}
+```
