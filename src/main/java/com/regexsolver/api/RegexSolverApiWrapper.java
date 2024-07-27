@@ -27,7 +27,7 @@ final class RegexSolverApiWrapper {
 
     private final static String DEFAULT_BASE_URL = "https://api.regexsolver.com/";
 
-    private final static String USER_AGENT = "RegexSolver Java / 1.0.0";
+    private final static String USER_AGENT = "RegexSolver Java / 1.0.1";
 
     private RegexApi api;
 
@@ -39,11 +39,11 @@ final class RegexSolverApiWrapper {
         initializeInternal(null, DEFAULT_BASE_URL);
     }
 
-    public static void initialize(String token) {
+    static void initialize(String token) {
         getInstance().initializeInternal(token, DEFAULT_BASE_URL);
     }
 
-    public static void initialize(String token, String baseUrl) {
+    static void initialize(String token, String baseUrl) {
         getInstance().initializeInternal(token, baseUrl);
     }
 

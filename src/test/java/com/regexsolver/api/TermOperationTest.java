@@ -24,7 +24,7 @@ public class TermOperationTest {
         server = new MockWebServer();
         server.start();
 
-        RegexSolverApiWrapper.initialize("TOKEN", server.url("/").toString());
+        RegexSolver.initialize("TOKEN", server.url("/").toString());
     }
 
     @After

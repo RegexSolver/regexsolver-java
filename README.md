@@ -18,14 +18,14 @@ they were sets.
 <dependency>
     <groupId>com.regexsolver.api</groupId>
     <artifactId>RegexSolver</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation "com.regexsolver.api:RegexSolver:1.0.0"
+implementation "com.regexsolver.api:RegexSolver:1.0.1"
 ```
 
 ## Usage
@@ -35,7 +35,7 @@ In order to use the library you need to generate an API Token on our [Developer 
 ```java
 public class Main {
     public static void main(String[] args) throws IOException, ApiError {
-        RegexSolverApiWrapper.initialize(/* Your API token here -> */"");
+        RegexSolver.initialize(/* Your API token here -> */"");
 
         Term term1 = Term.Regex.of("(abc|de|fg){2,}");
         Term term2 = Term.Regex.of("de.*");
