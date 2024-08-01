@@ -14,7 +14,6 @@ they were sets.
 ### Maven
 
 ```xml
-
 <dependency>
     <groupId>com.regexsolver.api</groupId>
     <artifactId>RegexSolver</artifactId>
@@ -33,6 +32,12 @@ implementation "com.regexsolver.api:RegexSolver:1.0.1"
 In order to use the library you need to generate an API Token on our [Developer Console](https://regexsolver.com/).
 
 ```java
+import com.regexsolver.api.RegexSolver;
+import com.regexsolver.api.Term;
+import com.regexsolver.api.exception.ApiError;
+
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args) throws IOException, ApiError {
         RegexSolver.initialize(/* Your API token here -> */"");
