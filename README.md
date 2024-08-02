@@ -30,7 +30,7 @@ implementation "com.regexsolver.api:RegexSolver:1.0.1"
 
 ## Usage
 
-In order to use the library you need to generate an API Token on our [Developer Console](https://regexsolver.com/).
+In order to use the library you need to generate an API Token on our [Developer Console](https://console.regexsolver.com/).
 
 ```java
 import com.regexsolver.api.RegexSolver;
