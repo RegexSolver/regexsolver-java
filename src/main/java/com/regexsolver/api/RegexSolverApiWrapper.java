@@ -27,7 +27,7 @@ final class RegexSolverApiWrapper {
 
     private final static String DEFAULT_BASE_URL = "https://api.regexsolver.com/";
 
-    private final static String USER_AGENT = "RegexSolver Java / 1.0.3";
+    private final static String USER_AGENT = "RegexSolver Java / 1.0.2";
 
     private RegexApi api;
 
