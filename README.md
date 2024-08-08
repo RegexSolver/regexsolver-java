@@ -18,14 +18,14 @@ they were sets.
 <dependency>
     <groupId>com.regexsolver.api</groupId>
     <artifactId>RegexSolver</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation "com.regexsolver.api:RegexSolver:1.0.1"
+implementation "com.regexsolver.api:RegexSolver:1.0.2"
 ```
 
 ## Usage
@@ -43,11 +43,11 @@ public class Main {
     public static void main(String[] args) throws IOException, ApiError {
         RegexSolver.initialize(/* Your API token here -> */"");
 
-        Term term1 = Term.Regex.of("(abc|de|fg){2,}");
-        Term term2 = Term.Regex.of("de.*");
-        Term term3 = Term.Regex.of(".*abc");
+        Term term1 = Term.regex("(abc|de|fg){2,}");
+        Term term2 = Term.regex("de.*");
+        Term term3 = Term.regex(".*abc");
 
-        Term term4 = Term.Regex.of(".+(abc|de).+");
+        Term term4 = Term.regex(".+(abc|de).+");
 
         Term result = term1.intersection(term2, term3)
                 .subtraction(term4);

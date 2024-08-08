@@ -39,7 +39,7 @@ public class TermOperationTest {
         MockResponse response = TestUtils.generateMockResponse(TestUtils.getResourceFileContent("response_getDetails.json"));
         server.enqueue(response);
 
-        Term.Regex regex = Term.Regex.of("(abc|de)");
+        Term.Regex regex = Term.regex("(abc|de)");
 
         Details details = regex.getDetails();
 
@@ -69,7 +69,7 @@ public class TermOperationTest {
         MockResponse response = TestUtils.generateMockResponse(TestUtils.getResourceFileContent("response_generateStrings.json"));
         server.enqueue(response);
 
-        Term.Regex regex = Term.Regex.of("(abc|de){2}");
+        Term.Regex regex = Term.regex("(abc|de){2}");
 
         List<String> strings = regex.generateStrings(10);
         assertEquals(4, strings.size());
@@ -87,9 +87,9 @@ public class TermOperationTest {
         MockResponse response = TestUtils.generateMockResponse(TestUtils.getResourceFileContent("response_intersection.json"));
         server.enqueue(response);
 
-        Term.Regex term1 = Term.Regex.of("(abc|de){2}");
-        Term.Regex term2 = Term.Regex.of("de.*");
-        Term.Regex term3 = Term.Regex.of(".*abc");
+        Term.Regex term1 = Term.regex("(abc|de){2}");
+        Term.Regex term2 = Term.regex("de.*");
+        Term.Regex term3 = Term.regex(".*abc");
 
         Term result = term1.intersection(term2, term3);
         assertTrue(result instanceof Term.Regex);
@@ -110,9 +110,9 @@ public class TermOperationTest {
         MockResponse response = TestUtils.generateMockResponse(TestUtils.getResourceFileContent("response_union.json"));
         server.enqueue(response);
 
-        Term.Regex term1 = Term.Regex.of("abc");
-        Term.Regex term2 = Term.Regex.of("de");
-        Term.Regex term3 = Term.Regex.of("fghi");
+        Term.Regex term1 = Term.regex("abc");
+        Term.Regex term2 = Term.regex("de");
+        Term.Regex term3 = Term.regex("fghi");
 
         Term result = term1.union(term2, term3);
         assertTrue(result instanceof Term.Regex);
@@ -133,8 +133,8 @@ public class TermOperationTest {
         MockResponse response = TestUtils.generateMockResponse(TestUtils.getResourceFileContent("response_subtraction.json"));
         server.enqueue(response);
 
-        Term.Regex term1 = Term.Regex.of("(abc|de)");
-        Term.Regex term2 = Term.Regex.of("de");
+        Term.Regex term1 = Term.regex("(abc|de)");
+        Term.Regex term2 = Term.regex("de");
 
         Term result = term1.subtraction(term2);
         assertTrue(result instanceof Term.Regex);
@@ -154,8 +154,8 @@ public class TermOperationTest {
         MockResponse response = TestUtils.generateMockResponse(TestUtils.getResourceFileContent("response_isEquivalentTo.json"));
         server.enqueue(response);
 
-        Term.Regex term1 = Term.Regex.of("(abc|de)");
-        Term.Fair term2 = Term.Fair.of("rgmsW[1g2LvP=Gr&V>sLc#w-!No&(oq@Sf>X).?lI3{uh{80qWEH[#0.pHq@B-9o[LpP-a#fYI+");
+        Term.Regex term1 = Term.regex("(abc|de)");
+        Term.Fair term2 = Term.fair("rgmsW[1g2LvP=Gr&V>sLc#w-!No&(oq@Sf>X).?lI3{uh{80qWEH[#0.pHq@B-9o[LpP-a#fYI+");
 
         boolean result = term1.isEquivalentTo(term2);
         assertFalse(result);
@@ -174,8 +174,8 @@ public class TermOperationTest {
         MockResponse response = TestUtils.generateMockResponse(TestUtils.getResourceFileContent("response_isSubsetOf.json"));
         server.enqueue(response);
 
-        Term.Regex term1 = Term.Regex.of("de");
-        Term.Regex term2 = Term.Regex.of("(abc|de)");
+        Term.Regex term1 = Term.regex("de");
+        Term.Regex term2 = Term.regex("(abc|de)");
 
         boolean result = term1.isSubsetOf(term2);
         assertTrue(result);
@@ -194,8 +194,8 @@ public class TermOperationTest {
         MockResponse response = TestUtils.generateErrorMockResponse(TestUtils.getResourceFileContent("response_error.json"), 400);
         server.enqueue(response);
 
-        Term.Regex term1 = Term.Regex.of("abc");
-        Term.Regex term2 = Term.Regex.of("de");
+        Term.Regex term1 = Term.regex("abc");
+        Term.Regex term2 = Term.regex("de");
 
         try {
             term1.intersection(term2);

@@ -6,7 +6,7 @@
 
     <groupId>com.regexsolver.api</groupId>
     <artifactId>RegexSolver</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <url>https://regexsolver.com</url>
     <organization>

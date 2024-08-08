@@ -40,6 +40,26 @@ public abstract class Term implements ResponseContent {
         this.value = value;
     }
 
+    /**
+     * Create a new instance of {@link Term.Regex}.
+     *
+     * @param regex The regular expression pattern.
+     * @return The created instance.
+     */
+    public static Term.Regex regex(String regex) {
+        return new Term.Regex(regex);
+    }
+
+    /**
+     * Create a new instance of {@link Term.Fair}.
+     *
+     * @param fair The FAIR.
+     * @return The created instance.
+     */
+    public static Term.Fair fair(String fair) {
+        return new Term.Fair(fair);
+    }
+
     String getValue() {
         return value;
     }
@@ -186,9 +206,9 @@ public abstract class Term implements ResponseContent {
         }
 
         if (string.startsWith(REGEX_PREFIX)) {
-            return Optional.of(Regex.of(string.substring(REGEX_PREFIX.length() + 1)));
+            return Optional.of(regex(string.substring(REGEX_PREFIX.length() + 1)));
         } else if (string.startsWith(FAIR_PREFIX)) {
-            return Optional.of(Fair.of(string.substring(FAIR_PREFIX.length() + 1)));
+            return Optional.of(fair(string.substring(FAIR_PREFIX.length() + 1)));
         } else {
             return Optional.empty();
         }
@@ -229,17 +249,6 @@ public abstract class Term implements ResponseContent {
         }
 
         /**
-         * Create a new instance.
-         *
-         * @param fair The FAIR.
-         * @return The created instance.
-         */
-        @JsonIgnore
-        public static Fair of(String fair) {
-            return new Fair(fair);
-        }
-
-        /**
          * Return the Fast Automaton Internal Representation (FAIR).
          *
          * @return The FAIR.
@@ -265,17 +274,6 @@ public abstract class Term implements ResponseContent {
          */
         public Regex(@JsonProperty("value") String regex) {
             super(regex);
-        }
-
-        /**
-         * Create a new instance.
-         *
-         * @param regex The regular expression pattern.
-         * @return The created instance.
-         */
-        @JsonIgnore
-        public static Regex of(String regex) {
-            return new Regex(regex);
         }
 
         /**
