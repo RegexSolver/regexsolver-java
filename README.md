@@ -16,7 +16,6 @@ they were sets.
 ### Maven
 
 ```xml
-
 <dependency>
     <groupId>com.regexsolver.api</groupId>
     <artifactId>RegexSolver</artifactId>
