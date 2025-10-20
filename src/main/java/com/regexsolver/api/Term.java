@@ -6,7 +6,6 @@ import com.regexsolver.api.Request.GenerateStringsRequest;
 import com.regexsolver.api.Request.MultiTermsRequest;
 import com.regexsolver.api.Request.RepeatRequest;
 import com.regexsolver.api.Request.RequestOptions;
-import com.regexsolver.api.Request.RequestOptions.ResponseFormat;
 import com.regexsolver.api.dto.Cardinality;
 import com.regexsolver.api.dto.Details;
 import com.regexsolver.api.dto.Length;

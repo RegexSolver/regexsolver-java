@@ -32,6 +32,9 @@ implementation "com.regexsolver.api:RegexSolver:1.1.0"
 2. Initialize the client and start working with terms:
 
 ```java
+import com.regexsolver.api.RegexSolver;
+import com.regexsolver.api.Term;
+
 // Set REGEXSOLVER_API_TOKEN in your env and call initialize(),
 // or pass the token directly:
 RegexSolver.initialize(); // or RegexSolver.initialize("YOUR_API_TOKEN");
@@ -66,8 +69,8 @@ The API can handle terms in two formats:
 By default, the engine returns whatever the operation produces, with no extra convertion. Override with `responseFormat`:
 
 ```java
-import com.regexsolver.Term;
-import com.regexsolver.ResponseFormat;
+import com.regexsolver.api.Term;
+import com.regexsolver.api.ResponseFormat;
 
 Term term = Term.regex("abcde");
 
@@ -93,8 +96,8 @@ Regardless of the format, you can always call `getPattern()` to obtain the regex
 Set a server-side compute timeout in milliseconds with `executionTimeout`:
 
 ```java
-import com.regexsolver.ApiError;
-import com.regexsolver.Term;
+import com.regexsolver.api.exception.ApiError;
+import com.regexsolver.api.Term;
 
 try {
     Term out = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c")

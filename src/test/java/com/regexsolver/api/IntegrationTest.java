@@ -1,6 +1,5 @@
 package com.regexsolver.api;
 
-import com.regexsolver.api.Request.RequestOptions.ResponseFormat;
 import com.regexsolver.api.Term.OperationOptions;
 import com.regexsolver.api.dto.Cardinality;
 import com.regexsolver.api.dto.Details;

@@ -74,15 +74,6 @@ final class Request {
                 return timeout;
             }
         }
-
-        public enum ResponseFormat {
-            @JsonProperty("any")
-            ANY,
-            @JsonProperty("regex")
-            REGEX,
-            @JsonProperty("fair")
-            FAIR
-        }
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
