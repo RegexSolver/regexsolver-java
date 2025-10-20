@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Cardinality.BigInteger.class, name = "BigInteger"),
-        @JsonSubTypes.Type(value = Cardinality.Infinite.class, name = "Infinite"),
-        @JsonSubTypes.Type(value = Cardinality.Integer.class, name = "Integer")
+        @JsonSubTypes.Type(value = Cardinality.BigInteger.class, name = "bigInteger"),
+        @JsonSubTypes.Type(value = Cardinality.Infinite.class, name = "infinite"),
+        @JsonSubTypes.Type(value = Cardinality.Integer.class, name = "integer")
 })
 public abstract class Cardinality {
     /**

@@ -1,6 +1,10 @@
 package com.regexsolver.api;
 
 public final class RegexSolver {
+    public static void initialize() {
+        RegexSolverApiWrapper.initialize();
+    }
+
     public static void initialize(String token) {
         RegexSolverApiWrapper.initialize(token);
     }

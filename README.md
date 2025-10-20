@@ -2,10 +2,7 @@
 
 [Homepage](https://regexsolver.com) | [Online Demo](https://regexsolver.com/demo) | [Documentation](https://docs.regexsolver.com) | [Developer Console](https://console.regexsolver.com)
 
-This repository contains the source code of the Java library for [RegexSolver](https://regexsolver.com) API.
-
-RegexSolver is a powerful regular expression manipulation toolkit, that gives you the power to manipulate regex as if
-they were sets.
+**RegexSolver** is a powerful toolkit for building, combining, and analyzing regular expressions. It is designed for constraint solvers, test generators, and other systems that need advanced regex operations.
 
 ## Installation
 
@@ -19,205 +16,154 @@ they were sets.
 <dependency>
     <groupId>com.regexsolver.api</groupId>
     <artifactId>RegexSolver</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation "com.regexsolver.api:RegexSolver:1.0.2"
+implementation "com.regexsolver.api:RegexSolver:1.1.0"
 ```
 
 ## Usage
 
-In order to use the library you need to generate an API Token on
-our [Developer Console](https://console.regexsolver.com/).
+1. Create an API token in the [Developer Console](https://console.regexsolver.com/).
+2. Initialize the client and start working with terms:
 
 ```java
-import com.regexsolver.api.RegexSolver;
-import com.regexsolver.api.Term;
-import com.regexsolver.api.exception.ApiError;
+// Set REGEXSOLVER_API_TOKEN in your env and call initialize(),
+// or pass the token directly:
+RegexSolver.initialize(); // or RegexSolver.initialize("YOUR_API_TOKEN");
 
-import java.io.IOException;
+Term term1 = Term.regex("(abc|de|fg){2,}");
+Term term2 = Term.regex("de.*");
+Term term3 = Term.regex(".*abc");
 
-public class Main {
-    public static void main(String[] args) throws IOException, ApiError {
-        RegexSolver.initialize("YOUR TOKEN HERE");
+Term result = term1.intersection(term2, term3)
+        .difference(Term.regex(".+(abc|de).+"));
+System.out.println(result.getPattern()); // de(fg)*abc
+```
 
-        Term term1 = Term.regex("(abc|de|fg){2,}");
-        Term term2 = Term.regex("de.*");
-        Term term3 = Term.regex(".*abc");
 
-        Term term4 = Term.regex(".+(abc|de).+");
+## Key Concepts & Limitations
 
-        Term result = term1.intersection(term2, term3)
-                .subtraction(term4);
+RegexSolver supports a subset of regular expressions that adhere to the principles of regular languages. Here are the key characteristics and limitations of the regular expressions supported by RegexSolver:
+- **Anchored Expressions:** All regular expressions in RegexSolver are anchored. This means that the expressions are treated as if they start and end at the boundaries of the input text. For example, the expression `abc` will match the string "abc" but not "xabc" or "abcx".
+- **Lookahead/Lookbehind:** RegexSolver does not support lookahead (`(?=...)`) or lookbehind (`(?<=...)`) assertions. Using them returns an error.
+- **Pure Regular Expressions:** RegexSolver focuses on pure regular expressions as defined in regular language theory. This means features that extend beyond regular languages, such as backreferences (`\1`, `\2`, etc.), are not supported. Any use of backreference would return an error.
+- **Greedy/Ungreedy Quantifiers:** The concept of ungreedy (`*?`, `+?`, `??`) quantifiers is not supported. All quantifiers are treated as greedy. For example, `a*` or `a*?` will match the longest possible sequence of "a"s.
+- **Line Feed and Dot:** RegexSolver handles all characters the same way. The dot `.` matches any Unicode character including line feed (`\n`).
+- **Empty Regular Expressions:** The empty language (matches no string) is represented by constructs like `[]` (empty character class). This is distinct from the empty string.
 
-        System.out.println(result);
-    }
+
+## Response Formats
+
+The API can handle terms in two formats:
+- `regex`: a regular expression pattern
+- `fair`: FAIR (Fast Automaton Internal Representation), a stable, signed format used internally by the engine
+
+By default, the engine returns whatever the operation produces, with no extra convertion. Override with `responseFormat`:
+
+```java
+import com.regexsolver.Term;
+import com.regexsolver.ResponseFormat;
+
+Term term = Term.regex("abcde");
+
+OperationOptions operationOptions = OperationOptions.init()
+        .responseFormat(ResponseFormat.REGEX);
+Term result1 = term.union(operationOptions, Term.regex("de"));
+
+System.out.println(result1.toString()); // regex=(abc)?de
+
+operationOptions = OperationOptions.init()
+        .responseFormat(ResponseFormat.FAIR);
+Term result2 = term.intersection(operationOptions, Term.regex("de.*"));
+
+System.out.println(r2.toString()); // fair=...
+```
+
+If the format does not matter, omit `responseFormat` or set it to `ResponseFormat.ANY`.
+
+Regardless of the format, you can always call `getPattern()` to obtain the regex pattern of a term.
+
+## Bounding execution time
+
+Set a server-side compute timeout in milliseconds with `executionTimeout`:
+
+```java
+import com.regexsolver.ApiError;
+import com.regexsolver.Term;
+
+try {
+    Term out = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c")
+            .difference(Term.regex(".*abc.*"));
+} catch (ApiError e) {
+    System.out.println(e.getMessage()); // The operation took too much time.
 }
 ```
 
-## Features
+Timeout is best effort. The exact time is not guaranteed.
 
-- [Intersection](#intersection)
-- [Union](#union)
-- [Subtraction / Difference](#subtraction--difference)
-- [Equivalence](#equivalence)
-- [Subset](#subset)
-- [Details](#details)
-- [Generate Strings](#generate-strings)
+## API Overview
 
-### Intersection
+`Term` exposes the following methods.
 
-#### Request
+### Build
+| Method | Return | Description |
+| -------- | ------- | ------- |
+| `Term.fair(String fair)` | `Term` | Creates a term from a FAIR. |
+| `Term.regex(String regex)` | `Term` | Creates a term from a regex pattern. |
 
-Compute the intersection of the provided terms and return the resulting term.
+### Analyze
 
-The maximum number of terms is currently limited to 10.
+| Method | Return | Description |
+| -------- | ------- | ------- |
+| `t.equivalent(Term term)` | `boolean` | `true` if `t` and `term` accept exactly the same language. Supports `executionTimeout`. |
+| `t.getCardinality()` | `Cardinality` | Returns the cardinality of the term (i.e., the number of possible matched strings). |
+| `t.getDetails()` | `Details` | Returns cardinality, length bounds, and if it is empty or total. |
+| `t.getDot()` | `String` | Returns a Graphviz DOT representation of the automaton for the term. |
+| `t.getFair()` | `String` | Returns the FAIR of the term if defined. |
+| `t.getLength()` | `Length` | Returns the minimum and maximum length of matched strings. |
+| `t.getPattern()` | `String` | Returns a regular expression pattern for the term. |
+| `t.isEmpty()` | `boolean` | `true` if the term matches no string. |
+| `t.isEmptyString()` | `boolean` | `true` if the term matches only the empty string. |
+| `t.isTotal()` | `boolean` | `true` if the term matches all possible strings. |
+| `t.subset(Term term)` | `boolean` | `true` if every string matched by `t` is also matched by `term`. Supports `executionTimeout`. |
 
-```java
-Term.Regex term1 = Term.regex("(abc|de){2}");
-Term.Regex term2 = Term.regex("de.*");
-Term.Regex term3 = Term.regex(".*abc");
+### Compute
 
-Term result = term1.intersection(term2, term3);
-System.out.println(result);
-```
+| Method | Return | Description |
+| -------- | ------- | ------- |
+| `t.concat(Term... terms)` | `Term` | Concatenates `t` with the given terms. Supports `responseFormat` and `executionTimeout`. |
+| `t.difference(Term term)` | `Term` | Computes the difference `t - term`. Supports `responseFormat` and `executionTimeout`. |
+| `t.intersection(Term... terms)` | `Term` | Computes the intersection of `t` with the given terms. Supports `responseFormat` and `executionTimeout`. |
+| `t.repeat(int min, Integer max)` | `Term` | Computes the repetition of the term between `min` and `max` times; if `max` is `null`, the repetition is unbounded. Supports `responseFormat` and `executionTimeout`. |
+| `t.union(Term... terms)` | `Term` | Computes the union of `t` with the given terms. Supports `responseFormat` and `executionTimeout`. |
 
-#### Response
+### Generate
 
-```
-regex=deabc
-```
+| Method | Return | Description |
+| -------- | ------- | ------- |
+| `t.generateStrings(int count)` | `String[]` | Generates up to `count` unique example strings matched by `t`. Supports `executionTimeout`. |
 
-### Union
+### Other
+| Method | Return | Description |
+| -------- | ------- | ------- |
+| `t.serialize()` | `String` | Returns a serialized form of `t`. |
+| `Term.deserialize(String string)` | `Term` | Returns a deserialized term from the given `string`. |
 
-Compute the union of the provided terms and return the resulting term.
+## Cross-Language Support
 
-The maximum number of terms is currently limited to 10.
+If you want to use this library with other programming languages, we provide:
+- [regexsolver-js](https://github.com/RegexSolver/regexsolver-js)
+- [regexsolver-python](https://github.com/RegexSolver/regexsolver-python)
 
-#### Request
+For more information about how to use the wrappers, you can refer to our [guide](https://docs.regexsolver.com/getting-started.html).
 
-```java
-Term.Regex term1 = Term.regex("abc");
-Term.Regex term2 = Term.regex("de");
-Term.Regex term3 = Term.regex("fghi");
+You can also take a look at [regexsolver](https://github.com/RegexSolver/regexsolver) which contains the source code of the engine.
 
-Term result = term1.union(term2, term3);
-System.out.println(result);
-```
+## License
 
-#### Response
-
-```
-regex=(abc|de|fghi)
-```
-
-### Subtraction / Difference
-
-Compute the first term minus the second and return the resulting term.
-
-#### Request
-
-```java
-Term.Regex term1 = Term.regex("(abc|de)");
-Term.Regex term2 = Term.regex("de");
-
-Term result = term1.subtraction(term2);
-System.out.println(result);
-```
-
-#### Response
-
-```
-regex=abc
-```
-
-### Equivalence
-
-Analyze if the two provided terms are equivalent.
-
-#### Request
-
-```java
-Term.Regex term1 = Term.regex("(abc|de)");
-Term.Fair term2 = Term.regex("(abc|de)*");
-
-boolean result = term1.isEquivalentTo(term2);
-System.out.println(result);
-```
-
-#### Response
-
-```
-false
-```
-
-### Subset
-
-Analyze if the second term is a subset of the first.
-
-#### Request
-
-```java
-Term.Regex term1 = Term.regex("de");
-Term.Regex term2 = Term.regex("(abc|de)");
-
-boolean result = term1.isSubsetOf(term2);
-System.out.println(result);
-```
-
-#### Response
-
-```
-true
-```
-
-### Details
-
-Compute the details of the provided term.
-
-The computed details are:
-
-- **Cardinality:** the number of possible values.
-- **Length:** the minimum and maximum length of possible values.
-- **Empty:** true if is an empty set (does not contain any value), false otherwise.
-- **Total:** true if is a total set (contains all values), false otherwise.
-
-#### Request
-
-```java
-Term.Regex term = Term.regex("(abc|de)");
-
-Details details = term.getDetails();
-System.out.println(details);
-```
-
-#### Response
-
-```
-Details[cardinality=Integer(2), length=Length[minimum=2, maximum=3], empty=false, total=false]
-```
-
-### Generate Strings
-
-Generate the given number of strings that can be matched by the provided term.
-
-The maximum number of strings to generate is currently limited to 200.
-
-#### Request
-
-```java
-Term.Regex term = Term.regex("(abc|de){2}");
-
-List<String> strings = term.generateStrings(3);
-System.out.println(strings);
-```
-
-#### Response
-
-```
-[abcde, dede, deabc]
-```
+This project is licensed under the MIT License.

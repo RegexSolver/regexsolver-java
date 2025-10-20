@@ -1,6 +1,7 @@
 package com.regexsolver.api.dto;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -18,8 +19,10 @@ public final class Length {
     private final Long maximum;
 
     /**
-     * @param minimum the minimum length of possible values, empty if is an empty set.
-     * @param maximum the maximum length of possible values, empty if the maximum length is infinite or if is an empty set.
+     * @param minimum the minimum length of possible values, empty if is an empty
+     *                set.
+     * @param maximum the maximum length of possible values, empty if the maximum
+     *                length is infinite or if is an empty set.
      */
     Length(Long minimum, Long maximum) {
         this.minimum = minimum;
@@ -37,7 +40,8 @@ public final class Length {
     }
 
     /**
-     * @return The maximum length of possible values, empty if the maximum length is infinite or if is an empty set.
+     * @return The maximum length of possible values, empty if the maximum length is
+     *         infinite or if is an empty set.
      */
     public OptionalLong getMaximum() {
         if (maximum == null) {
@@ -48,8 +52,10 @@ public final class Length {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
+        if (obj == this)
+            return true;
+        if (obj == null || obj.getClass() != this.getClass())
+            return false;
         var that = (Length) obj;
         return Objects.equals(this.minimum, that.minimum) &&
                 Objects.equals(this.maximum, that.maximum);
@@ -71,15 +77,41 @@ public final class Length {
         @Override
         public Length deserialize(JsonParser jp, DeserializationContext ctx)
                 throws IOException {
-            Long[] lengthArray = jp.readValueAs(Long[].class);
-            if (lengthArray != null && lengthArray.length == 2) {
-                return new Length(
-                        lengthArray[0],
-                        lengthArray[1]
-                );
-            } else {
-                throw new IOException("Invalid length array.");
+            JsonToken t = jp.currentToken();
+            if (t == null)
+                t = jp.nextToken();
+
+            if (t == JsonToken.START_ARRAY) {
+                Long[] arr = jp.readValueAs(Long[].class);
+                if (arr == null || arr.length != 2) {
+                    throw new IOException("Expected [minimum,maximum] array.");
+                }
+                return new Length(arr[0], arr[1]);
             }
+
+            if (t == JsonToken.START_OBJECT) {
+                Long min = null;
+                Long max = null;
+
+                while (jp.nextToken() != JsonToken.END_OBJECT) {
+                    String field = jp.currentName();
+                    jp.nextToken(); // move to value
+                    if ("min".equals(field)) {
+                        min = jp.currentToken() == JsonToken.VALUE_NULL ? null : jp.getLongValue();
+                    } else if ("max".equals(field)) {
+                        max = jp.currentToken() == JsonToken.VALUE_NULL ? null : jp.getLongValue();
+                    } else {
+                        jp.skipChildren(); // ignore unknown fields
+                    }
+                }
+                return new Length(min, max);
+            }
+
+            if (t == JsonToken.VALUE_NULL) {
+                return null;
+            }
+
+            throw new IOException("Expected [minimum,maximum] array, or {minimum,maximum} object.");
         }
     }
 }

@@ -17,6 +17,18 @@ final class Response {
         }
     }
 
+    public static final class StringResponse implements ResponseContent {
+        private final String value;
+
+        public StringResponse(@JsonProperty("value") String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+    }
+
     public static final class StringsResponse implements ResponseContent {
         private final List<String> value;
 
