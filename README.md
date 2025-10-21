@@ -75,13 +75,13 @@ import com.regexsolver.api.ResponseFormat;
 
 Term term = Term.regex("abcde");
 
-OperationOptions operationOptions = OperationOptions.init()
+OperationOptions operationOptions = OperationOptions.newDefault()
         .responseFormat(ResponseFormat.REGEX);
 Term result1 = term.union(operationOptions, Term.regex("de"));
 
 System.out.println(result1); // regex=(abc)?de
 
-operationOptions = OperationOptions.init()
+operationOptions = OperationOptions.newDefault()
         .responseFormat(ResponseFormat.FAIR);
 Term result2 = term.union(operationOptions, Term.regex("de"));
 
@@ -106,7 +106,7 @@ try {
     Term term1 = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c");
     Term term2 = Term.regex(".*abc.*");
 
-    OperationOptions operationOptions = OperationOptions.init()
+    OperationOptions operationOptions = OperationOptions.newDefault()
         .executionTimeout(5);
     Term out = term1.difference(operationOptions, term2);
 } catch (ApiError e) {

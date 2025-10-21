@@ -1,9 +1,9 @@
 package com.regexsolver.api;
 
-import com.regexsolver.api.Term.OperationOptions;
 import com.regexsolver.api.dto.Cardinality;
 import com.regexsolver.api.dto.Details;
 import com.regexsolver.api.dto.Length;
+import com.regexsolver.api.exception.ApiError;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -127,7 +127,7 @@ public class IntegrationTest {
     public void test_compute_concat() throws Exception {
         Term term1 = Term.regex("abc");
         Term term2 = Term.regex("de");
-        OperationOptions operationOptions = OperationOptions.init()
+        OperationOptions operationOptions = OperationOptions.newDefault()
                 .responseFormat(ResponseFormat.REGEX);
         Term result = term1.concat(operationOptions, term2);
         assertEquals("regex=abcde", result.toString());
@@ -137,7 +137,7 @@ public class IntegrationTest {
     public void test_compute_difference() throws Exception {
         Term term1 = Term.regex("(abc|de)");
         Term term2 = Term.regex("de");
-        OperationOptions operationOptions = OperationOptions.init()
+        OperationOptions operationOptions = OperationOptions.newDefault()
                 .responseFormat(ResponseFormat.REGEX);
         Term result = term1.difference(operationOptions, term2);
         assertEquals("regex=abc", result.toString());
@@ -148,7 +148,7 @@ public class IntegrationTest {
         Term term1 = Term.regex("(abc|de){2}");
         Term term2 = Term.regex("de.*");
         Term term3 = Term.regex(".*abc");
-        OperationOptions operationOptions = OperationOptions.init()
+        OperationOptions operationOptions = OperationOptions.newDefault()
                 .responseFormat(ResponseFormat.REGEX);
         Term result = term1.intersection(operationOptions, term2, term3);
         assertEquals("regex=deabc", result.toString());
@@ -157,7 +157,7 @@ public class IntegrationTest {
     @Test
     public void test_compute_repeat() throws Exception {
         Term term = Term.regex("abc");
-        OperationOptions operationOptions = OperationOptions.init()
+        OperationOptions operationOptions = OperationOptions.newDefault()
                 .responseFormat(ResponseFormat.REGEX);
         Term result = term.repeat(operationOptions, 3, 5);
         assertEquals("regex=(abc){3,5}", result.toString());
@@ -168,7 +168,7 @@ public class IntegrationTest {
         Term term1 = Term.regex("abc");
         Term term2 = Term.regex("de");
         Term term3 = Term.regex("fghi");
-        OperationOptions operationOptions = OperationOptions.init()
+        OperationOptions operationOptions = OperationOptions.newDefault()
                 .responseFormat(ResponseFormat.REGEX);
         Term result = term1.union(operationOptions, term2, term3);
         assertEquals("regex=(abc|de|fghi)", result.toString());
@@ -199,14 +199,31 @@ public class IntegrationTest {
     @Test
     public void test_readme_response_format() throws Exception {
         Term term = Term.regex("abcde");
-        OperationOptions operationOptions = OperationOptions.init()
+
+        OperationOptions operationOptions = OperationOptions.newDefault()
                 .responseFormat(ResponseFormat.REGEX);
         Term result1 = term.union(operationOptions, Term.regex("de"));
+
         assertEquals("regex=(abc)?de", result1.toString());
 
-        operationOptions = OperationOptions.init()
+        operationOptions = OperationOptions.newDefault()
                 .responseFormat(ResponseFormat.FAIR);
-        Term result2 = term.intersection(operationOptions, Term.regex("de.*"));
+        Term result2 = term.union(operationOptions, Term.regex("de"));
+
         assertTrue(result2.toString().startsWith("fair="));
+    }
+
+    @Test
+    public void test_readme_execution_timeout() throws Exception {
+        try {
+            Term term1 = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c");
+            Term term2 = Term.regex(".*abc.*");
+
+            OperationOptions operationOptions = OperationOptions.newDefault()
+                    .executionTimeout(5);
+            term1.difference(operationOptions, term2);
+        } catch (ApiError e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
