@@ -82,7 +82,7 @@ System.out.println(result1.toString()); // regex=(abc)?de
 
 operationOptions = OperationOptions.init()
         .responseFormat(ResponseFormat.FAIR);
-Term result2 = term.intersection(operationOptions, Term.regex("de.*"));
+Term result2 = term.union(operationOptions, Term.regex("de"));
 
 System.out.println(r2.toString()); // fair=...
 ```
