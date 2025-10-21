@@ -78,13 +78,13 @@ OperationOptions operationOptions = OperationOptions.init()
         .responseFormat(ResponseFormat.REGEX);
 Term result1 = term.union(operationOptions, Term.regex("de"));
 
-System.out.println(result1.toString()); // regex=(abc)?de
+System.out.println(result1); // regex=(abc)?de
 
 operationOptions = OperationOptions.init()
         .responseFormat(ResponseFormat.FAIR);
 Term result2 = term.union(operationOptions, Term.regex("de"));
 
-System.out.println(r2.toString()); // fair=...
+System.out.println(result2); // fair=...
 ```
 
 If the format does not matter, omit `responseFormat` or set it to `ResponseFormat.ANY`.
