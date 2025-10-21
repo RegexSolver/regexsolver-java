@@ -70,6 +70,7 @@ By default, the engine returns whatever the operation produces, with no extra co
 
 ```java
 import com.regexsolver.api.Term;
+import com.regexsolver.api.OperationOptions;
 import com.regexsolver.api.ResponseFormat;
 
 Term term = Term.regex("abcde");
@@ -97,11 +98,17 @@ Set a server-side compute timeout in milliseconds with `executionTimeout`:
 
 ```java
 import com.regexsolver.api.exception.ApiError;
+import com.regexsolver.api.OperationOptions;
 import com.regexsolver.api.Term;
 
+// Limit the server-side compute time to 5 ms
 try {
-    Term out = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c")
-            .difference(Term.regex(".*abc.*"));
+    Term term1 = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c");
+    Term term2 = Term.regex(".*abc.*");
+
+    OperationOptions operationOptions = OperationOptions.init()
+        .executionTimeout(5);
+    Term out = term1.difference(operationOptions, term2);
 } catch (ApiError e) {
     System.out.println(e.getMessage()); // The operation took too much time.
 }
