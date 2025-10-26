@@ -8,7 +8,6 @@ import com.regexsolver.api.Response.BooleanResponse;
 import com.regexsolver.api.Response.StringResponse;
 import com.regexsolver.api.Response.StringsResponse;
 import com.regexsolver.api.dto.Cardinality;
-import com.regexsolver.api.dto.Details;
 import com.regexsolver.api.dto.Length;
 import com.regexsolver.api.exception.ApiError;
 import com.regexsolver.api.exception.MissingAPITokenException;
@@ -30,7 +29,7 @@ import java.util.Optional;
 final class RegexSolverApiWrapper {
     private static final RegexSolverApiWrapper INSTANCE = new RegexSolverApiWrapper();
 
-    private final static String DEFAULT_BASE_URL = "https://api.regexsolver.com/";
+    private final static String DEFAULT_BASE_URL = "https://api.regexsolver.com/v1/";
 
     private final static String USER_AGENT = "RegexSolver Java / 1.1.0";
 
@@ -83,15 +82,6 @@ final class RegexSolverApiWrapper {
 
     public Cardinality analyzeCardinality(Term term) throws ApiError, IOException {
         Response<Cardinality> response = api.analyzeCardinality(term).execute();
-        if (response.isSuccessful()) {
-            return response.body();
-        } else {
-            throw getApiError(response);
-        }
-    }
-
-    public Details analyzeDetails(Term term) throws ApiError, IOException {
-        Response<Details> response = api.analyzeDetails(term).execute();
         if (response.isSuccessful()) {
             return response.body();
         } else {
@@ -240,54 +230,51 @@ final class RegexSolverApiWrapper {
 
     private interface RegexApi {
         // analyze
-        @POST("api/analyze/cardinality")
+        @POST("analyze/cardinality")
         Call<Cardinality> analyzeCardinality(@Body Term term);
 
-        @POST("api/analyze/details")
-        Call<Details> analyzeDetails(@Body Term term);
-
-        @POST("api/analyze/dot")
+        @POST("analyze/dot")
         Call<StringResponse> analyzeDot(@Body Term term);
 
-        @POST("api/analyze/equivalent")
+        @POST("analyze/equivalent")
         Call<BooleanResponse> analyzeEquivalent(@Body MultiTermsRequest multiTermsRequest);
 
-        @POST("api/analyze/empty")
+        @POST("analyze/empty")
         Call<BooleanResponse> analyzeEmpty(@Body Term term);
 
-        @POST("api/analyze/empty_string")
+        @POST("analyze/empty_string")
         Call<BooleanResponse> analyzeEmptyString(@Body Term term);
 
-        @POST("api/analyze/length")
+        @POST("analyze/length")
         Call<Length> analyzeLength(@Body Term term);
 
-        @POST("api/analyze/pattern")
+        @POST("analyze/pattern")
         Call<StringResponse> analyzePattern(@Body Term term);
 
-        @POST("api/analyze/subset")
+        @POST("analyze/subset")
         Call<BooleanResponse> analyzeSubset(@Body MultiTermsRequest multiTermsRequest);
 
-        @POST("api/analyze/total")
+        @POST("analyze/total")
         Call<BooleanResponse> analyzeTotal(@Body Term term);
 
         // compute
-        @POST("api/compute/concat")
+        @POST("compute/concat")
         Call<Term> computeConcat(@Body MultiTermsRequest multiTermsRequest);
 
-        @POST("api/compute/difference")
+        @POST("compute/difference")
         Call<Term> computeDifference(@Body MultiTermsRequest multiTermsRequest);
 
-        @POST("api/compute/intersection")
+        @POST("compute/intersection")
         Call<Term> computeIntersection(@Body MultiTermsRequest multiTermsRequest);
 
-        @POST("api/compute/repeat")
+        @POST("compute/repeat")
         Call<Term> computeRepeat(@Body RepeatRequest repeatRequest);
 
-        @POST("api/compute/union")
+        @POST("compute/union")
         Call<Term> computeUnion(@Body MultiTermsRequest multiTermsRequest);
 
         // generate
-        @POST("api/generate/strings")
+        @POST("generate/strings")
         Call<StringsResponse> generateStrings(@Body GenerateStringsRequest request);
     }
 }

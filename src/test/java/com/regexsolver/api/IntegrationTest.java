@@ -1,7 +1,6 @@
 package com.regexsolver.api;
 
 import com.regexsolver.api.dto.Cardinality;
-import com.regexsolver.api.dto.Details;
 import com.regexsolver.api.dto.Length;
 import com.regexsolver.api.exception.ApiError;
 
@@ -26,33 +25,6 @@ public class IntegrationTest {
 
         Cardinality cardinality = term.getCardinality();
         assertEquals("Integer(5)", cardinality.toString());
-    }
-
-    @Test
-    public void test_analyze_details() throws Exception {
-        Term term = Term.regex("(abc|de)");
-        Details details = term.getDetails();
-        assertEquals(
-                "Details[cardinality=Integer(2), length=Length[minimum=2, maximum=3], empty=false, total=false]",
-                details.toString());
-    }
-
-    @Test
-    public void test_analyze_details_infinite() throws Exception {
-        Term term = Term.regex(".*");
-        Details details = term.getDetails();
-        assertEquals(
-                "Details[cardinality=Infinite, length=Length[minimum=0, maximum=null], empty=false, total=true]",
-                details.toString());
-    }
-
-    @Test
-    public void test_analyze_details_empty() throws Exception {
-        Term term = Term.regex("[]");
-        Details details = term.getDetails();
-        assertEquals(
-                "Details[cardinality=Integer(0), length=Length[minimum=null, maximum=null], empty=true, total=false]",
-                details.toString());
     }
 
     @Test

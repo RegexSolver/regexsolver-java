@@ -7,7 +7,6 @@ import com.regexsolver.api.Request.MultiTermsRequest;
 import com.regexsolver.api.Request.RepeatRequest;
 import com.regexsolver.api.Request.RequestOptions;
 import com.regexsolver.api.dto.Cardinality;
-import com.regexsolver.api.dto.Details;
 import com.regexsolver.api.dto.Length;
 import com.regexsolver.api.exception.ApiError;
 
@@ -34,8 +33,6 @@ public abstract class Term implements ResponseContent {
     @JsonIgnore
     private transient String serialized = null;
 
-    @JsonIgnore
-    private transient Details details;
     @JsonIgnore
     private transient Cardinality cardinality;
     @JsonIgnore
@@ -137,30 +134,10 @@ public abstract class Term implements ResponseContent {
     public Cardinality getCardinality() throws IOException, ApiError {
         if (cardinality != null) {
             return cardinality;
-        } else if (details != null) {
-            return details.getCardinality();
         }
         cardinality = RegexSolverApiWrapper.getInstance()
                 .analyzeCardinality(this);
         return cardinality;
-    }
-
-    /**
-     * Get the details of this term.
-     * Cache the result to avoid calling the API again if this method is called
-     * multiple times.
-     *
-     * @return The details of this term.
-     * @throws IOException In case of issues requesting the API server.
-     * @throws ApiError    In case of error returned by the API.
-     */
-    @JsonIgnore
-    public Details getDetails() throws IOException, ApiError {
-        if (details != null) {
-            return details;
-        }
-        details = RegexSolverApiWrapper.getInstance().analyzeDetails(this);
-        return details;
     }
 
     /**
@@ -206,8 +183,6 @@ public abstract class Term implements ResponseContent {
     public Length getLength() throws IOException, ApiError {
         if (length != null) {
             return length;
-        } else if (details != null) {
-            return details.getLength();
         }
 
         length = RegexSolverApiWrapper.getInstance()
@@ -250,8 +225,6 @@ public abstract class Term implements ResponseContent {
     public boolean isEmpty() throws IOException, ApiError {
         if (empty != null) {
             return empty;
-        } else if (details != null) {
-            return details.isEmpty();
         }
 
         empty = RegexSolverApiWrapper.getInstance()
@@ -292,8 +265,6 @@ public abstract class Term implements ResponseContent {
     public boolean isTotal() throws IOException, ApiError {
         if (total != null) {
             return total;
-        } else if (details != null) {
-            return details.isTotal();
         }
 
         total = RegexSolverApiWrapper.getInstance()
