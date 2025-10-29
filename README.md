@@ -34,18 +34,27 @@ implementation "com.regexsolver.api:RegexSolver:1.1.0"
 ```java
 import com.regexsolver.api.RegexSolver;
 import com.regexsolver.api.Term;
+import com.regexsolver.api.exception.ApiError;
 
-// Set REGEXSOLVER_API_TOKEN in your env and call initialize(),
-// or pass the token directly:
-RegexSolver.initialize(); // or RegexSolver.initialize("YOUR_API_TOKEN");
+import java.io.IOException;
 
-Term term1 = Term.regex("(abc|de|fg){2,}");
-Term term2 = Term.regex("de.*");
-Term term3 = Term.regex(".*abc");
+public class Main {
+    public static void main(String[] args) throws IOException, ApiError {
+        // Set REGEXSOLVER_API_TOKEN in your env and call initialize(),
+        // or pass the token directly:
+        RegexSolver.initialize(); // or RegexSolver.initialize("YOUR_API_TOKEN");
 
-Term result = term1.intersection(term2, term3)
-        .difference(Term.regex(".+(abc|de).+"));
-System.out.println(result.getPattern()); // de(fg)*abc
+        // Create terms
+        Term term1 = Term.regex("(abc|de|fg){2,}");
+        Term term2 = Term.regex("de.*");
+        Term term3 = Term.regex(".*abc");
+
+        // Compute intersection and difference
+        Term result = term1.intersection(term2, term3)
+                .difference(Term.regex(".+(abc|de).+"));
+        System.out.println(result.getPattern()); // de(fg)*abc
+    }
+}
 ```
 
 
@@ -69,10 +78,6 @@ The API can handle terms in two formats:
 By default, the engine returns whatever the operation produces, with no extra convertion. Override with `responseFormat`:
 
 ```java
-import com.regexsolver.api.Term;
-import com.regexsolver.api.OperationOptions;
-import com.regexsolver.api.ResponseFormat;
-
 Term term = Term.regex("abcde");
 
 OperationOptions operationOptions = OperationOptions.newDefault()
@@ -97,10 +102,6 @@ Regardless of the format, you can always call `getPattern()` to obtain the regex
 Set a server-side compute timeout in milliseconds with `executionTimeout`:
 
 ```java
-import com.regexsolver.api.exception.ApiError;
-import com.regexsolver.api.OperationOptions;
-import com.regexsolver.api.Term;
-
 // Limit the server-side compute time to 5 ms
 try {
     Term term1 = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c");
