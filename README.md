@@ -1,14 +1,11 @@
 # RegexSolver Java API Client
-
 [Homepage](https://regexsolver.com) | [Online Demo](https://regexsolver.com/demo) | [Documentation](https://docs.regexsolver.com) | [Developer Console](https://console.regexsolver.com)
 
 **RegexSolver** is a powerful toolkit for building, combining, and analyzing regular expressions. It is designed for constraint solvers, test generators, and other systems that need advanced regex operations.
 
 ## Installation
 
-### Requirements
-
-- Java >=11
+Requirements: **Java >= 11**
 
 ### Maven
 
@@ -26,37 +23,60 @@
 implementation "com.regexsolver.api:RegexSolver:1.1.0"
 ```
 
-## Usage
+## Quick Start
 
 1. Create an API token in the [Developer Console](https://console.regexsolver.com/).
-2. Initialize the client and start working with terms:
+2. Initialize the client and start working with terms.
+
+### Synchronous Usage
+
+The synchronous client provides a simple, blocking API.
 
 ```java
-import com.regexsolver.api.RegexSolver;
+import com.regexsolver.api.RegexSolverClient;
 import com.regexsolver.api.Term;
-import com.regexsolver.api.exception.ApiError;
-
-import java.io.IOException;
+import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ApiError {
-        // Set REGEXSOLVER_API_TOKEN in your env and call initialize(),
-        // or pass the token directly:
-        RegexSolver.initialize(); // or RegexSolver.initialize("YOUR_API_TOKEN");
+    public static void main(String[] args) {
+        RegexSolverClient client = RegexSolverClient.builder()
+                .apiToken("YOUR_API_TOKEN")
+                .build();
 
-        // Create terms
         Term term1 = Term.regex("(abc|de|fg){2,}");
         Term term2 = Term.regex("de.*");
-        Term term3 = Term.regex(".*abc");
 
-        // Compute intersection and difference
-        Term result = term1.intersection(term2, term3)
-                .difference(Term.regex(".+(abc|de).+"));
-        System.out.println(result.getPattern()); // de(fg)*abc
+        Term intersection = client.intersection(Arrays.asList(term1, term2));
+        String pattern = client.getPattern(intersection);
+        System.out.println(pattern); // de(abc|de|fg)+
     }
 }
 ```
 
+### Asynchronous Usage
+
+For non-blocking applications, use the asynchronous client.
+
+```java
+import com.regexsolver.api.AsyncRegexSolverClient;
+import com.regexsolver.api.Term;
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        AsyncRegexSolverClient client = AsyncRegexSolverClient.builder()
+                .apiToken("YOUR_API_TOKEN")
+                .build();
+
+        Term term1 = Term.regex("(abc|de|fg){2,}");
+        Term term2 = Term.regex("de.*");
+
+        client.intersection(Arrays.asList(term1, term2))
+                .thenCompose(client::getPattern)
+                .thenAccept(System.out::println); // de(abc|de|fg)+
+    }
+}
+```
 
 ## Key Concepts & Limitations
 
@@ -68,32 +88,28 @@ RegexSolver supports a subset of regular expressions that adhere to the principl
 - **Line Feed and Dot:** RegexSolver handles all characters the same way. The dot `.` matches any Unicode character including line feed (`\n`).
 - **Empty Regular Expressions:** The empty language (matches no string) is represented by constructs like `[]` (empty character class). This is distinct from the empty string.
 
-
 ## Response Formats
 
 The API can handle terms in two formats:
 - `regex`: a regular expression pattern
 - `fair`: FAIR (Fast Automaton Internal Representation), a stable, signed format used internally by the engine
 
-By default, the engine returns whatever the operation produces, with no extra convertion. Override with `responseFormat`:
+By default, the engine returns whatever the operation produces, with no extra convertion. Override with `ResponseFormat`:
 
 ```java
-Term term = Term.regex("abcde");
+import com.regexsolver.api.ResponseFormat;
 
-OperationOptions operationOptions = OperationOptions.newDefault()
-        .responseFormat(ResponseFormat.REGEX);
-Term result1 = term.union(operationOptions, Term.regex("de"));
+Term term1 = Term.regex("abcde");
+Term term2 = Term.regex("de");
 
+Term result1 = client.union(Arrays.asList(term1, term2), ResponseFormat.REGEX, null);
 System.out.println(result1); // regex=(abc)?de
 
-operationOptions = OperationOptions.newDefault()
-        .responseFormat(ResponseFormat.FAIR);
-Term result2 = term.union(operationOptions, Term.regex("de"));
-
+Term result2 = client.union(Arrays.asList(term1, term2), ResponseFormat.FAIR, null);
 System.out.println(result2); // fair=...
 ```
 
-If the format does not matter, omit `responseFormat` or set it to `ResponseFormat.ANY`.
+If the format does not matter, omit `ResponseFormat` or set it to `ResponseFormat.ANY`.
 
 Regardless of the format, you can always call `getPattern()` to obtain the regex pattern of a term.
 
@@ -102,16 +118,16 @@ Regardless of the format, you can always call `getPattern()` to obtain the regex
 Set a server-side compute timeout in milliseconds with `executionTimeout`:
 
 ```java
-// Limit the server-side compute time to 5 ms
+import com.regexsolver.api.exceptions.TimeoutExceededException;
+
+// Limit the server-side compute time to 100 ms
 try {
     Term term1 = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c");
     Term term2 = Term.regex(".*abc.*");
-
-    OperationOptions operationOptions = OperationOptions.newDefault()
-        .executionTimeout(5);
-    Term out = term1.difference(operationOptions, term2);
-} catch (ApiError e) {
-    System.out.println(e.getMessage()); // The operation took too much time.
+    
+    Term res = client.difference(term1, term2, null, 100);
+} catch (TimeoutExceededException error) {
+    System.out.println(error.getMessage()); // The operation took too much time.
 }
 ```
 
@@ -119,50 +135,44 @@ Timeout is best effort. The exact time is not guaranteed.
 
 ## API Overview
 
-`Term` exposes the following methods.
-
-### Build
-| Method | Return | Description |
-| -------- | ------- | ------- |
-| `Term.fair(String fair)` | `Term` | Creates a term from a FAIR. |
-| `Term.regex(String regex)` | `Term` | Creates a term from a regex pattern. |
+`RegexSolverClient` and `AsyncRegexSolverClient` expose the following methods.
 
 ### Analyze
 
 | Method | Return | Description |
 | -------- | ------- | ------- |
-| `t.equivalent(Term term)` | `boolean` | `true` if `t` and `term` accept exactly the same language. Supports `executionTimeout`. |
-| `t.getCardinality()` | `Cardinality` | Returns the cardinality of the term (i.e., the number of possible matched strings). |
-| `t.getDot()` | `String` | Returns a Graphviz DOT representation of the automaton for the term. |
-| `t.getFair()` | `String` | Returns the FAIR of the term if defined. |
-| `t.getLength()` | `Length` | Returns the minimum and maximum length of matched strings. |
-| `t.getPattern()` | `String` | Returns a regular expression pattern for the term. |
-| `t.isEmpty()` | `boolean` | `true` if the term matches no string. |
-| `t.isEmptyString()` | `boolean` | `true` if the term matches only the empty string. |
-| `t.isTotal()` | `boolean` | `true` if the term matches all possible strings. |
-| `t.subset(Term term)` | `boolean` | `true` if every string matched by `t` is also matched by `term`. Supports `executionTimeout`. |
+| `client.equivalent(term1, term2)` | `boolean` | `true` if `term1` and `term2` accept exactly the same language. |
+| `client.getCardinality(term)` | `Cardinality` | Returns the number of possible matched strings. |
+| `client.getDot(term)` | `String` | Returns a Graphviz DOT representation of the automaton. |
+| `client.getLength(term)` | `Length` | Returns the minimum and maximum length of matched strings. |
+| `client.getPattern(term)` | `String` | Returns a regular expression pattern for the term. |
+| `client.isEmpty(term)` | `boolean` | `true` if the term matches no string. |
+| `client.isEmptyString(term)` | `boolean` | `true` if the term matches only the empty string. |
+| `client.isTotal(term)` | `boolean` | `true` if the term matches all possible strings. |
+| `client.subset(term1, term2)` | `boolean` | `true` if every string matched by `term1` is also matched by `term2`. |
+
+*Note: For `AsyncRegexSolverClient`, these methods return `CompletableFuture`.*
 
 ### Compute
 
 | Method | Return | Description |
 | -------- | ------- | ------- |
-| `t.concat(Term... terms)` | `Term` | Concatenates `t` with the given terms. Supports `responseFormat` and `executionTimeout`. |
-| `t.difference(Term term)` | `Term` | Computes the difference `t - term`. Supports `responseFormat` and `executionTimeout`. |
-| `t.intersection(Term... terms)` | `Term` | Computes the intersection of `t` with the given terms. Supports `responseFormat` and `executionTimeout`. |
-| `t.repeat(int min, Integer max)` | `Term` | Computes the repetition of the term between `min` and `max` times; if `max` is `null`, the repetition is unbounded. Supports `responseFormat` and `executionTimeout`. |
-| `t.union(Term... terms)` | `Term` | Computes the union of `t` with the given terms. Supports `responseFormat` and `executionTimeout`. |
+| `client.complement(term)` | `Term` | Computes the complement of the given term. |
+| `client.concat(terms)` | `Term` | Concatenates multiple terms in order. |
+| `client.difference(term1, term2)` | `Term` | Computes the difference `term1 - term2`. |
+| `client.intersection(terms)` | `Term` | Computes the intersection of the given terms. |
+| `client.repeat(term, min, max)` | `Term` | Computes the repetition of the term between `min` and `max` times. |
+| `client.union(terms)` | `Term` | Computes the union of the given terms. |
+
+*Note: For `AsyncRegexSolverClient`, these methods return `CompletableFuture<Term>`.*
 
 ### Generate
 
 | Method | Return | Description |
 | -------- | ------- | ------- |
-| `t.generateStrings(int count)` | `String[]` | Generates up to `count` unique example strings matched by `t`. Supports `executionTimeout`. |
+| `client.generateStrings(term, limit, offset)` | `List<String>` | Generates up to `limit` unique strings matched by `term`, skipping the first `offset` strings. |
 
-### Other
-| Method | Return | Description |
-| -------- | ------- | ------- |
-| `t.serialize()` | `String` | Returns a serialized form of `t`. |
-| `Term.deserialize(String string)` | `Term` | Returns a deserialized term from the given `string`. |
+*Note: For `AsyncRegexSolverClient`, this method returns `CompletableFuture<List<String>>`.*
 
 ## Cross-Language Support
 
