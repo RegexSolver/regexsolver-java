@@ -11,8 +11,8 @@ public final class RegexSolverClient {
 
     private final AsyncRegexSolverClient asyncClient;
 
-    private RegexSolverClient(AsyncRegexSolverClient asyncClient) {
-        this.asyncClient = asyncClient;
+    private RegexSolverClient(Builder builder) {
+        this.asyncClient = builder.asyncBuilder.build();
     }
 
     public static Builder builder() {
@@ -35,7 +35,7 @@ public final class RegexSolverClient {
         }
 
         public RegexSolverClient build() {
-            return new RegexSolverClient(asyncBuilder.build());
+            return new RegexSolverClient(this);
         }
     }
 
@@ -45,105 +45,105 @@ public final class RegexSolverClient {
      * Computes how many unique strings the term matches.
      *
      * @param term The term to analyze.
-     * @return A Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
+     * @return Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
      */
     public Cardinality getCardinality(Term term) {
-        return asyncClient.getCardinality(term).join();
+        return getCardinality(term, (OperationOptions) null);
     }
 
     /**
-     * Computes how many unique strings the term matches, with a timeout.
+     * Computes how many unique strings the term matches.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
-     * @return A Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
+     * @param options Options for the operation.
+     * @return Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
      */
-    public Cardinality getCardinality(Term term, Integer timeout) {
-        return asyncClient.getCardinality(term, timeout).join();
+    public Cardinality getCardinality(Term term, OperationOptions options) {
+        return asyncClient.getCardinality(term, options).join();
     }
 
     /**
      * Computes the minimum and maximum length of strings matched by the term.
      *
      * @param term The term to analyze.
-     * @return A Length object containing min and max integers. Limits are null if unbounded or undefined.
+     * @return Length object with `min` and `max` integers. Limits are null if unbounded or undefined.
      */
     public Length getLength(Term term) {
-        return asyncClient.getLength(term).join();
+        return getLength(term, (OperationOptions) null);
     }
 
     /**
-     * Computes the minimum and maximum length of strings matched by the term, with a timeout.
+     * Computes the minimum and maximum length of strings matched by the term.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
-     * @return A Length object containing min and max integers. Limits are null if unbounded or undefined.
+     * @param options Options for the operation.
+     * @return Length object with `min` and `max` integers. Limits are null if unbounded or undefined.
      */
-    public Length getLength(Term term, Integer timeout) {
-        return asyncClient.getLength(term, timeout).join();
+    public Length getLength(Term term, OperationOptions options) {
+        return asyncClient.getLength(term, options).join();
     }
 
     /**
      * Checks if the term matches no strings at all.
      *
      * @param term The term to analyze.
-     * @return True if the language is completely empty, false otherwise.
+     * @return true if the language is completely empty, false otherwise.
      */
     public boolean isEmpty(Term term) {
-        return asyncClient.isEmpty(term).join();
+        return isEmpty(term, (OperationOptions) null);
     }
 
     /**
-     * Checks if the term matches no strings at all, with a timeout.
+     * Checks if the term matches no strings at all.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
-     * @return True if the language is completely empty, false otherwise.
+     * @param options Options for the operation.
+     * @return true if the language is completely empty, false otherwise.
      */
-    public boolean isEmpty(Term term, Integer timeout) {
-        return asyncClient.isEmpty(term, timeout).join();
+    public boolean isEmpty(Term term, OperationOptions options) {
+        return asyncClient.isEmpty(term, options).join();
     }
 
     /**
      * Checks if the term matches only the empty string.
      *
      * @param term The term to analyze.
-     * @return True if the term strictly matches the empty string ("") and nothing else.
+     * @return true if the term strictly matches the empty string ("") and nothing else.
      */
     public boolean isEmptyString(Term term) {
-        return asyncClient.isEmptyString(term).join();
+        return isEmptyString(term, (OperationOptions) null);
     }
 
     /**
-     * Checks if the term matches only the empty string, with a timeout.
+     * Checks if the term matches only the empty string.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
-     * @return True if the term strictly matches the empty string ("") and nothing else.
+     * @param options Options for the operation.
+     * @return true if the term strictly matches the empty string ("") and nothing else.
      */
-    public boolean isEmptyString(Term term, Integer timeout) {
-        return asyncClient.isEmptyString(term, timeout).join();
+    public boolean isEmptyString(Term term, OperationOptions options) {
+        return asyncClient.isEmptyString(term, options).join();
     }
 
     /**
      * Checks if the term matches all possible strings.
      *
      * @param term The term to analyze.
-     * @return True if the term matches every possible string.
+     * @return true if the term matches every possible string.
      */
     public boolean isTotal(Term term) {
-        return asyncClient.isTotal(term).join();
+        return isTotal(term, (OperationOptions) null);
     }
 
     /**
-     * Checks if the term matches all possible strings, with a timeout.
+     * Checks if the term matches all possible strings.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
-     * @return True if the term matches every possible string.
+     * @param options Options for the operation.
+     * @return true if the term matches every possible string.
      */
-    public boolean isTotal(Term term, Integer timeout) {
-        return asyncClient.isTotal(term, timeout).join();
+    public boolean isTotal(Term term, OperationOptions options) {
+        return asyncClient.isTotal(term, options).join();
     }
 
     /**
@@ -153,18 +153,18 @@ public final class RegexSolverClient {
      * @return A valid regular expression string representing the language.
      */
     public String getPattern(Term term) {
-        return asyncClient.getPattern(term).join();
+        return getPattern(term, (OperationOptions) null);
     }
 
     /**
-     * Returns a regular expression pattern that represents the term, with a timeout.
+     * Returns a regular expression pattern that represents the term.
      *
      * @param term    The term to extract the pattern from.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A valid regular expression string representing the language.
      */
-    public String getPattern(Term term, Integer timeout) {
-        return asyncClient.getPattern(term, timeout).join();
+    public String getPattern(Term term, OperationOptions options) {
+        return asyncClient.getPattern(term, options).join();
     }
 
     /**
@@ -174,18 +174,18 @@ public final class RegexSolverClient {
      * @return The raw DOT syntax for Graphviz compilation.
      */
     public String getDot(Term term) {
-        return asyncClient.getDot(term).join();
+        return getDot(term, (OperationOptions) null);
     }
 
     /**
-     * Builds a Graphviz DOT representation of the term's automaton, with a timeout.
+     * Builds a Graphviz DOT representation of the term's automaton.
      *
      * @param term    The term to visualize.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return The raw DOT syntax for Graphviz compilation.
      */
-    public String getDot(Term term, Integer timeout) {
-        return asyncClient.getDot(term, timeout).join();
+    public String getDot(Term term, OperationOptions options) {
+        return asyncClient.getDot(term, options).join();
     }
 
     /**
@@ -193,22 +193,22 @@ public final class RegexSolverClient {
      *
      * @param term1 The first term.
      * @param term2 The second term to compare against.
-     * @return True if they are entirely equivalent, false otherwise.
+     * @return true if they are entirely equivalent, false otherwise.
      */
     public boolean equivalent(Term term1, Term term2) {
-        return asyncClient.equivalent(term1, term2).join();
+        return equivalent(term1, term2, (OperationOptions) null);
     }
 
     /**
-     * Checks if the two terms accept exactly the same language, with a timeout.
+     * Checks if the two terms accept exactly the same language.
      *
      * @param term1   The first term.
      * @param term2   The second term to compare against.
-     * @param timeout Timeout in milliseconds for the operation.
-     * @return True if they are entirely equivalent, false otherwise.
+     * @param options Options for the operation.
+     * @return true if they are entirely equivalent, false otherwise.
      */
-    public boolean equivalent(Term term1, Term term2, Integer timeout) {
-        return asyncClient.equivalent(term1, term2, timeout).join();
+    public boolean equivalent(Term term1, Term term2, OperationOptions options) {
+        return asyncClient.equivalent(term1, term2, options).join();
     }
 
     /**
@@ -216,25 +216,39 @@ public final class RegexSolverClient {
      *
      * @param subset   The term to test as the subset.
      * @param superset The term representing the entire set space.
-     * @return True if every string matched by subset is also matched by superset.
+     * @return true if every string matched by subset is also matched by superset.
      */
     public boolean subset(Term subset, Term superset) {
-        return asyncClient.subset(subset, superset).join();
+        return subset(subset, superset, (OperationOptions) null);
     }
 
     /**
-     * Checks if the first term's language is a subset of the second term's language, with a timeout.
+     * Checks if the first term's language is a subset of the second term's language.
      *
      * @param subset   The term to test as the subset.
      * @param superset The term representing the entire set space.
-     * @param timeout  Timeout in milliseconds for the operation.
-     * @return True if every string matched by subset is also matched by superset.
+     * @param options  Options for the operation.
+     * @return true if every string matched by subset is also matched by superset.
      */
-    public boolean subset(Term subset, Term superset, Integer timeout) {
-        return asyncClient.subset(subset, superset, timeout).join();
+    public boolean subset(
+        Term subset,
+        Term superset,
+        OperationOptions options
+    ) {
+        return asyncClient.subset(subset, superset, options).join();
     }
 
     // --- COMPUTE OPERATIONS ---
+
+    /**
+     * Concatenates the given terms sequentially.
+     *
+     * @param terms Variadic terms to concatenate in order.
+     * @return A newly computed concatenated term.
+     */
+    public Term concat(Term... terms) {
+        return asyncClient.concat(terms).join();
+    }
 
     /**
      * Concatenates the given terms sequentially.
@@ -243,23 +257,28 @@ public final class RegexSolverClient {
      * @return A newly computed concatenated term.
      */
     public Term concat(List<Term> terms) {
-        return asyncClient.concat(terms).join();
+        return concat(terms, (OperationOptions) null);
     }
 
     /**
-     * Concatenates the given terms sequentially, allowing for format and timeout specification.
+     * Concatenates the given terms sequentially, allowing for options specification.
      *
      * @param terms   A list of terms to concatenate in order.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A newly computed concatenated term.
      */
-    public Term concat(
-        List<Term> terms,
-        ResponseFormat format,
-        Integer timeout
-    ) {
-        return asyncClient.concat(terms, format, timeout).join();
+    public Term concat(List<Term> terms, OperationOptions options) {
+        return asyncClient.concat(terms, options).join();
+    }
+
+    /**
+     * Computes the intersection of the given terms.
+     *
+     * @param terms Variadic terms to intersect.
+     * @return A term representing only strings matched by ALL provided terms.
+     */
+    public Term intersection(Term... terms) {
+        return asyncClient.intersection(terms).join();
     }
 
     /**
@@ -269,23 +288,28 @@ public final class RegexSolverClient {
      * @return A term representing only strings matched by ALL provided terms.
      */
     public Term intersection(List<Term> terms) {
-        return asyncClient.intersection(terms).join();
+        return intersection(terms, (OperationOptions) null);
     }
 
     /**
-     * Computes the intersection of the given terms, allowing for format and timeout specification.
+     * Computes the intersection of the given terms, allowing for options specification.
      *
      * @param terms   A list of terms to intersect.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A term representing only strings matched by ALL provided terms.
      */
-    public Term intersection(
-        List<Term> terms,
-        ResponseFormat format,
-        Integer timeout
-    ) {
-        return asyncClient.intersection(terms, format, timeout).join();
+    public Term intersection(List<Term> terms, OperationOptions options) {
+        return asyncClient.intersection(terms, options).join();
+    }
+
+    /**
+     * Computes the union of the given terms.
+     *
+     * @param terms Variadic terms to combine.
+     * @return A term representing strings matched by ANY of the provided terms.
+     */
+    public Term union(Term... terms) {
+        return asyncClient.union(terms).join();
     }
 
     /**
@@ -295,23 +319,18 @@ public final class RegexSolverClient {
      * @return A term representing strings matched by ANY of the provided terms.
      */
     public Term union(List<Term> terms) {
-        return asyncClient.union(terms).join();
+        return union(terms, (OperationOptions) null);
     }
 
     /**
-     * Computes the union of the given terms, allowing for format and timeout specification.
+     * Computes the union of the given terms, allowing for options specification.
      *
      * @param terms   A list of terms to combine.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A term representing strings matched by ANY of the provided terms.
      */
-    public Term union(
-        List<Term> terms,
-        ResponseFormat format,
-        Integer timeout
-    ) {
-        return asyncClient.union(terms, format, timeout).join();
+    public Term union(List<Term> terms, OperationOptions options) {
+        return asyncClient.union(terms, options).join();
     }
 
     /**
@@ -322,25 +341,19 @@ public final class RegexSolverClient {
      * @return A computed difference term.
      */
     public Term difference(Term base, Term excluded) {
-        return asyncClient.difference(base, excluded).join();
+        return difference(base, excluded, (OperationOptions) null);
     }
 
     /**
-     * Computes the difference between the two provided terms, allowing for format and timeout specification.
+     * Computes the difference between the two provided terms.
      *
      * @param base     The base language term to subtract from.
      * @param excluded The term whose language should be removed from the base.
-     * @param format   The return format of the term (any, regex or fair).
-     * @param timeout  Timeout in milliseconds for the operation.
+     * @param options  Options for the operation.
      * @return A computed difference term.
      */
-    public Term difference(
-        Term base,
-        Term excluded,
-        ResponseFormat format,
-        Integer timeout
-    ) {
-        return asyncClient.difference(base, excluded, format, timeout).join();
+    public Term difference(Term base, Term excluded, OperationOptions options) {
+        return asyncClient.difference(base, excluded, options).join();
     }
 
     /**
@@ -350,19 +363,18 @@ public final class RegexSolverClient {
      * @return The complemented term.
      */
     public Term complement(Term term) {
-        return asyncClient.complement(term).join();
+        return complement(term, (OperationOptions) null);
     }
 
     /**
-     * Computes the complement of the given term, allowing for format and timeout specification.
+     * Computes the complement of the given term.
      *
      * @param term    The term to complement.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return The complemented term.
      */
-    public Term complement(Term term, ResponseFormat format, Integer timeout) {
-        return asyncClient.complement(term, format, timeout).join();
+    public Term complement(Term term, OperationOptions options) {
+        return asyncClient.complement(term, options).join();
     }
 
     /**
@@ -374,27 +386,25 @@ public final class RegexSolverClient {
      * @return A computed repeated term.
      */
     public Term repeat(Term term, int min, Integer max) {
-        return asyncClient.repeat(term, min, max).join();
+        return repeat(term, min, max, (OperationOptions) null);
     }
 
     /**
-     * Repeats a term between a minimum and maximum number of times, allowing for format and timeout specification.
+     * Repeats a term between a minimum and maximum number of times.
      *
      * @param term    The term to repeat.
      * @param min     The inclusive lower bound of repetitions.
      * @param max     The inclusive upper bound. If null, repetitions are unbounded.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A computed repeated term.
      */
     public Term repeat(
         Term term,
         int min,
         Integer max,
-        ResponseFormat format,
-        Integer timeout
+        OperationOptions options
     ) {
-        return asyncClient.repeat(term, min, max, format, timeout).join();
+        return asyncClient.repeat(term, min, max, options).join();
     }
 
     // --- GENERATE OPERATIONS ---
@@ -408,24 +418,24 @@ public final class RegexSolverClient {
      * @return A list of strings that match the term.
      */
     public List<String> generateStrings(Term term, int limit, int offset) {
-        return asyncClient.generateStrings(term, limit, offset).join();
+        return generateStrings(term, limit, offset, (OperationOptions) null);
     }
 
     /**
-     * Generates up to {@code limit} distinct strings matched by the term, skipping the first {@code offset} strings, with a timeout.
+     * Generates up to {@code limit} distinct strings matched by the term, skipping the first {@code offset} strings.
      *
      * @param term    The term to sample generated strings from.
      * @param limit   The maximum number of unique strings to return.
      * @param offset  Number of matched strings to skip before starting to collect the results. Used for pagination.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A list of strings that match the term.
      */
     public List<String> generateStrings(
         Term term,
         int limit,
         int offset,
-        Integer timeout
+        OperationOptions options
     ) {
-        return asyncClient.generateStrings(term, limit, offset, timeout).join();
+        return asyncClient.generateStrings(term, limit, offset, options).join();
     }
 }

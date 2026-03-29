@@ -46,7 +46,7 @@ public class Main {
         Term term1 = Term.regex("(abc|de|fg){2,}");
         Term term2 = Term.regex("de.*");
 
-        Term intersection = client.intersection(Arrays.asList(term1, term2));
+        Term intersection = client.intersection(term1, term2);
         String pattern = client.getPattern(intersection);
         System.out.println(pattern); // de(abc|de|fg)+
     }
@@ -71,7 +71,7 @@ public class Main {
         Term term1 = Term.regex("(abc|de|fg){2,}");
         Term term2 = Term.regex("de.*");
 
-        client.intersection(Arrays.asList(term1, term2))
+        client.intersection(term1, term2)
                 .thenCompose(client::getPattern)
                 .thenAccept(System.out::println); // de(abc|de|fg)+
     }
@@ -94,38 +94,38 @@ The API can handle terms in two formats:
 - `regex`: a regular expression pattern
 - `fair`: FAIR (Fast Automaton Internal Representation), a stable, signed format used internally by the engine
 
-By default, the engine returns whatever the operation produces, with no extra convertion. Override with `ResponseFormat`:
+By default, the engine returns whatever the operation produces, with no extra convertion. Override with `OperationOptions`:
 
 ```java
 import com.regexsolver.api.ResponseFormat;
+import com.regexsolver.api.OperationOptions;
 
 Term term1 = Term.regex("abcde");
 Term term2 = Term.regex("de");
 
-Term result1 = client.union(Arrays.asList(term1, term2), ResponseFormat.REGEX, null);
+Term result1 = client.union(Arrays.asList(term1, term2), new OperationOptions().responseFormat(ResponseFormat.REGEX));
 System.out.println(result1); // regex=(abc)?de
 
-Term result2 = client.union(Arrays.asList(term1, term2), ResponseFormat.FAIR, null);
+Term result2 = client.union(Arrays.asList(term1, term2), new OperationOptions().responseFormat(ResponseFormat.FAIR));
 System.out.println(result2); // fair=...
 ```
-
-If the format does not matter, omit `ResponseFormat` or set it to `ResponseFormat.ANY`.
 
 Regardless of the format, you can always call `getPattern()` to obtain the regex pattern of a term.
 
 ## Bounding execution time
 
-Set a server-side compute timeout in milliseconds with `executionTimeout`:
+Set a server-side compute timeout in milliseconds with `executionTimeout` in `OperationOptions`:
 
 ```java
 import com.regexsolver.api.exceptions.TimeoutExceededException;
+import com.regexsolver.api.OperationOptions;
 
 // Limit the server-side compute time to 100 ms
 try {
     Term term1 = Term.regex(".*ab.*c(de|fg).*dab.*c(de|fg).*ab.*c(de|fg).*dab.*c");
     Term term2 = Term.regex(".*abc.*");
     
-    Term res = client.difference(term1, term2, null, 100);
+    Term res = client.difference(term1, term2, new OperationOptions().executionTimeout(100));
 } catch (TimeoutExceededException error) {
     System.out.println(error.getMessage()); // The operation took too much time.
 }
@@ -135,7 +135,7 @@ Timeout is best effort. The exact time is not guaranteed.
 
 ## API Overview
 
-`RegexSolverClient` and `AsyncRegexSolverClient` expose the following methods.
+`RegexSolverClient` and `AsyncRegexSolverClient` expose the following methods. All methods accept an optional `OperationOptions` object as the last parameter.
 
 ### Analyze
 

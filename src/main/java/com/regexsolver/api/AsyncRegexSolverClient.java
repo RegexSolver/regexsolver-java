@@ -9,8 +9,8 @@ import com.regexsolver.api.generated.api.ComputeApi;
 import com.regexsolver.api.generated.api.GenerateApi;
 import com.regexsolver.api.generated.model.*;
 import java.net.http.HttpHeaders;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -81,18 +81,23 @@ public final class AsyncRegexSolverClient {
 
     // --- INTERNAL HELPERS ---
 
-    private RequestOptionsDto buildOptions(
-        Integer timeout,
-        ResponseFormat format
-    ) {
-        RequestOptionsDto options = new RequestOptionsDto().schemaVersion(1);
-        if (timeout != null) {
-            options.execution(new ExecutionOptionsDto().timeout(timeout));
+    private RequestOptionsDto buildOptions(OperationOptions options) {
+        RequestOptionsDto dto = new RequestOptionsDto().schemaVersion(1);
+        if (options != null) {
+            options
+                .getExecutionTimeout()
+                .ifPresent(timeout ->
+                    dto.execution(new ExecutionOptionsDto().timeout(timeout))
+                );
+            options
+                .getResponseFormat()
+                .ifPresent(format ->
+                    dto.response(
+                        new ResponseOptionsDto().format(format.toDto())
+                    )
+                );
         }
-        if (format != null) {
-            options.response(new ResponseOptionsDto().format(format.toDto()));
-        }
-        return options;
+        return dto;
     }
 
     private <T> CompletableFuture<T> executeWithRetry(
@@ -261,19 +266,19 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
      */
     public CompletableFuture<Cardinality> getCardinality(Term term) {
-        return getCardinality(term, null);
+        return getCardinality(term, (OperationOptions) null);
     }
 
     /**
      * Computes how many unique strings the term matches asynchronously.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing a Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
      */
     public CompletableFuture<Cardinality> getCardinality(
         Term term,
-        Integer timeout
+        OperationOptions options
     ) {
         if (term.getCachedCardinality() != null) {
             return CompletableFuture.completedFuture(
@@ -282,7 +287,7 @@ public final class AsyncRegexSolverClient {
         }
         TermRequestDto request = new TermRequestDto()
             .term(term.toDto())
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
         return executeWithRetry(() ->
             analyzeApi.cardinality(request)
         ).thenApply(resp -> {
@@ -299,23 +304,26 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a Length object with `min` and `max` integers. Limits are null if unbounded or undefined.
      */
     public CompletableFuture<Length> getLength(Term term) {
-        return getLength(term, null);
+        return getLength(term, (OperationOptions) null);
     }
 
     /**
      * Computes the minimum and maximum length of strings matched by the term asynchronously.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing a Length object with `min` and `max` integers. Limits are null if unbounded or undefined.
      */
-    public CompletableFuture<Length> getLength(Term term, Integer timeout) {
+    public CompletableFuture<Length> getLength(
+        Term term,
+        OperationOptions options
+    ) {
         if (term.getCachedLength() != null) {
             return CompletableFuture.completedFuture(term.getCachedLength());
         }
         TermRequestDto request = new TermRequestDto()
             .term(term.toDto())
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
         return executeWithRetry(() -> analyzeApi.length(request)).thenApply(
             resp -> {
                 Length len = Length.fromDto(resp.getData());
@@ -332,23 +340,26 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if the language is completely empty, false otherwise.
      */
     public CompletableFuture<Boolean> isEmpty(Term term) {
-        return isEmpty(term, null);
+        return isEmpty(term, (OperationOptions) null);
     }
 
     /**
      * Checks if the term matches no strings at all asynchronously.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing true if the language is completely empty, false otherwise.
      */
-    public CompletableFuture<Boolean> isEmpty(Term term, Integer timeout) {
+    public CompletableFuture<Boolean> isEmpty(
+        Term term,
+        OperationOptions options
+    ) {
         if (term.getCachedEmpty() != null) {
             return CompletableFuture.completedFuture(term.getCachedEmpty());
         }
         TermRequestDto request = new TermRequestDto()
             .term(term.toDto())
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
         return executeWithRetry(() -> analyzeApi.empty(request)).thenApply(
             resp -> {
                 boolean val = resp.getData().getValue();
@@ -369,19 +380,19 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if the term strictly matches the empty string ("") and nothing else.
      */
     public CompletableFuture<Boolean> isEmptyString(Term term) {
-        return isEmptyString(term, null);
+        return isEmptyString(term, (OperationOptions) null);
     }
 
     /**
      * Checks if the term matches only the empty string asynchronously.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing true if the term strictly matches the empty string ("") and nothing else.
      */
     public CompletableFuture<Boolean> isEmptyString(
         Term term,
-        Integer timeout
+        OperationOptions options
     ) {
         if (term.getCachedEmptyString() != null) {
             return CompletableFuture.completedFuture(
@@ -390,7 +401,7 @@ public final class AsyncRegexSolverClient {
         }
         TermRequestDto request = new TermRequestDto()
             .term(term.toDto())
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
         return executeWithRetry(() ->
             analyzeApi.emptyString(request)
         ).thenApply(resp -> {
@@ -412,23 +423,26 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if the term matches every possible string.
      */
     public CompletableFuture<Boolean> isTotal(Term term) {
-        return isTotal(term, null);
+        return isTotal(term, (OperationOptions) null);
     }
 
     /**
      * Checks if the term matches all possible strings asynchronously.
      *
      * @param term    The term to analyze.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing true if the term matches every possible string.
      */
-    public CompletableFuture<Boolean> isTotal(Term term, Integer timeout) {
+    public CompletableFuture<Boolean> isTotal(
+        Term term,
+        OperationOptions options
+    ) {
         if (term.getCachedTotal() != null) {
             return CompletableFuture.completedFuture(term.getCachedTotal());
         }
         TermRequestDto request = new TermRequestDto()
             .term(term.toDto())
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
         return executeWithRetry(() -> analyzeApi.total(request)).thenApply(
             resp -> {
                 boolean val = resp.getData().getValue();
@@ -450,32 +464,35 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a valid regular expression string representing the language.
      */
     public CompletableFuture<String> getPattern(Term term) {
-        return getPattern(term, null);
+        return getPattern(term, (OperationOptions) null);
     }
 
     /**
      * Returns a regular expression pattern that represents the term asynchronously.
      *
      * @param term    The term to extract the pattern from.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing a valid regular expression string representing the language.
      */
-    public CompletableFuture<String> getPattern(Term term, Integer timeout) {
-        Optional<String> patternOpt = term.getPattern();
-        if (patternOpt.isPresent()) {
-            return CompletableFuture.completedFuture(patternOpt.get());
-        }
-
-        TermRequestDto request = new TermRequestDto()
-            .term(term.toDto())
-            .options(buildOptions(timeout, null));
-        return executeWithRetry(() -> analyzeApi.pattern(request)).thenApply(
-            resp -> {
-                String val = resp.getData().getValue();
-                term.setCachedPattern(val);
-                return val;
-            }
-        );
+    public CompletableFuture<String> getPattern(
+        Term term,
+        OperationOptions options
+    ) {
+        return term
+            .getPattern()
+            .map(CompletableFuture::completedFuture)
+            .orElseGet(() -> {
+                TermRequestDto request = new TermRequestDto()
+                    .term(term.toDto())
+                    .options(buildOptions(options));
+                return executeWithRetry(() ->
+                    analyzeApi.pattern(request)
+                ).thenApply(resp -> {
+                    String val = resp.getData().getValue();
+                    term.setCachedPattern(val);
+                    return val;
+                });
+            });
     }
 
     /**
@@ -485,23 +502,26 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing the raw DOT syntax for Graphviz compilation.
      */
     public CompletableFuture<String> getDot(Term term) {
-        return getDot(term, null);
+        return getDot(term, (OperationOptions) null);
     }
 
     /**
      * Builds a Graphviz DOT representation of the term's automaton asynchronously.
      *
      * @param term    The term to visualize.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing the raw DOT syntax for Graphviz compilation.
      */
-    public CompletableFuture<String> getDot(Term term, Integer timeout) {
+    public CompletableFuture<String> getDot(
+        Term term,
+        OperationOptions options
+    ) {
         if (term.getCachedDot() != null) {
             return CompletableFuture.completedFuture(term.getCachedDot());
         }
         TermRequestDto request = new TermRequestDto()
             .term(term.toDto())
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
         return executeWithRetry(() -> analyzeApi.dot(request)).thenApply(
             resp -> {
                 String val = resp.getData().getValue();
@@ -519,7 +539,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if they are entirely equivalent, false otherwise.
      */
     public CompletableFuture<Boolean> equivalent(Term term1, Term term2) {
-        return equivalent(term1, term2, null);
+        return equivalent(term1, term2, (OperationOptions) null);
     }
 
     /**
@@ -527,18 +547,18 @@ public final class AsyncRegexSolverClient {
      *
      * @param term1   The first term.
      * @param term2   The second term to compare against.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing true if they are entirely equivalent, false otherwise.
      */
     public CompletableFuture<Boolean> equivalent(
         Term term1,
         Term term2,
-        Integer timeout
+        OperationOptions options
     ) {
         TwoTermsRequestDto request = new TwoTermsRequestDto()
             .addTermsItem(term1.toDto())
             .addTermsItem(term2.toDto())
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
         return executeWithRetry(() -> analyzeApi.equivalent(request)).thenApply(
             resp -> resp.getData().getValue()
         );
@@ -552,7 +572,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if every string matched by subset is also matched by superset.
      */
     public CompletableFuture<Boolean> subset(Term subset, Term superset) {
-        return subset(subset, superset, null);
+        return subset(subset, superset, (OperationOptions) null);
     }
 
     /**
@@ -560,18 +580,18 @@ public final class AsyncRegexSolverClient {
      *
      * @param subset   The term to test as the subset.
      * @param superset The term representing the entire set space.
-     * @param timeout  Timeout in milliseconds for the operation.
+     * @param options  Options for the operation.
      * @return A CompletableFuture containing true if every string matched by subset is also matched by superset.
      */
     public CompletableFuture<Boolean> subset(
         Term subset,
         Term superset,
-        Integer timeout
+        OperationOptions options
     ) {
         TwoTermsRequestDto request = new TwoTermsRequestDto()
             .addTermsItem(subset.toDto())
             .addTermsItem(superset.toDto())
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
         return executeWithRetry(() -> analyzeApi.subset(request)).thenApply(
             resp -> resp.getData().getValue()
         );
@@ -582,32 +602,50 @@ public final class AsyncRegexSolverClient {
     /**
      * Concatenates the given terms sequentially asynchronously.
      *
+     * @param terms Variadic terms to concatenate in order.
+     * @return A CompletableFuture containing a newly computed concatenated term.
+     */
+    public CompletableFuture<Term> concat(Term... terms) {
+        return concat(Arrays.asList(terms));
+    }
+
+    /**
+     * Concatenates the given terms sequentially asynchronously.
+     *
      * @param terms A dynamic list of terms to concatenate in order.
      * @return A CompletableFuture containing a newly computed concatenated term.
      */
     public CompletableFuture<Term> concat(List<Term> terms) {
-        return concat(terms, ResponseFormat.ANY, null);
+        return concat(terms, (OperationOptions) null);
     }
 
     /**
      * Concatenates the given terms sequentially asynchronously.
      *
      * @param terms   A dynamic list of terms to concatenate in order.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing a newly computed concatenated term.
      */
     public CompletableFuture<Term> concat(
         List<Term> terms,
-        ResponseFormat format,
-        Integer timeout
+        OperationOptions options
     ) {
         MultiTermsRequestDto request = new MultiTermsRequestDto()
             .terms(terms.stream().map(Term::toDto).collect(Collectors.toList()))
-            .options(buildOptions(timeout, format));
+            .options(buildOptions(options));
         return executeWithRetry(() -> computeApi.concat(request)).thenApply(
             resp -> Term.fromDto(resp.getData())
         );
+    }
+
+    /**
+     * Computes the intersection of the given terms asynchronously.
+     *
+     * @param terms Variadic terms to intersect.
+     * @return A CompletableFuture containing a term representing only strings matched by ALL provided terms.
+     */
+    public CompletableFuture<Term> intersection(Term... terms) {
+        return intersection(Arrays.asList(terms));
     }
 
     /**
@@ -617,28 +655,36 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a term representing only strings matched by ALL provided terms.
      */
     public CompletableFuture<Term> intersection(List<Term> terms) {
-        return intersection(terms, ResponseFormat.ANY, null);
+        return intersection(terms, (OperationOptions) null);
     }
 
     /**
      * Computes the intersection of the given terms asynchronously.
      *
      * @param terms   A dynamic list of terms to intersect.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing a term representing only strings matched by ALL provided terms.
      */
     public CompletableFuture<Term> intersection(
         List<Term> terms,
-        ResponseFormat format,
-        Integer timeout
+        OperationOptions options
     ) {
         MultiTermsRequestDto request = new MultiTermsRequestDto()
             .terms(terms.stream().map(Term::toDto).collect(Collectors.toList()))
-            .options(buildOptions(timeout, format));
+            .options(buildOptions(options));
         return executeWithRetry(() ->
             computeApi.intersection(request)
         ).thenApply(resp -> Term.fromDto(resp.getData()));
+    }
+
+    /**
+     * Computes the union of the given terms asynchronously.
+     *
+     * @param terms Variadic terms to combine.
+     * @return A CompletableFuture containing a term representing strings matched by ANY of the provided terms.
+     */
+    public CompletableFuture<Term> union(Term... terms) {
+        return union(Arrays.asList(terms));
     }
 
     /**
@@ -648,25 +694,23 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a term representing strings matched by ANY of the provided terms.
      */
     public CompletableFuture<Term> union(List<Term> terms) {
-        return union(terms, ResponseFormat.ANY, null);
+        return union(terms, (OperationOptions) null);
     }
 
     /**
      * Computes the union of the given terms asynchronously.
      *
      * @param terms   A dynamic list of terms to combine.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing a term representing strings matched by ANY of the provided terms.
      */
     public CompletableFuture<Term> union(
         List<Term> terms,
-        ResponseFormat format,
-        Integer timeout
+        OperationOptions options
     ) {
         MultiTermsRequestDto request = new MultiTermsRequestDto()
             .terms(terms.stream().map(Term::toDto).collect(Collectors.toList()))
-            .options(buildOptions(timeout, format));
+            .options(buildOptions(options));
         return executeWithRetry(() -> computeApi.union(request)).thenApply(
             resp -> Term.fromDto(resp.getData())
         );
@@ -680,7 +724,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a computed difference term.
      */
     public CompletableFuture<Term> difference(Term base, Term excluded) {
-        return difference(base, excluded, ResponseFormat.ANY, null);
+        return difference(base, excluded, (OperationOptions) null);
     }
 
     /**
@@ -688,20 +732,18 @@ public final class AsyncRegexSolverClient {
      *
      * @param base     The base language term to subtract from.
      * @param excluded The term whose language should be removed from the base.
-     * @param format   The return format of the term (any, regex or fair).
-     * @param timeout  Timeout in milliseconds for the operation.
+     * @param options  Options for the operation.
      * @return A CompletableFuture containing a computed difference term.
      */
     public CompletableFuture<Term> difference(
         Term base,
         Term excluded,
-        ResponseFormat format,
-        Integer timeout
+        OperationOptions options
     ) {
         TwoTermsRequestDto request = new TwoTermsRequestDto()
             .addTermsItem(base.toDto())
             .addTermsItem(excluded.toDto())
-            .options(buildOptions(timeout, format));
+            .options(buildOptions(options));
         return executeWithRetry(() -> computeApi.difference(request)).thenApply(
             resp -> Term.fromDto(resp.getData())
         );
@@ -714,25 +756,23 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing the complemented term.
      */
     public CompletableFuture<Term> complement(Term term) {
-        return complement(term, ResponseFormat.ANY, null);
+        return complement(term, (OperationOptions) null);
     }
 
     /**
      * Computes the complement of the given term asynchronously.
      *
      * @param term    The term to complement.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing the complemented term.
      */
     public CompletableFuture<Term> complement(
         Term term,
-        ResponseFormat format,
-        Integer timeout
+        OperationOptions options
     ) {
         TermRequestDto request = new TermRequestDto()
             .term(term.toDto())
-            .options(buildOptions(timeout, format));
+            .options(buildOptions(options));
         return executeWithRetry(() -> computeApi.complement(request)).thenApply(
             resp -> Term.fromDto(resp.getData())
         );
@@ -747,7 +787,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a computed repeated term.
      */
     public CompletableFuture<Term> repeat(Term term, int min, Integer max) {
-        return repeat(term, min, max, ResponseFormat.ANY, null);
+        return repeat(term, min, max, (OperationOptions) null);
     }
 
     /**
@@ -756,22 +796,20 @@ public final class AsyncRegexSolverClient {
      * @param term    The term to repeat.
      * @param min     The inclusive lower bound of repetitions.
      * @param max     The inclusive upper bound. If null, repetitions are unbounded.
-     * @param format  The return format of the term (any, regex or fair).
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options  Options for the operation.
      * @return A CompletableFuture containing a computed repeated term.
      */
     public CompletableFuture<Term> repeat(
         Term term,
         int min,
         Integer max,
-        ResponseFormat format,
-        Integer timeout
+        OperationOptions options
     ) {
         RepeatRequestDto request = new RepeatRequestDto()
             .term(term.toDto())
             .min(min)
             .max(max)
-            .options(buildOptions(timeout, format));
+            .options(buildOptions(options));
         return executeWithRetry(() -> computeApi.repeat(request)).thenApply(
             resp -> Term.fromDto(resp.getData())
         );
@@ -792,7 +830,7 @@ public final class AsyncRegexSolverClient {
         int limit,
         int offset
     ) {
-        return generateStrings(term, limit, offset, null);
+        return generateStrings(term, limit, offset, (OperationOptions) null);
     }
 
     /**
@@ -801,14 +839,14 @@ public final class AsyncRegexSolverClient {
      * @param term    The term to sample generated strings from.
      * @param limit   The maximum number of unique strings to return.
      * @param offset  Number of matched strings to skip before starting to collect the results. Used for pagination.
-     * @param timeout Timeout in milliseconds for the operation.
+     * @param options Options for the operation.
      * @return A CompletableFuture containing a list of strings that match the term.
      */
     public CompletableFuture<List<String>> generateStrings(
         Term term,
         int limit,
         int offset,
-        Integer timeout
+        OperationOptions options
     ) {
         Term termToUse =
             term.getCachedStableTerm() != null
@@ -821,7 +859,7 @@ public final class AsyncRegexSolverClient {
             .limit(limit)
             .offset(offset)
             .returnStableTerm(returnStableTerm)
-            .options(buildOptions(timeout, null));
+            .options(buildOptions(options));
 
         return executeWithRetry(() -> generateApi.strings(request)).thenApply(
             resp -> {

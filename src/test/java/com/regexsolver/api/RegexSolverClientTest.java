@@ -81,10 +81,10 @@ class RegexSolverClientTest {
         );
 
         // Let's assume the sync client passes down to the async client's 3-arg method
-        Term result = client.union(termList, null, null);
+        Term result = client.union(termList);
 
         assertThat(result.getPattern()).contains("a|b");
-        verify(asyncClient).union(termList, null, null);
+        verify(asyncClient).union(termList);
     }
 
     @Test
@@ -92,14 +92,14 @@ class RegexSolverClientTest {
         Term term = Term.regex(".*a.*");
         Term mockResultTerm = Term.regex("[^a].*");
 
-        when(asyncClient.complement(any(), isNull(), isNull())).thenReturn(
+        when(asyncClient.complement(any())).thenReturn(
             CompletableFuture.completedFuture(mockResultTerm)
         );
 
-        Term result = client.complement(term, null, null);
+        Term result = client.complement(term);
 
         assertThat(result.getPattern()).contains("[^a].*");
-        verify(asyncClient).complement(term, null, null);
+        verify(asyncClient).complement(term);
     }
 
     @Test
@@ -129,10 +129,10 @@ class RegexSolverClientTest {
             CompletableFuture.completedFuture(mockResultTerm)
         );
 
-        Term result = client.intersection(termList, null, null);
+        Term result = client.intersection(termList);
 
         assertThat(result.getPattern()).contains("a");
-        verify(asyncClient).intersection(termList, null, null);
+        verify(asyncClient).intersection(termList);
     }
 
     @Test
