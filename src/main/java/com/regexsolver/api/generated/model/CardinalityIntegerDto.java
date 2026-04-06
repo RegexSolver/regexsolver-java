@@ -36,7 +36,7 @@ import com.regexsolver.api.generated.ApiClient;
   CardinalityIntegerDto.JSON_PROPERTY_TYPE,
   CardinalityIntegerDto.JSON_PROPERTY_VALUE
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class CardinalityIntegerDto {
   /**
    * Gets or Sets type
@@ -72,17 +72,17 @@ public class CardinalityIntegerDto {
   }
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private TypeEnum type;
 
   public static final String JSON_PROPERTY_VALUE = "value";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private Long value;
 
   public CardinalityIntegerDto() { 
   }
 
-  public CardinalityIntegerDto type(@javax.annotation.Nonnull TypeEnum type) {
+  public CardinalityIntegerDto type(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -91,7 +91,7 @@ public class CardinalityIntegerDto {
    * Get type
    * @return type
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TypeEnum getType() {
@@ -101,12 +101,12 @@ public class CardinalityIntegerDto {
 
   @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(@javax.annotation.Nonnull TypeEnum type) {
+  public void setType(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
   }
 
 
-  public CardinalityIntegerDto value(@javax.annotation.Nonnull Long value) {
+  public CardinalityIntegerDto value(@jakarta.annotation.Nonnull Long value) {
     this.value = value;
     return this;
   }
@@ -116,7 +116,7 @@ public class CardinalityIntegerDto {
    * minimum: 0
    * @return value
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Long getValue() {
@@ -126,7 +126,7 @@ public class CardinalityIntegerDto {
 
   @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setValue(@javax.annotation.Nonnull Long value) {
+  public void setValue(@jakarta.annotation.Nonnull Long value) {
     this.value = value;
   }
 

@@ -40,28 +40,28 @@ import com.regexsolver.api.generated.ApiClient;
   RepeatRequestDto.JSON_PROPERTY_MAX,
   RepeatRequestDto.JSON_PROPERTY_OPTIONS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class RepeatRequestDto {
   public static final String JSON_PROPERTY_TERM = "term";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private TermDto term;
 
   public static final String JSON_PROPERTY_MIN = "min";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private Integer min;
 
   public static final String JSON_PROPERTY_MAX = "max";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private Integer max;
 
   public static final String JSON_PROPERTY_OPTIONS = "options";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private RequestOptionsDto options;
 
   public RepeatRequestDto() { 
   }
 
-  public RepeatRequestDto term(@javax.annotation.Nonnull TermDto term) {
+  public RepeatRequestDto term(@jakarta.annotation.Nonnull TermDto term) {
     this.term = term;
     return this;
   }
@@ -70,7 +70,7 @@ public class RepeatRequestDto {
    * Term to repeat.
    * @return term
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_TERM, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TermDto getTerm() {
@@ -80,12 +80,12 @@ public class RepeatRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_TERM, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setTerm(@javax.annotation.Nonnull TermDto term) {
+  public void setTerm(@jakarta.annotation.Nonnull TermDto term) {
     this.term = term;
   }
 
 
-  public RepeatRequestDto min(@javax.annotation.Nonnull Integer min) {
+  public RepeatRequestDto min(@jakarta.annotation.Nonnull Integer min) {
     this.min = min;
     return this;
   }
@@ -94,7 +94,7 @@ public class RepeatRequestDto {
    * Inclusive lower bound of repetitions.
    * @return min
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_MIN, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getMin() {
@@ -104,12 +104,12 @@ public class RepeatRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_MIN, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setMin(@javax.annotation.Nonnull Integer min) {
+  public void setMin(@jakarta.annotation.Nonnull Integer min) {
     this.min = min;
   }
 
 
-  public RepeatRequestDto max(@javax.annotation.Nullable Integer max) {
+  public RepeatRequestDto max(@jakarta.annotation.Nullable Integer max) {
     this.max = max;
     return this;
   }
@@ -118,7 +118,7 @@ public class RepeatRequestDto {
    * Inclusive upper bound. If omitted or null, the repetition is unbounded.
    * @return max
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_MAX, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMax() {
@@ -128,12 +128,12 @@ public class RepeatRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_MAX, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMax(@javax.annotation.Nullable Integer max) {
+  public void setMax(@jakarta.annotation.Nullable Integer max) {
     this.max = max;
   }
 
 
-  public RepeatRequestDto options(@javax.annotation.Nullable RequestOptionsDto options) {
+  public RepeatRequestDto options(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
     return this;
   }
@@ -142,7 +142,7 @@ public class RepeatRequestDto {
    * Get options
    * @return options
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public RequestOptionsDto getOptions() {
@@ -152,7 +152,7 @@ public class RepeatRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setOptions(@javax.annotation.Nullable RequestOptionsDto options) {
+  public void setOptions(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
   }
 

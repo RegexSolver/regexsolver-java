@@ -37,7 +37,7 @@ public final class AsyncRegexSolverClient {
         this.rateLimiter = RateLimiter.getInstance(this.apiToken);
 
         ApiClient apiClient = new ApiClient();
-        apiClient.setBasePath(this.baseUrl);
+        apiClient.updateBaseUri(this.baseUrl);
         apiClient.setRequestInterceptor(requestBuilder -> {
             requestBuilder.header(
                 "User-Agent",

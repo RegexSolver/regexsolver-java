@@ -40,20 +40,20 @@ import com.regexsolver.api.generated.ApiClient;
   TwoTermsRequestDto.JSON_PROPERTY_TERMS,
   TwoTermsRequestDto.JSON_PROPERTY_OPTIONS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class TwoTermsRequestDto {
   public static final String JSON_PROPERTY_TERMS = "terms";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private List<TermDto> terms = new ArrayList<>();
 
   public static final String JSON_PROPERTY_OPTIONS = "options";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private RequestOptionsDto options;
 
   public TwoTermsRequestDto() { 
   }
 
-  public TwoTermsRequestDto terms(@javax.annotation.Nonnull List<TermDto> terms) {
+  public TwoTermsRequestDto terms(@jakarta.annotation.Nonnull List<TermDto> terms) {
     this.terms = terms;
     return this;
   }
@@ -70,7 +70,7 @@ public class TwoTermsRequestDto {
    * Exactly 2 terms.
    * @return terms
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_TERMS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<TermDto> getTerms() {
@@ -80,12 +80,12 @@ public class TwoTermsRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_TERMS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setTerms(@javax.annotation.Nonnull List<TermDto> terms) {
+  public void setTerms(@jakarta.annotation.Nonnull List<TermDto> terms) {
     this.terms = terms;
   }
 
 
-  public TwoTermsRequestDto options(@javax.annotation.Nullable RequestOptionsDto options) {
+  public TwoTermsRequestDto options(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
     return this;
   }
@@ -94,7 +94,7 @@ public class TwoTermsRequestDto {
    * Get options
    * @return options
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public RequestOptionsDto getOptions() {
@@ -104,7 +104,7 @@ public class TwoTermsRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setOptions(@javax.annotation.Nullable RequestOptionsDto options) {
+  public void setOptions(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
   }
 

@@ -41,32 +41,32 @@ import com.regexsolver.api.generated.ApiClient;
   GenerateStringsRequestDto.JSON_PROPERTY_RETURN_STABLE_TERM,
   GenerateStringsRequestDto.JSON_PROPERTY_OPTIONS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class GenerateStringsRequestDto {
   public static final String JSON_PROPERTY_TERM = "term";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private TermDto term;
 
   public static final String JSON_PROPERTY_LIMIT = "limit";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private Integer limit;
 
   public static final String JSON_PROPERTY_OFFSET = "offset";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private Integer offset;
 
   public static final String JSON_PROPERTY_RETURN_STABLE_TERM = "returnStableTerm";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private Boolean returnStableTerm = false;
 
   public static final String JSON_PROPERTY_OPTIONS = "options";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private RequestOptionsDto options;
 
   public GenerateStringsRequestDto() { 
   }
 
-  public GenerateStringsRequestDto term(@javax.annotation.Nonnull TermDto term) {
+  public GenerateStringsRequestDto term(@jakarta.annotation.Nonnull TermDto term) {
     this.term = term;
     return this;
   }
@@ -75,7 +75,7 @@ public class GenerateStringsRequestDto {
    * Source term to generate strings from.
    * @return term
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_TERM, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TermDto getTerm() {
@@ -85,12 +85,12 @@ public class GenerateStringsRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_TERM, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setTerm(@javax.annotation.Nonnull TermDto term) {
+  public void setTerm(@jakarta.annotation.Nonnull TermDto term) {
     this.term = term;
   }
 
 
-  public GenerateStringsRequestDto limit(@javax.annotation.Nonnull Integer limit) {
+  public GenerateStringsRequestDto limit(@jakarta.annotation.Nonnull Integer limit) {
     this.limit = limit;
     return this;
   }
@@ -101,7 +101,7 @@ public class GenerateStringsRequestDto {
    * maximum: 100
    * @return limit
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_LIMIT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getLimit() {
@@ -111,12 +111,12 @@ public class GenerateStringsRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_LIMIT, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLimit(@javax.annotation.Nonnull Integer limit) {
+  public void setLimit(@jakarta.annotation.Nonnull Integer limit) {
     this.limit = limit;
   }
 
 
-  public GenerateStringsRequestDto offset(@javax.annotation.Nonnull Integer offset) {
+  public GenerateStringsRequestDto offset(@jakarta.annotation.Nonnull Integer offset) {
     this.offset = offset;
     return this;
   }
@@ -126,7 +126,7 @@ public class GenerateStringsRequestDto {
    * minimum: 0
    * @return offset
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_OFFSET, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getOffset() {
@@ -136,12 +136,12 @@ public class GenerateStringsRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_OFFSET, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setOffset(@javax.annotation.Nonnull Integer offset) {
+  public void setOffset(@jakarta.annotation.Nonnull Integer offset) {
     this.offset = offset;
   }
 
 
-  public GenerateStringsRequestDto returnStableTerm(@javax.annotation.Nullable Boolean returnStableTerm) {
+  public GenerateStringsRequestDto returnStableTerm(@jakarta.annotation.Nullable Boolean returnStableTerm) {
     this.returnStableTerm = returnStableTerm;
     return this;
   }
@@ -150,7 +150,7 @@ public class GenerateStringsRequestDto {
    * If set to true, a stable term is returned. This term can be reused in subsequent calls to guarantee no strings are repeated. If the provided term is already stable, it will not be returned.
    * @return returnStableTerm
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_RETURN_STABLE_TERM, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getReturnStableTerm() {
@@ -160,12 +160,12 @@ public class GenerateStringsRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_RETURN_STABLE_TERM, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setReturnStableTerm(@javax.annotation.Nullable Boolean returnStableTerm) {
+  public void setReturnStableTerm(@jakarta.annotation.Nullable Boolean returnStableTerm) {
     this.returnStableTerm = returnStableTerm;
   }
 
 
-  public GenerateStringsRequestDto options(@javax.annotation.Nullable RequestOptionsDto options) {
+  public GenerateStringsRequestDto options(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
     return this;
   }
@@ -174,7 +174,7 @@ public class GenerateStringsRequestDto {
    * Get options
    * @return options
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public RequestOptionsDto getOptions() {
@@ -184,7 +184,7 @@ public class GenerateStringsRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setOptions(@javax.annotation.Nullable RequestOptionsDto options) {
+  public void setOptions(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
   }
 

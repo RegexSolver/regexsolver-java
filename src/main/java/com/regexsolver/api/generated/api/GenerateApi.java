@@ -49,7 +49,7 @@ import java.util.function.Consumer;
 
 import java.util.concurrent.CompletableFuture;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class GenerateApi {
   /**
    * Utility class for extending HttpRequest.Builder functionality.
@@ -174,7 +174,7 @@ public class GenerateApi {
    * @return CompletableFuture&lt;Strings200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Strings200ResponseDto> strings(@javax.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto) throws ApiException {
+  public CompletableFuture<Strings200ResponseDto> strings(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto) throws ApiException {
     return strings(generateStringsRequestDto, null);
   }
 
@@ -186,7 +186,7 @@ public class GenerateApi {
    * @return CompletableFuture&lt;Strings200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Strings200ResponseDto> strings(@javax.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Strings200ResponseDto> strings(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return stringsWithHttpInfo(generateStringsRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -203,7 +203,7 @@ public class GenerateApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Strings200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Strings200ResponseDto>> stringsWithHttpInfo(@javax.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Strings200ResponseDto>> stringsWithHttpInfo(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto) throws ApiException {
     return stringsWithHttpInfo(generateStringsRequestDto, null);
   }
 
@@ -215,7 +215,7 @@ public class GenerateApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Strings200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Strings200ResponseDto>> stringsWithHttpInfo(@javax.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Strings200ResponseDto>> stringsWithHttpInfo(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = stringsRequestBuilder(generateStringsRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -267,7 +267,7 @@ public class GenerateApi {
     }
   }
 
-  private HttpRequest.Builder stringsRequestBuilder(@javax.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder stringsRequestBuilder(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'generateStringsRequestDto' is set
     if (generateStringsRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'generateStringsRequestDto' when calling strings");

@@ -38,7 +38,7 @@ import com.regexsolver.api.generated.ApiClient;
   StringsDto.JSON_PROPERTY_TYPE,
   StringsDto.JSON_PROPERTY_VALUE
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class StringsDto {
   /**
    * Gets or Sets type
@@ -74,17 +74,17 @@ public class StringsDto {
   }
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private TypeEnum type;
 
   public static final String JSON_PROPERTY_VALUE = "value";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private List<String> value = new ArrayList<>();
 
   public StringsDto() { 
   }
 
-  public StringsDto type(@javax.annotation.Nonnull TypeEnum type) {
+  public StringsDto type(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -93,7 +93,7 @@ public class StringsDto {
    * Get type
    * @return type
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TypeEnum getType() {
@@ -103,12 +103,12 @@ public class StringsDto {
 
   @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(@javax.annotation.Nonnull TypeEnum type) {
+  public void setType(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
   }
 
 
-  public StringsDto value(@javax.annotation.Nonnull List<String> value) {
+  public StringsDto value(@jakarta.annotation.Nonnull List<String> value) {
     this.value = value;
     return this;
   }
@@ -125,7 +125,7 @@ public class StringsDto {
    * Array of unique strings.
    * @return value
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<String> getValue() {
@@ -135,7 +135,7 @@ public class StringsDto {
 
   @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setValue(@javax.annotation.Nonnull List<String> value) {
+  public void setValue(@jakarta.annotation.Nonnull List<String> value) {
     this.value = value;
   }
 

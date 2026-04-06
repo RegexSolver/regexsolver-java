@@ -37,20 +37,20 @@ import com.regexsolver.api.generated.ApiClient;
   Empty200ResponseDto.JSON_PROPERTY_SUCCESS,
   Empty200ResponseDto.JSON_PROPERTY_DATA
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class Empty200ResponseDto {
   public static final String JSON_PROPERTY_SUCCESS = "success";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private Boolean success;
 
   public static final String JSON_PROPERTY_DATA = "data";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private BooleanDto data;
 
   public Empty200ResponseDto() { 
   }
 
-  public Empty200ResponseDto success(@javax.annotation.Nonnull Boolean success) {
+  public Empty200ResponseDto success(@jakarta.annotation.Nonnull Boolean success) {
     this.success = success;
     return this;
   }
@@ -59,7 +59,7 @@ public class Empty200ResponseDto {
    * Get success
    * @return success
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_SUCCESS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Boolean getSuccess() {
@@ -69,12 +69,12 @@ public class Empty200ResponseDto {
 
   @JsonProperty(value = JSON_PROPERTY_SUCCESS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setSuccess(@javax.annotation.Nonnull Boolean success) {
+  public void setSuccess(@jakarta.annotation.Nonnull Boolean success) {
     this.success = success;
   }
 
 
-  public Empty200ResponseDto data(@javax.annotation.Nonnull BooleanDto data) {
+  public Empty200ResponseDto data(@jakarta.annotation.Nonnull BooleanDto data) {
     this.data = data;
     return this;
   }
@@ -83,7 +83,7 @@ public class Empty200ResponseDto {
    * Get data
    * @return data
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public BooleanDto getData() {
@@ -93,7 +93,7 @@ public class Empty200ResponseDto {
 
   @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setData(@javax.annotation.Nonnull BooleanDto data) {
+  public void setData(@jakarta.annotation.Nonnull BooleanDto data) {
     this.data = data;
   }
 

@@ -39,24 +39,24 @@ import com.regexsolver.api.generated.ApiClient;
   RequestOptionsDto.JSON_PROPERTY_RESPONSE,
   RequestOptionsDto.JSON_PROPERTY_EXECUTION
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class RequestOptionsDto {
   public static final String JSON_PROPERTY_SCHEMA_VERSION = "schemaVersion";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private Integer schemaVersion;
 
   public static final String JSON_PROPERTY_RESPONSE = "response";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private ResponseOptionsDto response;
 
   public static final String JSON_PROPERTY_EXECUTION = "execution";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private ExecutionOptionsDto execution;
 
   public RequestOptionsDto() { 
   }
 
-  public RequestOptionsDto schemaVersion(@javax.annotation.Nonnull Integer schemaVersion) {
+  public RequestOptionsDto schemaVersion(@jakarta.annotation.Nonnull Integer schemaVersion) {
     this.schemaVersion = schemaVersion;
     return this;
   }
@@ -65,7 +65,7 @@ public class RequestOptionsDto {
    * Client-expected schema version.
    * @return schemaVersion
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_SCHEMA_VERSION, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getSchemaVersion() {
@@ -75,12 +75,12 @@ public class RequestOptionsDto {
 
   @JsonProperty(value = JSON_PROPERTY_SCHEMA_VERSION, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setSchemaVersion(@javax.annotation.Nonnull Integer schemaVersion) {
+  public void setSchemaVersion(@jakarta.annotation.Nonnull Integer schemaVersion) {
     this.schemaVersion = schemaVersion;
   }
 
 
-  public RequestOptionsDto response(@javax.annotation.Nullable ResponseOptionsDto response) {
+  public RequestOptionsDto response(@jakarta.annotation.Nullable ResponseOptionsDto response) {
     this.response = response;
     return this;
   }
@@ -89,7 +89,7 @@ public class RequestOptionsDto {
    * Get response
    * @return response
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_RESPONSE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ResponseOptionsDto getResponse() {
@@ -99,12 +99,12 @@ public class RequestOptionsDto {
 
   @JsonProperty(value = JSON_PROPERTY_RESPONSE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setResponse(@javax.annotation.Nullable ResponseOptionsDto response) {
+  public void setResponse(@jakarta.annotation.Nullable ResponseOptionsDto response) {
     this.response = response;
   }
 
 
-  public RequestOptionsDto execution(@javax.annotation.Nullable ExecutionOptionsDto execution) {
+  public RequestOptionsDto execution(@jakarta.annotation.Nullable ExecutionOptionsDto execution) {
     this.execution = execution;
     return this;
   }
@@ -113,7 +113,7 @@ public class RequestOptionsDto {
    * Get execution
    * @return execution
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_EXECUTION, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ExecutionOptionsDto getExecution() {
@@ -123,7 +123,7 @@ public class RequestOptionsDto {
 
   @JsonProperty(value = JSON_PROPERTY_EXECUTION, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExecution(@javax.annotation.Nullable ExecutionOptionsDto execution) {
+  public void setExecution(@jakarta.annotation.Nullable ExecutionOptionsDto execution) {
     this.execution = execution;
   }
 

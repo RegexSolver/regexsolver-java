@@ -15,6 +15,7 @@ openapi-generator-cli generate \
   --additional-properties=modelPackage=com.regexsolver.api.generated.model \
   --additional-properties=asyncNative=true \
   --additional-properties=useRuntimeException=true \
-  --additional-properties=openApiNullable=false
+  --additional-properties=openApiNullable=false \
+  --additional-properties=useJakartaEe=true
 
 echo "API Generation Complete."

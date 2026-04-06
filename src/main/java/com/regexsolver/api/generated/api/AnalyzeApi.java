@@ -53,7 +53,7 @@ import java.util.function.Consumer;
 
 import java.util.concurrent.CompletableFuture;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class AnalyzeApi {
   /**
    * Utility class for extending HttpRequest.Builder functionality.
@@ -178,7 +178,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Cardinality200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Cardinality200ResponseDto> cardinality(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<Cardinality200ResponseDto> cardinality(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return cardinality(termRequestDto, null);
   }
 
@@ -190,7 +190,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Cardinality200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Cardinality200ResponseDto> cardinality(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Cardinality200ResponseDto> cardinality(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return cardinalityWithHttpInfo(termRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -207,7 +207,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Cardinality200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Cardinality200ResponseDto>> cardinalityWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Cardinality200ResponseDto>> cardinalityWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return cardinalityWithHttpInfo(termRequestDto, null);
   }
 
@@ -219,7 +219,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Cardinality200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Cardinality200ResponseDto>> cardinalityWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Cardinality200ResponseDto>> cardinalityWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = cardinalityRequestBuilder(termRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -271,7 +271,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder cardinalityRequestBuilder(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder cardinalityRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'termRequestDto' is set
     if (termRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling cardinality");
@@ -310,7 +310,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Dot200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Dot200ResponseDto> dot(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<Dot200ResponseDto> dot(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return dot(termRequestDto, null);
   }
 
@@ -322,7 +322,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Dot200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Dot200ResponseDto> dot(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Dot200ResponseDto> dot(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return dotWithHttpInfo(termRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -339,7 +339,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Dot200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Dot200ResponseDto>> dotWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Dot200ResponseDto>> dotWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return dotWithHttpInfo(termRequestDto, null);
   }
 
@@ -351,7 +351,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Dot200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Dot200ResponseDto>> dotWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Dot200ResponseDto>> dotWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = dotRequestBuilder(termRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -403,7 +403,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder dotRequestBuilder(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder dotRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'termRequestDto' is set
     if (termRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling dot");
@@ -442,7 +442,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> empty(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> empty(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return empty(termRequestDto, null);
   }
 
@@ -454,7 +454,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> empty(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> empty(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return emptyWithHttpInfo(termRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -471,7 +471,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> emptyWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> emptyWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return emptyWithHttpInfo(termRequestDto, null);
   }
 
@@ -483,7 +483,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> emptyWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> emptyWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = emptyRequestBuilder(termRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -535,7 +535,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder emptyRequestBuilder(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder emptyRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'termRequestDto' is set
     if (termRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling empty");
@@ -574,7 +574,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> emptyString(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> emptyString(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return emptyString(termRequestDto, null);
   }
 
@@ -586,7 +586,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> emptyString(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> emptyString(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return emptyStringWithHttpInfo(termRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -603,7 +603,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> emptyStringWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> emptyStringWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return emptyStringWithHttpInfo(termRequestDto, null);
   }
 
@@ -615,7 +615,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> emptyStringWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> emptyStringWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = emptyStringRequestBuilder(termRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -667,7 +667,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder emptyStringRequestBuilder(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder emptyStringRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'termRequestDto' is set
     if (termRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling emptyString");
@@ -706,7 +706,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> equivalent(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> equivalent(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
     return equivalent(twoTermsRequestDto, null);
   }
 
@@ -718,7 +718,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> equivalent(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> equivalent(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return equivalentWithHttpInfo(twoTermsRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -735,7 +735,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> equivalentWithHttpInfo(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> equivalentWithHttpInfo(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
     return equivalentWithHttpInfo(twoTermsRequestDto, null);
   }
 
@@ -747,7 +747,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> equivalentWithHttpInfo(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> equivalentWithHttpInfo(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = equivalentRequestBuilder(twoTermsRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -799,7 +799,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder equivalentRequestBuilder(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder equivalentRequestBuilder(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'twoTermsRequestDto' is set
     if (twoTermsRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'twoTermsRequestDto' when calling equivalent");
@@ -838,7 +838,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Length200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Length200ResponseDto> length(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<Length200ResponseDto> length(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return length(termRequestDto, null);
   }
 
@@ -850,7 +850,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Length200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Length200ResponseDto> length(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Length200ResponseDto> length(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return lengthWithHttpInfo(termRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -867,7 +867,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Length200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Length200ResponseDto>> lengthWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Length200ResponseDto>> lengthWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return lengthWithHttpInfo(termRequestDto, null);
   }
 
@@ -879,7 +879,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Length200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Length200ResponseDto>> lengthWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Length200ResponseDto>> lengthWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = lengthRequestBuilder(termRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -931,7 +931,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder lengthRequestBuilder(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder lengthRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'termRequestDto' is set
     if (termRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling length");
@@ -970,7 +970,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Dot200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Dot200ResponseDto> pattern(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<Dot200ResponseDto> pattern(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return pattern(termRequestDto, null);
   }
 
@@ -982,7 +982,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Dot200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Dot200ResponseDto> pattern(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Dot200ResponseDto> pattern(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return patternWithHttpInfo(termRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -999,7 +999,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Dot200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Dot200ResponseDto>> patternWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Dot200ResponseDto>> patternWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return patternWithHttpInfo(termRequestDto, null);
   }
 
@@ -1011,7 +1011,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Dot200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Dot200ResponseDto>> patternWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Dot200ResponseDto>> patternWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = patternRequestBuilder(termRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -1063,7 +1063,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder patternRequestBuilder(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder patternRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'termRequestDto' is set
     if (termRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling pattern");
@@ -1102,7 +1102,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> subset(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> subset(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
     return subset(twoTermsRequestDto, null);
   }
 
@@ -1114,7 +1114,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> subset(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> subset(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return subsetWithHttpInfo(twoTermsRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -1131,7 +1131,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> subsetWithHttpInfo(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> subsetWithHttpInfo(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
     return subsetWithHttpInfo(twoTermsRequestDto, null);
   }
 
@@ -1143,7 +1143,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> subsetWithHttpInfo(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> subsetWithHttpInfo(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = subsetRequestBuilder(twoTermsRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -1195,7 +1195,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder subsetRequestBuilder(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder subsetRequestBuilder(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'twoTermsRequestDto' is set
     if (twoTermsRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'twoTermsRequestDto' when calling subset");
@@ -1234,7 +1234,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> total(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> total(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return total(termRequestDto, null);
   }
 
@@ -1246,7 +1246,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;Empty200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Empty200ResponseDto> total(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Empty200ResponseDto> total(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return totalWithHttpInfo(termRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -1263,7 +1263,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> totalWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> totalWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return totalWithHttpInfo(termRequestDto, null);
   }
 
@@ -1275,7 +1275,7 @@ public class AnalyzeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Empty200ResponseDto>> totalWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> totalWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = totalRequestBuilder(termRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -1327,7 +1327,7 @@ public class AnalyzeApi {
     }
   }
 
-  private HttpRequest.Builder totalRequestBuilder(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder totalRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'termRequestDto' is set
     if (termRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling total");

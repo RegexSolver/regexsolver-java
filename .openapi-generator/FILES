@@ -1,6 +1,4 @@
 api/openapi.yaml
-gradle.properties
-src/main/AndroidManifest.xml
 src/main/java/com/regexsolver/api/generated/ApiClient.java
 src/main/java/com/regexsolver/api/generated/ApiException.java
 src/main/java/com/regexsolver/api/generated/ApiResponse.java

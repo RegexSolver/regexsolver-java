@@ -39,7 +39,7 @@ import com.regexsolver.api.generated.ApiClient;
   GenerateStringsResponseDto.JSON_PROPERTY_TERM,
   GenerateStringsResponseDto.JSON_PROPERTY_STRINGS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class GenerateStringsResponseDto {
   /**
    * Gets or Sets type
@@ -75,21 +75,21 @@ public class GenerateStringsResponseDto {
   }
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private TypeEnum type;
 
   public static final String JSON_PROPERTY_TERM = "term";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private TermDto term;
 
   public static final String JSON_PROPERTY_STRINGS = "strings";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private StringsDto strings;
 
   public GenerateStringsResponseDto() { 
   }
 
-  public GenerateStringsResponseDto type(@javax.annotation.Nonnull TypeEnum type) {
+  public GenerateStringsResponseDto type(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -98,7 +98,7 @@ public class GenerateStringsResponseDto {
    * Get type
    * @return type
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TypeEnum getType() {
@@ -108,12 +108,12 @@ public class GenerateStringsResponseDto {
 
   @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(@javax.annotation.Nonnull TypeEnum type) {
+  public void setType(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
   }
 
 
-  public GenerateStringsResponseDto term(@javax.annotation.Nullable TermDto term) {
+  public GenerateStringsResponseDto term(@jakarta.annotation.Nullable TermDto term) {
     this.term = term;
     return this;
   }
@@ -122,7 +122,7 @@ public class GenerateStringsResponseDto {
    * A stable term to use in subsequent calls to guarantee the uniqueness of generated strings. Omitted if &#39;returnStableTerm&#39; was false in the request, or if the provided term was already stable.
    * @return term
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_TERM, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public TermDto getTerm() {
@@ -132,12 +132,12 @@ public class GenerateStringsResponseDto {
 
   @JsonProperty(value = JSON_PROPERTY_TERM, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTerm(@javax.annotation.Nullable TermDto term) {
+  public void setTerm(@jakarta.annotation.Nullable TermDto term) {
     this.term = term;
   }
 
 
-  public GenerateStringsResponseDto strings(@javax.annotation.Nonnull StringsDto strings) {
+  public GenerateStringsResponseDto strings(@jakarta.annotation.Nonnull StringsDto strings) {
     this.strings = strings;
     return this;
   }
@@ -146,7 +146,7 @@ public class GenerateStringsResponseDto {
    * The generated distinct strings.
    * @return strings
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_STRINGS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public StringsDto getStrings() {
@@ -156,7 +156,7 @@ public class GenerateStringsResponseDto {
 
   @JsonProperty(value = JSON_PROPERTY_STRINGS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setStrings(@javax.annotation.Nonnull StringsDto strings) {
+  public void setStrings(@jakarta.annotation.Nonnull StringsDto strings) {
     this.strings = strings;
   }
 

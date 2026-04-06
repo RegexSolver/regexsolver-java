@@ -38,20 +38,20 @@ import com.regexsolver.api.generated.ApiClient;
   TermRequestDto.JSON_PROPERTY_TERM,
   TermRequestDto.JSON_PROPERTY_OPTIONS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class TermRequestDto {
   public static final String JSON_PROPERTY_TERM = "term";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private TermDto term;
 
   public static final String JSON_PROPERTY_OPTIONS = "options";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private RequestOptionsDto options;
 
   public TermRequestDto() { 
   }
 
-  public TermRequestDto term(@javax.annotation.Nonnull TermDto term) {
+  public TermRequestDto term(@jakarta.annotation.Nonnull TermDto term) {
     this.term = term;
     return this;
   }
@@ -60,7 +60,7 @@ public class TermRequestDto {
    * Get term
    * @return term
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_TERM, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TermDto getTerm() {
@@ -70,12 +70,12 @@ public class TermRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_TERM, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setTerm(@javax.annotation.Nonnull TermDto term) {
+  public void setTerm(@jakarta.annotation.Nonnull TermDto term) {
     this.term = term;
   }
 
 
-  public TermRequestDto options(@javax.annotation.Nullable RequestOptionsDto options) {
+  public TermRequestDto options(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
     return this;
   }
@@ -84,7 +84,7 @@ public class TermRequestDto {
    * Get options
    * @return options
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public RequestOptionsDto getOptions() {
@@ -94,7 +94,7 @@ public class TermRequestDto {
 
   @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setOptions(@javax.annotation.Nullable RequestOptionsDto options) {
+  public void setOptions(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
   }
 

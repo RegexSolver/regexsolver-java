@@ -35,16 +35,16 @@ import com.regexsolver.api.generated.ApiClient;
 @JsonPropertyOrder({
   ExecutionOptionsDto.JSON_PROPERTY_TIMEOUT
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class ExecutionOptionsDto {
   public static final String JSON_PROPERTY_TIMEOUT = "timeout";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private Integer timeout;
 
   public ExecutionOptionsDto() { 
   }
 
-  public ExecutionOptionsDto timeout(@javax.annotation.Nullable Integer timeout) {
+  public ExecutionOptionsDto timeout(@jakarta.annotation.Nullable Integer timeout) {
     this.timeout = timeout;
     return this;
   }
@@ -54,7 +54,7 @@ public class ExecutionOptionsDto {
    * minimum: 1
    * @return timeout
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_TIMEOUT, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getTimeout() {
@@ -64,7 +64,7 @@ public class ExecutionOptionsDto {
 
   @JsonProperty(value = JSON_PROPERTY_TIMEOUT, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTimeout(@javax.annotation.Nullable Integer timeout) {
+  public void setTimeout(@jakarta.annotation.Nullable Integer timeout) {
     this.timeout = timeout;
   }
 

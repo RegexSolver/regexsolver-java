@@ -52,7 +52,7 @@ import java.util.function.Consumer;
 
 import java.util.concurrent.CompletableFuture;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class ComputeApi {
   /**
    * Utility class for extending HttpRequest.Builder functionality.
@@ -177,7 +177,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> complement(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> complement(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return complement(termRequestDto, null);
   }
 
@@ -189,7 +189,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> complement(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> complement(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return complementWithHttpInfo(termRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -206,7 +206,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> complementWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> complementWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
     return complementWithHttpInfo(termRequestDto, null);
   }
 
@@ -218,7 +218,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> complementWithHttpInfo(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> complementWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = complementRequestBuilder(termRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -270,7 +270,7 @@ public class ComputeApi {
     }
   }
 
-  private HttpRequest.Builder complementRequestBuilder(@javax.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder complementRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'termRequestDto' is set
     if (termRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling complement");
@@ -309,7 +309,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> concat(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> concat(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
     return concat(multiTermsRequestDto, null);
   }
 
@@ -321,7 +321,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> concat(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> concat(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return concatWithHttpInfo(multiTermsRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -338,7 +338,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> concatWithHttpInfo(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> concatWithHttpInfo(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
     return concatWithHttpInfo(multiTermsRequestDto, null);
   }
 
@@ -350,7 +350,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> concatWithHttpInfo(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> concatWithHttpInfo(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = concatRequestBuilder(multiTermsRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -402,7 +402,7 @@ public class ComputeApi {
     }
   }
 
-  private HttpRequest.Builder concatRequestBuilder(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder concatRequestBuilder(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'multiTermsRequestDto' is set
     if (multiTermsRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'multiTermsRequestDto' when calling concat");
@@ -441,7 +441,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> difference(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> difference(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
     return difference(twoTermsRequestDto, null);
   }
 
@@ -453,7 +453,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> difference(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> difference(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return differenceWithHttpInfo(twoTermsRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -470,7 +470,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> differenceWithHttpInfo(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> differenceWithHttpInfo(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto) throws ApiException {
     return differenceWithHttpInfo(twoTermsRequestDto, null);
   }
 
@@ -482,7 +482,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> differenceWithHttpInfo(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> differenceWithHttpInfo(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = differenceRequestBuilder(twoTermsRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -534,7 +534,7 @@ public class ComputeApi {
     }
   }
 
-  private HttpRequest.Builder differenceRequestBuilder(@javax.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder differenceRequestBuilder(@jakarta.annotation.Nonnull TwoTermsRequestDto twoTermsRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'twoTermsRequestDto' is set
     if (twoTermsRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'twoTermsRequestDto' when calling difference");
@@ -573,7 +573,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> intersection(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> intersection(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
     return intersection(multiTermsRequestDto, null);
   }
 
@@ -585,7 +585,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> intersection(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> intersection(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return intersectionWithHttpInfo(multiTermsRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -602,7 +602,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> intersectionWithHttpInfo(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> intersectionWithHttpInfo(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
     return intersectionWithHttpInfo(multiTermsRequestDto, null);
   }
 
@@ -614,7 +614,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> intersectionWithHttpInfo(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> intersectionWithHttpInfo(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = intersectionRequestBuilder(multiTermsRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -666,7 +666,7 @@ public class ComputeApi {
     }
   }
 
-  private HttpRequest.Builder intersectionRequestBuilder(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder intersectionRequestBuilder(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'multiTermsRequestDto' is set
     if (multiTermsRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'multiTermsRequestDto' when calling intersection");
@@ -705,7 +705,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> repeat(@javax.annotation.Nonnull RepeatRequestDto repeatRequestDto) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> repeat(@jakarta.annotation.Nonnull RepeatRequestDto repeatRequestDto) throws ApiException {
     return repeat(repeatRequestDto, null);
   }
 
@@ -717,7 +717,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> repeat(@javax.annotation.Nonnull RepeatRequestDto repeatRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> repeat(@jakarta.annotation.Nonnull RepeatRequestDto repeatRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return repeatWithHttpInfo(repeatRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -734,7 +734,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> repeatWithHttpInfo(@javax.annotation.Nonnull RepeatRequestDto repeatRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> repeatWithHttpInfo(@jakarta.annotation.Nonnull RepeatRequestDto repeatRequestDto) throws ApiException {
     return repeatWithHttpInfo(repeatRequestDto, null);
   }
 
@@ -746,7 +746,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> repeatWithHttpInfo(@javax.annotation.Nonnull RepeatRequestDto repeatRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> repeatWithHttpInfo(@jakarta.annotation.Nonnull RepeatRequestDto repeatRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = repeatRequestBuilder(repeatRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -798,7 +798,7 @@ public class ComputeApi {
     }
   }
 
-  private HttpRequest.Builder repeatRequestBuilder(@javax.annotation.Nonnull RepeatRequestDto repeatRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder repeatRequestBuilder(@jakarta.annotation.Nonnull RepeatRequestDto repeatRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'repeatRequestDto' is set
     if (repeatRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'repeatRequestDto' when calling repeat");
@@ -837,7 +837,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> union(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> union(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
     return union(multiTermsRequestDto, null);
   }
 
@@ -849,7 +849,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Concat200ResponseDto> union(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Concat200ResponseDto> union(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       return unionWithHttpInfo(multiTermsRequestDto, headers)
           .thenApply(ApiResponse::getData);
@@ -866,7 +866,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> unionWithHttpInfo(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> unionWithHttpInfo(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto) throws ApiException {
     return unionWithHttpInfo(multiTermsRequestDto, null);
   }
 
@@ -878,7 +878,7 @@ public class ComputeApi {
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Concat200ResponseDto>> unionWithHttpInfo(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> unionWithHttpInfo(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     try {
       HttpRequest.Builder localVarRequestBuilder = unionRequestBuilder(multiTermsRequestDto, headers);
       return memberVarHttpClient.sendAsync(
@@ -930,7 +930,7 @@ public class ComputeApi {
     }
   }
 
-  private HttpRequest.Builder unionRequestBuilder(@javax.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
+  private HttpRequest.Builder unionRequestBuilder(@jakarta.annotation.Nonnull MultiTermsRequestDto multiTermsRequestDto, Map<String, String> headers) throws ApiException {
     // verify the required parameter 'multiTermsRequestDto' is set
     if (multiTermsRequestDto == null) {
       throw new ApiException(400, "Missing the required parameter 'multiTermsRequestDto' when calling union");

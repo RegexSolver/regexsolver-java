@@ -206,7 +206,11 @@ public abstract class Term {
 
         @Override
         TermDto toDto() {
-            return new TermDto(new TermRegexDto().value(getValue()));
+            return new TermDto(
+                new TermRegexDto()
+                    .type(TermRegexDto.TypeEnum.REGEX)
+                    .value(getValue())
+            );
         }
 
         @Override
@@ -233,7 +237,11 @@ public abstract class Term {
 
         @Override
         TermDto toDto() {
-            return new TermDto(new TermFairDto().value(getValue()));
+            return new TermDto(
+                new TermFairDto()
+                    .type(TermFairDto.TypeEnum.FAIR)
+                    .value(getValue())
+            );
         }
 
         @Override

@@ -35,7 +35,7 @@ import com.regexsolver.api.generated.ApiClient;
 @JsonPropertyOrder({
   ResponseOptionsDto.JSON_PROPERTY_FORMAT
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class ResponseOptionsDto {
   /**
    * Return format of the term.
@@ -75,13 +75,13 @@ public class ResponseOptionsDto {
   }
 
   public static final String JSON_PROPERTY_FORMAT = "format";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private FormatEnum format;
 
   public ResponseOptionsDto() { 
   }
 
-  public ResponseOptionsDto format(@javax.annotation.Nullable FormatEnum format) {
+  public ResponseOptionsDto format(@jakarta.annotation.Nullable FormatEnum format) {
     this.format = format;
     return this;
   }
@@ -90,7 +90,7 @@ public class ResponseOptionsDto {
    * Return format of the term.
    * @return format
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_FORMAT, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public FormatEnum getFormat() {
@@ -100,7 +100,7 @@ public class ResponseOptionsDto {
 
   @JsonProperty(value = JSON_PROPERTY_FORMAT, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFormat(@javax.annotation.Nullable FormatEnum format) {
+  public void setFormat(@jakarta.annotation.Nullable FormatEnum format) {
     this.format = format;
   }
 

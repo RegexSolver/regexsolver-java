@@ -35,7 +35,6 @@ The synchronous client provides a simple, blocking API.
 ```java
 import com.regexsolver.api.RegexSolverClient;
 import com.regexsolver.api.Term;
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -60,7 +59,7 @@ For non-blocking applications, use the asynchronous client.
 ```java
 import com.regexsolver.api.AsyncRegexSolverClient;
 import com.regexsolver.api.Term;
-import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 
 public class Main {
     public static void main(String[] args) {
@@ -103,10 +102,10 @@ import com.regexsolver.api.OperationOptions;
 Term term1 = Term.regex("abcde");
 Term term2 = Term.regex("de");
 
-Term result1 = client.union(Arrays.asList(term1, term2), new OperationOptions().responseFormat(ResponseFormat.REGEX));
+Term result1 = client.union(term1, term2, new OperationOptions().responseFormat(ResponseFormat.REGEX));
 System.out.println(result1); // regex=(abc)?de
 
-Term result2 = client.union(Arrays.asList(term1, term2), new OperationOptions().responseFormat(ResponseFormat.FAIR));
+Term result2 = client.union(term1, term2, new OperationOptions().responseFormat(ResponseFormat.FAIR));
 System.out.println(result2); // fair=...
 ```
 
@@ -141,15 +140,15 @@ Timeout is best effort. The exact time is not guaranteed.
 
 | Method | Return | Description |
 | -------- | ------- | ------- |
-| `client.equivalent(term1, term2)` | `boolean` | `true` if `term1` and `term2` accept exactly the same language. |
-| `client.getCardinality(term)` | `Cardinality` | Returns the number of possible matched strings. |
-| `client.getDot(term)` | `String` | Returns a Graphviz DOT representation of the automaton. |
-| `client.getLength(term)` | `Length` | Returns the minimum and maximum length of matched strings. |
-| `client.getPattern(term)` | `String` | Returns a regular expression pattern for the term. |
-| `client.isEmpty(term)` | `boolean` | `true` if the term matches no string. |
-| `client.isEmptyString(term)` | `boolean` | `true` if the term matches only the empty string. |
-| `client.isTotal(term)` | `boolean` | `true` if the term matches all possible strings. |
-| `client.subset(term1, term2)` | `boolean` | `true` if every string matched by `term1` is also matched by `term2`. |
+| `client.equivalent(term1, term2, options?)` | `boolean` | `true` if `term1` and `term2` accept exactly the same language. |
+| `client.getCardinality(term, options?)` | `Cardinality` | Returns the number of possible matched strings. |
+| `client.getDot(term, options?)` | `String` | Returns a Graphviz DOT representation of the automaton. |
+| `client.getLength(term, options?)` | `Length` | Returns the minimum and maximum length of matched strings. |
+| `client.getPattern(term, options?)` | `String` | Returns a regular expression pattern for the term. |
+| `client.isEmpty(term, options?)` | `boolean` | `true` if the term matches no string. |
+| `client.isEmptyString(term, options?)` | `boolean` | `true` if the term matches only the empty string. |
+| `client.isTotal(term, options?)` | `boolean` | `true` if the term matches all possible strings. |
+| `client.subset(term1, term2, options?)` | `boolean` | `true` if every string matched by `term1` is also matched by `term2`. |
 
 *Note: For `AsyncRegexSolverClient`, these methods return `CompletableFuture`.*
 
@@ -157,12 +156,12 @@ Timeout is best effort. The exact time is not guaranteed.
 
 | Method | Return | Description |
 | -------- | ------- | ------- |
-| `client.complement(term)` | `Term` | Computes the complement of the given term. |
-| `client.concat(terms)` | `Term` | Concatenates multiple terms in order. |
-| `client.difference(term1, term2)` | `Term` | Computes the difference `term1 - term2`. |
-| `client.intersection(terms)` | `Term` | Computes the intersection of the given terms. |
-| `client.repeat(term, min, max)` | `Term` | Computes the repetition of the term between `min` and `max` times. |
-| `client.union(terms)` | `Term` | Computes the union of the given terms. |
+| `client.complement(term, options?)` | `Term` | Computes the complement of the given term. |
+| `client.concat(term1, term2, ..., options?)` | `Term` | Concatenates multiple terms in order. |
+| `client.difference(term1, term2, options?)` | `Term` | Computes the difference `term1 - term2`. |
+| `client.intersection(term1, term2, ..., options?)` | `Term` | Computes the intersection of the given terms. |
+| `client.repeat(term, min, max, options?)` | `Term` | Computes the repetition of the term between `min` and `max` times. |
+| `client.union(term1, term2, ..., options?)` | `Term` | Computes the union of the given terms. |
 
 *Note: For `AsyncRegexSolverClient`, these methods return `CompletableFuture<Term>`.*
 
@@ -170,7 +169,7 @@ Timeout is best effort. The exact time is not guaranteed.
 
 | Method | Return | Description |
 | -------- | ------- | ------- |
-| `client.generateStrings(term, limit, offset)` | `List<String>` | Generates up to `limit` unique strings matched by `term`, skipping the first `offset` strings. |
+| `client.generateStrings(term, limit, offset, options?)` | `List<String>` | Generates up to `limit` unique strings matched by `term`, skipping the first `offset` strings. |
 
 *Note: For `AsyncRegexSolverClient`, this method returns `CompletableFuture<List<String>>`.*
 

@@ -24,13 +24,14 @@ public abstract class Cardinality extends TermPropertiesMixin {
         }
     }
 
-    /** Indicates that the set of matched strings is finite and exactly calculable.
-     * @param value The exact count of uniquely matched strings.
-     */
+    /** Indicates that the set of matched strings is finite and exactly calculable. */
     public static final class Integer extends Cardinality {
 
         private final long value;
 
+        /**
+         * @param value The exact count of uniquely matched strings.
+         */
         public Integer(long value) {
             this.value = value;
         }

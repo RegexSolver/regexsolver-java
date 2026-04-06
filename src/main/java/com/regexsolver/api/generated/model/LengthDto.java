@@ -37,7 +37,7 @@ import com.regexsolver.api.generated.ApiClient;
   LengthDto.JSON_PROPERTY_MIN,
   LengthDto.JSON_PROPERTY_MAX
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class LengthDto {
   /**
    * Gets or Sets type
@@ -73,21 +73,21 @@ public class LengthDto {
   }
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private TypeEnum type;
 
   public static final String JSON_PROPERTY_MIN = "min";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private Integer min;
 
   public static final String JSON_PROPERTY_MAX = "max";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private Integer max;
 
   public LengthDto() { 
   }
 
-  public LengthDto type(@javax.annotation.Nonnull TypeEnum type) {
+  public LengthDto type(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -96,7 +96,7 @@ public class LengthDto {
    * Get type
    * @return type
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public TypeEnum getType() {
@@ -106,12 +106,12 @@ public class LengthDto {
 
   @JsonProperty(value = JSON_PROPERTY_TYPE, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(@javax.annotation.Nonnull TypeEnum type) {
+  public void setType(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
   }
 
 
-  public LengthDto min(@javax.annotation.Nullable Integer min) {
+  public LengthDto min(@jakarta.annotation.Nullable Integer min) {
     this.min = min;
     return this;
   }
@@ -120,7 +120,7 @@ public class LengthDto {
    * Shortest possible length, or null if empty.
    * @return min
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_MIN, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getMin() {
@@ -130,12 +130,12 @@ public class LengthDto {
 
   @JsonProperty(value = JSON_PROPERTY_MIN, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setMin(@javax.annotation.Nullable Integer min) {
+  public void setMin(@jakarta.annotation.Nullable Integer min) {
     this.min = min;
   }
 
 
-  public LengthDto max(@javax.annotation.Nullable Integer max) {
+  public LengthDto max(@jakarta.annotation.Nullable Integer max) {
     this.max = max;
     return this;
   }
@@ -144,7 +144,7 @@ public class LengthDto {
    * Longest possible length, or null if unbounded.
    * @return max
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_MAX, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getMax() {
@@ -154,7 +154,7 @@ public class LengthDto {
 
   @JsonProperty(value = JSON_PROPERTY_MAX, required = false)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setMax(@javax.annotation.Nullable Integer max) {
+  public void setMax(@jakarta.annotation.Nullable Integer max) {
     this.max = max;
   }
 

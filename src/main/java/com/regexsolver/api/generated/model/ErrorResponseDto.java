@@ -37,24 +37,24 @@ import com.regexsolver.api.generated.ApiClient;
   ErrorResponseDto.JSON_PROPERTY_ERROR,
   ErrorResponseDto.JSON_PROPERTY_ERROR_CODE
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-03-28T15:29:36.647057244+01:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class ErrorResponseDto {
   public static final String JSON_PROPERTY_SUCCESS = "success";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private Boolean success;
 
   public static final String JSON_PROPERTY_ERROR = "error";
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   private String error;
 
   public static final String JSON_PROPERTY_ERROR_CODE = "errorCode";
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   private String errorCode;
 
   public ErrorResponseDto() { 
   }
 
-  public ErrorResponseDto success(@javax.annotation.Nonnull Boolean success) {
+  public ErrorResponseDto success(@jakarta.annotation.Nonnull Boolean success) {
     this.success = success;
     return this;
   }
@@ -63,7 +63,7 @@ public class ErrorResponseDto {
    * Get success
    * @return success
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_SUCCESS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Boolean getSuccess() {
@@ -73,12 +73,12 @@ public class ErrorResponseDto {
 
   @JsonProperty(value = JSON_PROPERTY_SUCCESS, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setSuccess(@javax.annotation.Nonnull Boolean success) {
+  public void setSuccess(@jakarta.annotation.Nonnull Boolean success) {
     this.success = success;
   }
 
 
-  public ErrorResponseDto error(@javax.annotation.Nonnull String error) {
+  public ErrorResponseDto error(@jakarta.annotation.Nonnull String error) {
     this.error = error;
     return this;
   }
@@ -87,7 +87,7 @@ public class ErrorResponseDto {
    * Human readable error message.
    * @return error
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
   @JsonProperty(value = JSON_PROPERTY_ERROR, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getError() {
@@ -97,12 +97,12 @@ public class ErrorResponseDto {
 
   @JsonProperty(value = JSON_PROPERTY_ERROR, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setError(@javax.annotation.Nonnull String error) {
+  public void setError(@jakarta.annotation.Nonnull String error) {
     this.error = error;
   }
 
 
-  public ErrorResponseDto errorCode(@javax.annotation.Nullable String errorCode) {
+  public ErrorResponseDto errorCode(@jakarta.annotation.Nullable String errorCode) {
     this.errorCode = errorCode;
     return this;
   }
@@ -111,7 +111,7 @@ public class ErrorResponseDto {
    * The error code.
    * @return errorCode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
   @JsonProperty(value = JSON_PROPERTY_ERROR_CODE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public String getErrorCode() {
@@ -121,7 +121,7 @@ public class ErrorResponseDto {
 
   @JsonProperty(value = JSON_PROPERTY_ERROR_CODE, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setErrorCode(@javax.annotation.Nullable String errorCode) {
+  public void setErrorCode(@jakarta.annotation.Nullable String errorCode) {
     this.errorCode = errorCode;
   }
 
