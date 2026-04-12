@@ -39,7 +39,7 @@ import com.regexsolver.api.Term;
 public class Main {
     public static void main(String[] args) {
         RegexSolverClient client = RegexSolverClient.builder()
-                .apiToken("YOUR_API_TOKEN")
+                .apiToken("REGEXSOLVER_API_TOKEN")
                 .build();
 
         Term term1 = Term.regex("(abc|de|fg){2,}");
@@ -64,7 +64,7 @@ import java.util.concurrent.CompletableFuture;
 public class Main {
     public static void main(String[] args) {
         AsyncRegexSolverClient client = AsyncRegexSolverClient.builder()
-                .apiToken("YOUR_API_TOKEN")
+                .apiToken("REGEXSOLVER_API_TOKEN")
                 .build();
 
         Term term1 = Term.regex("(abc|de|fg){2,}");
