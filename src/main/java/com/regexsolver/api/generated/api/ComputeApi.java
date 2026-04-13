@@ -19,6 +19,9 @@ import com.regexsolver.api.generated.Configuration;
 import com.regexsolver.api.generated.Pair;
 
 import com.regexsolver.api.generated.model.Concat200ResponseDto;
+import com.regexsolver.api.generated.model.ErrorResponse400Dto;
+import com.regexsolver.api.generated.model.ErrorResponse401Dto;
+import com.regexsolver.api.generated.model.ErrorResponse403Dto;
 import com.regexsolver.api.generated.model.ErrorResponseDto;
 import com.regexsolver.api.generated.model.MultiTermsRequestDto;
 import com.regexsolver.api.generated.model.RepeatRequestDto;
@@ -52,7 +55,7 @@ import java.util.function.Consumer;
 
 import java.util.concurrent.CompletableFuture;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class ComputeApi {
   /**
    * Utility class for extending HttpRequest.Builder functionality.

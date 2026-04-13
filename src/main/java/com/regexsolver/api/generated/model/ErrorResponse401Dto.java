@@ -24,33 +24,72 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.regexsolver.api.generated.model.CardinalityDto;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 import com.regexsolver.api.generated.ApiClient;
 /**
- * Cardinality200ResponseDto
+ * ErrorResponse401Dto
  */
 @JsonPropertyOrder({
-  Cardinality200ResponseDto.JSON_PROPERTY_SUCCESS,
-  Cardinality200ResponseDto.JSON_PROPERTY_DATA
+  ErrorResponse401Dto.JSON_PROPERTY_SUCCESS,
+  ErrorResponse401Dto.JSON_PROPERTY_ERROR,
+  ErrorResponse401Dto.JSON_PROPERTY_ERROR_CODE
 })
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
-public class Cardinality200ResponseDto {
+public class ErrorResponse401Dto {
   public static final String JSON_PROPERTY_SUCCESS = "success";
   @jakarta.annotation.Nonnull
   private Boolean success;
 
-  public static final String JSON_PROPERTY_DATA = "data";
+  public static final String JSON_PROPERTY_ERROR = "error";
   @jakarta.annotation.Nonnull
-  private CardinalityDto data;
+  private String error;
 
-  public Cardinality200ResponseDto() { 
+  /**
+   * Gets or Sets errorCode
+   */
+  public enum ErrorCodeEnum {
+    MISSING_OR_MALFORMED_TOKEN(String.valueOf("MissingOrMalformedToken")),
+    
+    INVALID_TOKEN(String.valueOf("InvalidToken"));
+
+    private String value;
+
+    ErrorCodeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static ErrorCodeEnum fromValue(String value) {
+      for (ErrorCodeEnum b : ErrorCodeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
   }
 
-  public Cardinality200ResponseDto success(@jakarta.annotation.Nonnull Boolean success) {
+  public static final String JSON_PROPERTY_ERROR_CODE = "errorCode";
+  @jakarta.annotation.Nullable
+  private ErrorCodeEnum errorCode;
+
+  public ErrorResponse401Dto() { 
+  }
+
+  public ErrorResponse401Dto success(@jakarta.annotation.Nonnull Boolean success) {
     this.success = success;
     return this;
   }
@@ -74,32 +113,56 @@ public class Cardinality200ResponseDto {
   }
 
 
-  public Cardinality200ResponseDto data(@jakarta.annotation.Nonnull CardinalityDto data) {
-    this.data = data;
+  public ErrorResponse401Dto error(@jakarta.annotation.Nonnull String error) {
+    this.error = error;
     return this;
   }
 
   /**
-   * Get data
-   * @return data
+   * Human readable error message.
+   * @return error
    */
   @jakarta.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public CardinalityDto getData() {
-    return data;
+  public String getError() {
+    return error;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
+  @JsonProperty(value = JSON_PROPERTY_ERROR, required = true)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setData(@jakarta.annotation.Nonnull CardinalityDto data) {
-    this.data = data;
+  public void setError(@jakarta.annotation.Nonnull String error) {
+    this.error = error;
+  }
+
+
+  public ErrorResponse401Dto errorCode(@jakarta.annotation.Nullable ErrorCodeEnum errorCode) {
+    this.errorCode = errorCode;
+    return this;
+  }
+
+  /**
+   * Get errorCode
+   * @return errorCode
+   */
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ERROR_CODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public ErrorCodeEnum getErrorCode() {
+    return errorCode;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_ERROR_CODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setErrorCode(@jakarta.annotation.Nullable ErrorCodeEnum errorCode) {
+    this.errorCode = errorCode;
   }
 
 
   /**
-   * Return true if this cardinality_200_response object is equal to o.
+   * Return true if this ErrorResponse401 object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -109,22 +172,24 @@ public class Cardinality200ResponseDto {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Cardinality200ResponseDto cardinality200Response = (Cardinality200ResponseDto) o;
-    return Objects.equals(this.success, cardinality200Response.success) &&
-        Objects.equals(this.data, cardinality200Response.data);
+    ErrorResponse401Dto errorResponse401 = (ErrorResponse401Dto) o;
+    return Objects.equals(this.success, errorResponse401.success) &&
+        Objects.equals(this.error, errorResponse401.error) &&
+        Objects.equals(this.errorCode, errorResponse401.errorCode);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(success, data);
+    return Objects.hash(success, error, errorCode);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Cardinality200ResponseDto {\n");
+    sb.append("class ErrorResponse401Dto {\n");
     sb.append("    success: ").append(toIndentedString(success)).append("\n");
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
+    sb.append("    errorCode: ").append(toIndentedString(errorCode)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -174,9 +239,14 @@ public class Cardinality200ResponseDto {
       joiner.add(String.format(java.util.Locale.ROOT, "%ssuccess%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSuccess()))));
     }
 
-    // add `data` to the URL query string
-    if (getData() != null) {
-      joiner.add(getData().toUrlQueryString(prefix + "data" + suffix));
+    // add `error` to the URL query string
+    if (getError() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%serror%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getError()))));
+    }
+
+    // add `errorCode` to the URL query string
+    if (getErrorCode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%serrorCode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getErrorCode()))));
     }
 
     return joiner.toString();

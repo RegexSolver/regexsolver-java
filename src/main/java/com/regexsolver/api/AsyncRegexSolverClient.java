@@ -197,6 +197,22 @@ public final class AsyncRegexSolverClient {
                     errorCode,
                     body
                 );
+                if (
+                    "AutomatonTooManyStates".equals(errorCode)
+                ) return new AutomatonTooManyStatesException(
+                    message,
+                    code,
+                    errorCode,
+                    body
+                );
+                if (
+                    "RegexSyntaxError".equals(errorCode)
+                ) return new RegexSyntaxException(
+                    message,
+                    code,
+                    errorCode,
+                    body
+                );
                 return new BadRequestException(message, code, errorCode, body);
             case 401:
                 if (

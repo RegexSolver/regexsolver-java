@@ -23,6 +23,9 @@ src/main/java/com/regexsolver/api/generated/model/CardinalityIntegerDto.java
 src/main/java/com/regexsolver/api/generated/model/Concat200ResponseDto.java
 src/main/java/com/regexsolver/api/generated/model/Dot200ResponseDto.java
 src/main/java/com/regexsolver/api/generated/model/Empty200ResponseDto.java
+src/main/java/com/regexsolver/api/generated/model/ErrorResponse400Dto.java
+src/main/java/com/regexsolver/api/generated/model/ErrorResponse401Dto.java
+src/main/java/com/regexsolver/api/generated/model/ErrorResponse403Dto.java
 src/main/java/com/regexsolver/api/generated/model/ErrorResponseDto.java
 src/main/java/com/regexsolver/api/generated/model/ExecutionOptionsDto.java
 src/main/java/com/regexsolver/api/generated/model/GenerateStringsRequestDto.java

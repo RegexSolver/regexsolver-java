@@ -39,7 +39,7 @@ import com.regexsolver.api.generated.ApiClient;
   GenerateStringsResponseDto.JSON_PROPERTY_TERM,
   GenerateStringsResponseDto.JSON_PROPERTY_STRINGS
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-06T14:52:22.603140815+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class GenerateStringsResponseDto {
   /**
    * Gets or Sets type
