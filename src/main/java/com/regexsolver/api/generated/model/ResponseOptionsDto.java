@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.regexsolver.api.generated.model.FairResponseOptionsDto;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -33,9 +34,10 @@ import com.regexsolver.api.generated.ApiClient;
  * Change how the engine returns results.
  */
 @JsonPropertyOrder({
-  ResponseOptionsDto.JSON_PROPERTY_FORMAT
+  ResponseOptionsDto.JSON_PROPERTY_FORMAT,
+  ResponseOptionsDto.JSON_PROPERTY_FAIR
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class ResponseOptionsDto {
   /**
    * Return format of the term.
@@ -78,6 +80,10 @@ public class ResponseOptionsDto {
   @jakarta.annotation.Nullable
   private FormatEnum format;
 
+  public static final String JSON_PROPERTY_FAIR = "fair";
+  @jakarta.annotation.Nullable
+  private FairResponseOptionsDto fair;
+
   public ResponseOptionsDto() { 
   }
 
@@ -105,6 +111,30 @@ public class ResponseOptionsDto {
   }
 
 
+  public ResponseOptionsDto fair(@jakarta.annotation.Nullable FairResponseOptionsDto fair) {
+    this.fair = fair;
+    return this;
+  }
+
+  /**
+   * Options applied when format is \&quot;fair\&quot;. Ignored otherwise.
+   * @return fair
+   */
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_FAIR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public FairResponseOptionsDto getFair() {
+    return fair;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_FAIR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setFair(@jakarta.annotation.Nullable FairResponseOptionsDto fair) {
+    this.fair = fair;
+  }
+
+
   /**
    * Return true if this ResponseOptions object is equal to o.
    */
@@ -117,12 +147,13 @@ public class ResponseOptionsDto {
       return false;
     }
     ResponseOptionsDto responseOptions = (ResponseOptionsDto) o;
-    return Objects.equals(this.format, responseOptions.format);
+    return Objects.equals(this.format, responseOptions.format) &&
+        Objects.equals(this.fair, responseOptions.fair);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(format);
+    return Objects.hash(format, fair);
   }
 
   @Override
@@ -130,6 +161,7 @@ public class ResponseOptionsDto {
     StringBuilder sb = new StringBuilder();
     sb.append("class ResponseOptionsDto {\n");
     sb.append("    format: ").append(toIndentedString(format)).append("\n");
+    sb.append("    fair: ").append(toIndentedString(fair)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -177,6 +209,11 @@ public class ResponseOptionsDto {
     // add `format` to the URL query string
     if (getFormat() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sformat%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFormat()))));
+    }
+
+    // add `fair` to the URL query string
+    if (getFair() != null) {
+      joiner.add(getFair().toUrlQueryString(prefix + "fair" + suffix));
     }
 
     return joiner.toString();

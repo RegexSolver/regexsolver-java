@@ -11,6 +11,7 @@ import com.regexsolver.api.generated.model.*;
 import java.net.http.HttpHeaders;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -89,13 +90,30 @@ public final class AsyncRegexSolverClient {
                 .ifPresent(timeout ->
                     dto.execution(new ExecutionOptionsDto().timeout(timeout))
                 );
-            options
-                .getResponseFormat()
-                .ifPresent(format ->
-                    dto.response(
-                        new ResponseOptionsDto().format(format.toDto())
-                    )
-                );
+
+            Optional<ResponseFormat> responseFormat = options.getResponseFormat();
+            Optional<Boolean> deterministic = options.getDeterministic();
+
+            if (deterministic.isPresent() && responseFormat.isPresent()) {
+                if (responseFormat.get() != ResponseFormat.FAIR) {
+                    throw new IllegalArgumentException(
+                        "deterministic can only be used with responseFormat=ResponseFormat.FAIR, got " +
+                        responseFormat.get()
+                    );
+                }
+            }
+
+            if (responseFormat.isPresent() || deterministic.isPresent()) {
+                ResponseOptionsDto responseOptions = new ResponseOptionsDto();
+                responseFormat.ifPresent(format -> responseOptions.format(format.toDto()));
+                deterministic.ifPresent(value -> {
+                    responseOptions.fair(new FairResponseOptionsDto().deterministic(value));
+                    if (responseFormat.isEmpty()) {
+                        responseOptions.format(ResponseFormat.FAIR.toDto());
+                    }
+                });
+                dto.response(responseOptions);
+            }
         }
         return dto;
     }
@@ -474,6 +492,49 @@ public final class AsyncRegexSolverClient {
     }
 
     /**
+     * Checks if the term's automaton is deterministic asynchronously.
+     * Only a deterministic FAIR guarantees consistent string ordering across paginated generateStrings() calls; call determinize() first if this is false.
+     *
+     * @param term The term to analyze.
+     * @return A CompletableFuture containing true if the term's automaton is deterministic.
+     */
+    public CompletableFuture<Boolean> isDeterministic(Term term) {
+        return isDeterministic(term, (OperationOptions) null);
+    }
+
+    /**
+     * Checks if the term's automaton is deterministic asynchronously.
+     * Only a deterministic FAIR guarantees consistent string ordering across paginated generateStrings() calls; call determinize() first if this is false.
+     *
+     * @param term    The term to analyze.
+     * @param options Options for the operation.
+     * @return A CompletableFuture containing true if the term's automaton is deterministic.
+     */
+    public CompletableFuture<Boolean> isDeterministic(
+        Term term,
+        OperationOptions options
+    ) {
+        if (!(term instanceof Term.FairTerm)) {
+            return CompletableFuture.completedFuture(false);
+        }
+        Term.FairTerm fairTerm = (Term.FairTerm) term;
+        Optional<Boolean> cached = fairTerm.getCachedDeterministic();
+        if (cached.isPresent()) {
+            return CompletableFuture.completedFuture(cached.get());
+        }
+        TermRequestDto request = new TermRequestDto()
+            .term(term.toDto())
+            .options(buildOptions(options));
+        return executeWithRetry(() -> analyzeApi.deterministic(request)).thenApply(
+            resp -> {
+                boolean val = resp.getData().getValue();
+                fairTerm.setCachedDeterministic(Optional.of(val));
+                return val;
+            }
+        );
+    }
+
+    /**
      * Returns a regular expression pattern that represents the term asynchronously.
      *
      * @param term The term to extract the pattern from.
@@ -831,6 +892,41 @@ public final class AsyncRegexSolverClient {
         );
     }
 
+    /**
+     * Computes a deterministic FAIR automaton from the given term asynchronously.
+     * A deterministic FAIR guarantees consistent string ordering across paginated
+     * generateStrings() calls. Use this when isDeterministic() is false
+     * before calling generateStrings() with an offset.
+     *
+     * @param term The term to determinize.
+     * @return A CompletableFuture containing a deterministic FAIR.
+     */
+    public CompletableFuture<Term> determinize(Term term) {
+        return determinize(term, (OperationOptions) null);
+    }
+
+    /**
+     * Computes a deterministic FAIR automaton from the given term asynchronously.
+     * A deterministic FAIR guarantees consistent string ordering across paginated
+     * generateStrings() calls. Use this when isDeterministic() is false
+     * before calling generateStrings() with an offset.
+     *
+     * @param term    The term to determinize.
+     * @param options Options for the operation.
+     * @return A CompletableFuture containing a deterministic FAIR.
+     */
+    public CompletableFuture<Term> determinize(
+        Term term,
+        OperationOptions options
+    ) {
+        TermRequestDto request = new TermRequestDto()
+            .term(term.toDto())
+            .options(buildOptions(options));
+        return executeWithRetry(() -> computeApi.determinize(request)).thenApply(
+            resp -> Term.fromDto(resp.getData())
+        );
+    }
+
     // --- GENERATE OPERATIONS ---
 
     /**
@@ -864,27 +960,14 @@ public final class AsyncRegexSolverClient {
         int offset,
         OperationOptions options
     ) {
-        Term termToUse =
-            term.getCachedStableTerm() != null
-                ? term.getCachedStableTerm()
-                : term;
-        boolean returnStableTerm = term.getCachedStableTerm() == null;
-
         GenerateStringsRequestDto request = new GenerateStringsRequestDto()
-            .term(termToUse.toDto())
+            .term(term.toDto())
             .limit(limit)
             .offset(offset)
-            .returnStableTerm(returnStableTerm)
             .options(buildOptions(options));
 
         return executeWithRetry(() -> generateApi.strings(request)).thenApply(
-            resp -> {
-                GenerateStringsResponseDto data = resp.getData();
-                if (data.getTerm() != null) {
-                    term.setCachedStableTerm(Term.fromDto(data.getTerm()));
-                }
-                return data.getStrings().getValue();
-            }
+            resp -> resp.getData().getStrings().getValue()
         );
     }
 }

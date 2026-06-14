@@ -59,7 +59,15 @@ public final class RegexSolverClient {
      * @return Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
      */
     public Cardinality getCardinality(Term term, OperationOptions options) {
-        return asyncClient.getCardinality(term, options).join();
+        try {
+            return asyncClient.getCardinality(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -80,7 +88,15 @@ public final class RegexSolverClient {
      * @return Length object with `min` and `max` integers. Limits are null if unbounded or undefined.
      */
     public Length getLength(Term term, OperationOptions options) {
-        return asyncClient.getLength(term, options).join();
+        try {
+            return asyncClient.getLength(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -101,7 +117,15 @@ public final class RegexSolverClient {
      * @return true if the language is completely empty, false otherwise.
      */
     public boolean isEmpty(Term term, OperationOptions options) {
-        return asyncClient.isEmpty(term, options).join();
+        try {
+            return asyncClient.isEmpty(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -122,7 +146,15 @@ public final class RegexSolverClient {
      * @return true if the term strictly matches the empty string ("") and nothing else.
      */
     public boolean isEmptyString(Term term, OperationOptions options) {
-        return asyncClient.isEmptyString(term, options).join();
+        try {
+            return asyncClient.isEmptyString(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -143,7 +175,46 @@ public final class RegexSolverClient {
      * @return true if the term matches every possible string.
      */
     public boolean isTotal(Term term, OperationOptions options) {
-        return asyncClient.isTotal(term, options).join();
+        try {
+            return asyncClient.isTotal(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Checks if the term's automaton is deterministic.
+     * Only a deterministic FAIR guarantees consistent string ordering across paginated generateStrings() calls; call determinize() first if this is false.
+     *
+     * @param term The term to analyze.
+     * @return true if the term's automaton is deterministic.
+     */
+    public boolean isDeterministic(Term term) {
+        return isDeterministic(term, (OperationOptions) null);
+    }
+
+    /**
+     * Checks if the term's automaton is deterministic.
+     * Only a deterministic FAIR guarantees consistent string ordering across paginated generateStrings() calls; call determinize() first if this is false.
+     *
+     * @param term    The term to analyze.
+     * @param options Options for the operation.
+     * @return true if the term's automaton is deterministic.
+     */
+    public boolean isDeterministic(Term term, OperationOptions options) {
+        try {
+            return asyncClient.isDeterministic(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -164,7 +235,15 @@ public final class RegexSolverClient {
      * @return A valid regular expression string representing the language.
      */
     public String getPattern(Term term, OperationOptions options) {
-        return asyncClient.getPattern(term, options).join();
+        try {
+            return asyncClient.getPattern(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -185,7 +264,15 @@ public final class RegexSolverClient {
      * @return The raw DOT syntax for Graphviz compilation.
      */
     public String getDot(Term term, OperationOptions options) {
-        return asyncClient.getDot(term, options).join();
+        try {
+            return asyncClient.getDot(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -207,8 +294,20 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return true if they are entirely equivalent, false otherwise.
      */
-    public boolean equivalent(Term term1, Term term2, OperationOptions options) {
-        return asyncClient.equivalent(term1, term2, options).join();
+    public boolean equivalent(
+        Term term1,
+        Term term2,
+        OperationOptions options
+    ) {
+        try {
+            return asyncClient.equivalent(term1, term2, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -235,7 +334,15 @@ public final class RegexSolverClient {
         Term superset,
         OperationOptions options
     ) {
-        return asyncClient.subset(subset, superset, options).join();
+        try {
+            return asyncClient.subset(subset, superset, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     // --- COMPUTE OPERATIONS ---
@@ -247,7 +354,15 @@ public final class RegexSolverClient {
      * @return A newly computed concatenated term.
      */
     public Term concat(Term... terms) {
-        return asyncClient.concat(terms).join();
+        try {
+            return asyncClient.concat(terms).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -268,7 +383,15 @@ public final class RegexSolverClient {
      * @return A newly computed concatenated term.
      */
     public Term concat(List<Term> terms, OperationOptions options) {
-        return asyncClient.concat(terms, options).join();
+        try {
+            return asyncClient.concat(terms, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -278,7 +401,15 @@ public final class RegexSolverClient {
      * @return A term representing only strings matched by ALL provided terms.
      */
     public Term intersection(Term... terms) {
-        return asyncClient.intersection(terms).join();
+        try {
+            return asyncClient.intersection(terms).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -299,7 +430,15 @@ public final class RegexSolverClient {
      * @return A term representing only strings matched by ALL provided terms.
      */
     public Term intersection(List<Term> terms, OperationOptions options) {
-        return asyncClient.intersection(terms, options).join();
+        try {
+            return asyncClient.intersection(terms, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -309,7 +448,15 @@ public final class RegexSolverClient {
      * @return A term representing strings matched by ANY of the provided terms.
      */
     public Term union(Term... terms) {
-        return asyncClient.union(terms).join();
+        try {
+            return asyncClient.union(terms).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -330,7 +477,15 @@ public final class RegexSolverClient {
      * @return A term representing strings matched by ANY of the provided terms.
      */
     public Term union(List<Term> terms, OperationOptions options) {
-        return asyncClient.union(terms, options).join();
+        try {
+            return asyncClient.union(terms, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -353,7 +508,15 @@ public final class RegexSolverClient {
      * @return A computed difference term.
      */
     public Term difference(Term base, Term excluded, OperationOptions options) {
-        return asyncClient.difference(base, excluded, options).join();
+        try {
+            return asyncClient.difference(base, excluded, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -374,7 +537,15 @@ public final class RegexSolverClient {
      * @return The complemented term.
      */
     public Term complement(Term term, OperationOptions options) {
-        return asyncClient.complement(term, options).join();
+        try {
+            return asyncClient.complement(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     /**
@@ -404,7 +575,50 @@ public final class RegexSolverClient {
         Integer max,
         OperationOptions options
     ) {
-        return asyncClient.repeat(term, min, max, options).join();
+        try {
+            return asyncClient.repeat(term, min, max, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Computes a deterministic FAIR automaton from the given term.
+     * A deterministic FAIR guarantees consistent string ordering across paginated
+     * generateStrings() calls. Use this when isDeterministic() is false
+     * before calling generateStrings() with an offset.
+     *
+     * @param term The term to determinize.
+     * @return A deterministic FAIR.
+     */
+    public Term determinize(Term term) {
+        return determinize(term, (OperationOptions) null);
+    }
+
+    /**
+     * Computes a deterministic FAIR automaton from the given term.
+     * A deterministic FAIR guarantees consistent string ordering across paginated
+     * generateStrings() calls. Use this when isDeterministic() is false
+     * before calling generateStrings() with an offset.
+     *
+     * @param term    The term to determinize.
+     * @param options Options for the operation.
+     * @return A deterministic FAIR.
+     */
+    public Term determinize(Term term, OperationOptions options) {
+        try {
+            return asyncClient.determinize(term, options).join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 
     // --- GENERATE OPERATIONS ---
@@ -436,6 +650,16 @@ public final class RegexSolverClient {
         int offset,
         OperationOptions options
     ) {
-        return asyncClient.generateStrings(term, limit, offset, options).join();
+        try {
+            return asyncClient
+                .generateStrings(term, limit, offset, options)
+                .join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
+        }
     }
 }

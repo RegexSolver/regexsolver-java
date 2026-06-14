@@ -28,6 +28,7 @@ src/main/java/com/regexsolver/api/generated/model/ErrorResponse401Dto.java
 src/main/java/com/regexsolver/api/generated/model/ErrorResponse403Dto.java
 src/main/java/com/regexsolver/api/generated/model/ErrorResponseDto.java
 src/main/java/com/regexsolver/api/generated/model/ExecutionOptionsDto.java
+src/main/java/com/regexsolver/api/generated/model/FairResponseOptionsDto.java
 src/main/java/com/regexsolver/api/generated/model/GenerateStringsRequestDto.java
 src/main/java/com/regexsolver/api/generated/model/GenerateStringsResponseDto.java
 src/main/java/com/regexsolver/api/generated/model/Length200ResponseDto.java
@@ -41,6 +42,7 @@ src/main/java/com/regexsolver/api/generated/model/Strings200ResponseDto.java
 src/main/java/com/regexsolver/api/generated/model/StringsDto.java
 src/main/java/com/regexsolver/api/generated/model/TermDto.java
 src/main/java/com/regexsolver/api/generated/model/TermFairDto.java
+src/main/java/com/regexsolver/api/generated/model/TermFairMetadataDto.java
 src/main/java/com/regexsolver/api/generated/model/TermRegexDto.java
 src/main/java/com/regexsolver/api/generated/model/TermRequestDto.java
 src/main/java/com/regexsolver/api/generated/model/TwoTermsRequestDto.java

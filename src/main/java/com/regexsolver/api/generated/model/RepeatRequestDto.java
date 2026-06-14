@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.regexsolver.api.generated.ApiClient;
 /**
- * Request to repeat a term between &#39;min&#39; and &#39;max&#39; times.
+ * Request to repeat a term between &#x60;min&#x60; and &#x60;max&#x60; times.
  */
 @JsonPropertyOrder({
   RepeatRequestDto.JSON_PROPERTY_TERM,
@@ -40,7 +40,7 @@ import com.regexsolver.api.generated.ApiClient;
   RepeatRequestDto.JSON_PROPERTY_MAX,
   RepeatRequestDto.JSON_PROPERTY_OPTIONS
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class RepeatRequestDto {
   public static final String JSON_PROPERTY_TERM = "term";
   @jakarta.annotation.Nonnull
@@ -92,6 +92,7 @@ public class RepeatRequestDto {
 
   /**
    * Inclusive lower bound of repetitions.
+   * minimum: 0
    * @return min
    */
   @jakarta.annotation.Nonnull
@@ -116,6 +117,7 @@ public class RepeatRequestDto {
 
   /**
    * Inclusive upper bound. If omitted or null, the repetition is unbounded.
+   * minimum: 0
    * @return max
    */
   @jakarta.annotation.Nullable

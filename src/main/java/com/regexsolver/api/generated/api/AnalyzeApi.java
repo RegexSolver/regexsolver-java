@@ -56,7 +56,7 @@ import java.util.function.Consumer;
 
 import java.util.concurrent.CompletableFuture;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class AnalyzeApi {
   /**
    * Utility class for extending HttpRequest.Builder functionality.
@@ -307,7 +307,139 @@ public class AnalyzeApi {
   }
 
   /**
-   * GraphViz Dot
+   * Deterministic
+   * Check if the term&#39;s automaton is deterministic. Only a deterministic FAIR guarantees consistent string ordering across paginated /generate/strings requests; call /compute/determinize first if this is false.
+   * @param termRequestDto  (required)
+   * @return CompletableFuture&lt;Empty200ResponseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public CompletableFuture<Empty200ResponseDto> deterministic(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+    return deterministic(termRequestDto, null);
+  }
+
+  /**
+   * Deterministic
+   * Check if the term&#39;s automaton is deterministic. Only a deterministic FAIR guarantees consistent string ordering across paginated /generate/strings requests; call /compute/determinize first if this is false.
+   * @param termRequestDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CompletableFuture&lt;Empty200ResponseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public CompletableFuture<Empty200ResponseDto> deterministic(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+    try {
+      return deterministicWithHttpInfo(termRequestDto, headers)
+          .thenApply(ApiResponse::getData);
+    }
+    catch (ApiException e) {
+      return CompletableFuture.failedFuture(e);
+    }
+  }
+
+  /**
+   * Deterministic
+   * Check if the term&#39;s automaton is deterministic. Only a deterministic FAIR guarantees consistent string ordering across paginated /generate/strings requests; call /compute/determinize first if this is false.
+   * @param termRequestDto  (required)
+   * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> deterministicWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+    return deterministicWithHttpInfo(termRequestDto, null);
+  }
+
+  /**
+   * Deterministic
+   * Check if the term&#39;s automaton is deterministic. Only a deterministic FAIR guarantees consistent string ordering across paginated /generate/strings requests; call /compute/determinize first if this is false.
+   * @param termRequestDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CompletableFuture&lt;ApiResponse&lt;Empty200ResponseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public CompletableFuture<ApiResponse<Empty200ResponseDto>> deterministicWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+    try {
+      HttpRequest.Builder localVarRequestBuilder = deterministicRequestBuilder(termRequestDto, headers);
+      return memberVarHttpClient.sendAsync(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream()).thenComposeAsync(localVarResponse -> {
+            if (memberVarAsyncResponseInterceptor != null) {
+              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            }
+            if (localVarResponse.statusCode()/ 100 != 2) {
+              return CompletableFuture.failedFuture(getApiException("deterministic", localVarResponse));
+            }
+            try {
+              InputStream localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+              try {
+                if (localVarResponseBody == null) {
+                  return CompletableFuture.completedFuture(
+                      new ApiResponse<Empty200ResponseDto>(
+                          localVarResponse.statusCode(),
+                          localVarResponse.headers().map(),
+                          null
+                      )
+                  );
+                }
+                
+                
+                String responseBody = new String(localVarResponseBody.readAllBytes());
+                Empty200ResponseDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Empty200ResponseDto>() {});
+                
+                return CompletableFuture.completedFuture(
+                    new ApiResponse<Empty200ResponseDto>(
+                        localVarResponse.statusCode(),
+                        localVarResponse.headers().map(),
+                        responseValue
+                    )
+                );
+              } finally {
+                if (localVarResponseBody != null) {
+                  localVarResponseBody.close();
+                }
+              }
+            } catch (IOException e) {
+              return CompletableFuture.failedFuture(new ApiException(e));
+            }
+        }
+      );
+    }
+    catch (ApiException e) {
+      return CompletableFuture.failedFuture(e);
+    }
+  }
+
+  private HttpRequest.Builder deterministicRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'termRequestDto' is set
+    if (termRequestDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling deterministic");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/analyze/deterministic";
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(termRequestDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Graphviz DOT
    * Build a Graphviz DOT representation of the term&#39;s automaton.
    * @param termRequestDto  (required)
    * @return CompletableFuture&lt;Dot200ResponseDto&gt;
@@ -318,7 +450,7 @@ public class AnalyzeApi {
   }
 
   /**
-   * GraphViz Dot
+   * Graphviz DOT
    * Build a Graphviz DOT representation of the term&#39;s automaton.
    * @param termRequestDto  (required)
    * @param headers Optional headers to include in the request
@@ -336,7 +468,7 @@ public class AnalyzeApi {
   }
 
   /**
-   * GraphViz Dot
+   * Graphviz DOT
    * Build a Graphviz DOT representation of the term&#39;s automaton.
    * @param termRequestDto  (required)
    * @return CompletableFuture&lt;ApiResponse&lt;Dot200ResponseDto&gt;&gt;
@@ -347,7 +479,7 @@ public class AnalyzeApi {
   }
 
   /**
-   * GraphViz Dot
+   * Graphviz DOT
    * Build a Graphviz DOT representation of the term&#39;s automaton.
    * @param termRequestDto  (required)
    * @param headers Optional headers to include in the request

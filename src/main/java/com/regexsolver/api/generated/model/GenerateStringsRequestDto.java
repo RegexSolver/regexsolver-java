@@ -32,16 +32,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.regexsolver.api.generated.ApiClient;
 /**
- * Request to generate up to &#39;limit&#39; distinct strings matched by &#39;term&#39;, skipping the first &#39;offset&#39; strings.
+ * Request to generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings. For consistent pagination, &#x60;term&#x60; should be deterministic.
  */
 @JsonPropertyOrder({
   GenerateStringsRequestDto.JSON_PROPERTY_TERM,
   GenerateStringsRequestDto.JSON_PROPERTY_LIMIT,
   GenerateStringsRequestDto.JSON_PROPERTY_OFFSET,
-  GenerateStringsRequestDto.JSON_PROPERTY_RETURN_STABLE_TERM,
   GenerateStringsRequestDto.JSON_PROPERTY_OPTIONS
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class GenerateStringsRequestDto {
   public static final String JSON_PROPERTY_TERM = "term";
   @jakarta.annotation.Nonnull
@@ -54,10 +53,6 @@ public class GenerateStringsRequestDto {
   public static final String JSON_PROPERTY_OFFSET = "offset";
   @jakarta.annotation.Nonnull
   private Integer offset;
-
-  public static final String JSON_PROPERTY_RETURN_STABLE_TERM = "returnStableTerm";
-  @jakarta.annotation.Nullable
-  private Boolean returnStableTerm = false;
 
   public static final String JSON_PROPERTY_OPTIONS = "options";
   @jakarta.annotation.Nullable
@@ -141,30 +136,6 @@ public class GenerateStringsRequestDto {
   }
 
 
-  public GenerateStringsRequestDto returnStableTerm(@jakarta.annotation.Nullable Boolean returnStableTerm) {
-    this.returnStableTerm = returnStableTerm;
-    return this;
-  }
-
-  /**
-   * If set to true, a stable term is returned. This term can be reused in subsequent calls to guarantee no strings are repeated. If the provided term is already stable, it will not be returned.
-   * @return returnStableTerm
-   */
-  @jakarta.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_RETURN_STABLE_TERM, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public Boolean getReturnStableTerm() {
-    return returnStableTerm;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_RETURN_STABLE_TERM, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setReturnStableTerm(@jakarta.annotation.Nullable Boolean returnStableTerm) {
-    this.returnStableTerm = returnStableTerm;
-  }
-
-
   public GenerateStringsRequestDto options(@jakarta.annotation.Nullable RequestOptionsDto options) {
     this.options = options;
     return this;
@@ -204,13 +175,12 @@ public class GenerateStringsRequestDto {
     return Objects.equals(this.term, generateStringsRequest.term) &&
         Objects.equals(this.limit, generateStringsRequest.limit) &&
         Objects.equals(this.offset, generateStringsRequest.offset) &&
-        Objects.equals(this.returnStableTerm, generateStringsRequest.returnStableTerm) &&
         Objects.equals(this.options, generateStringsRequest.options);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(term, limit, offset, returnStableTerm, options);
+    return Objects.hash(term, limit, offset, options);
   }
 
   @Override
@@ -220,7 +190,6 @@ public class GenerateStringsRequestDto {
     sb.append("    term: ").append(toIndentedString(term)).append("\n");
     sb.append("    limit: ").append(toIndentedString(limit)).append("\n");
     sb.append("    offset: ").append(toIndentedString(offset)).append("\n");
-    sb.append("    returnStableTerm: ").append(toIndentedString(returnStableTerm)).append("\n");
     sb.append("    options: ").append(toIndentedString(options)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -279,11 +248,6 @@ public class GenerateStringsRequestDto {
     // add `offset` to the URL query string
     if (getOffset() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%soffset%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOffset()))));
-    }
-
-    // add `returnStableTerm` to the URL query string
-    if (getReturnStableTerm() != null) {
-      joiner.add(String.format(java.util.Locale.ROOT, "%sreturnStableTerm%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getReturnStableTerm()))));
     }
 
     // add `options` to the URL query string

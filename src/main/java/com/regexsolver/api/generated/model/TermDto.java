@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.regexsolver.api.generated.model.TermFairDto;
+import com.regexsolver.api.generated.model.TermFairMetadataDto;
 import com.regexsolver.api.generated.model.TermRegexDto;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -57,7 +58,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.regexsolver.api.generated.ApiClient;
 import com.regexsolver.api.generated.JSON;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 @JsonDeserialize(using = TermDto.TermDtoDeserializer.class)
 @JsonSerialize(using = TermDto.TermDtoSerializer.class)
 public class TermDto extends AbstractOpenApiSchema {

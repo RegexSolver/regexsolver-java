@@ -15,7 +15,7 @@ package com.regexsolver.api.generated;
 
 import java.net.http.HttpHeaders;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class ApiException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 

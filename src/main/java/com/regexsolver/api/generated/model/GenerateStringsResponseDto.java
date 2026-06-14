@@ -25,21 +25,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.regexsolver.api.generated.model.StringsDto;
-import com.regexsolver.api.generated.model.TermDto;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 import com.regexsolver.api.generated.ApiClient;
 /**
- * Response containing distinct strings generated from the requested &#39;term&#39;.
+ * Response containing distinct strings generated from the requested &#x60;term&#x60;.
  */
 @JsonPropertyOrder({
   GenerateStringsResponseDto.JSON_PROPERTY_TYPE,
-  GenerateStringsResponseDto.JSON_PROPERTY_TERM,
   GenerateStringsResponseDto.JSON_PROPERTY_STRINGS
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class GenerateStringsResponseDto {
   /**
    * Gets or Sets type
@@ -78,10 +76,6 @@ public class GenerateStringsResponseDto {
   @jakarta.annotation.Nonnull
   private TypeEnum type;
 
-  public static final String JSON_PROPERTY_TERM = "term";
-  @jakarta.annotation.Nullable
-  private TermDto term;
-
   public static final String JSON_PROPERTY_STRINGS = "strings";
   @jakarta.annotation.Nonnull
   private StringsDto strings;
@@ -110,30 +104,6 @@ public class GenerateStringsResponseDto {
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setType(@jakarta.annotation.Nonnull TypeEnum type) {
     this.type = type;
-  }
-
-
-  public GenerateStringsResponseDto term(@jakarta.annotation.Nullable TermDto term) {
-    this.term = term;
-    return this;
-  }
-
-  /**
-   * A stable term to use in subsequent calls to guarantee the uniqueness of generated strings. Omitted if &#39;returnStableTerm&#39; was false in the request, or if the provided term was already stable.
-   * @return term
-   */
-  @jakarta.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_TERM, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public TermDto getTerm() {
-    return term;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_TERM, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTerm(@jakarta.annotation.Nullable TermDto term) {
-    this.term = term;
   }
 
 
@@ -174,13 +144,12 @@ public class GenerateStringsResponseDto {
     }
     GenerateStringsResponseDto generateStringsResponse = (GenerateStringsResponseDto) o;
     return Objects.equals(this.type, generateStringsResponse.type) &&
-        Objects.equals(this.term, generateStringsResponse.term) &&
         Objects.equals(this.strings, generateStringsResponse.strings);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, term, strings);
+    return Objects.hash(type, strings);
   }
 
   @Override
@@ -188,7 +157,6 @@ public class GenerateStringsResponseDto {
     StringBuilder sb = new StringBuilder();
     sb.append("class GenerateStringsResponseDto {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    term: ").append(toIndentedString(term)).append("\n");
     sb.append("    strings: ").append(toIndentedString(strings)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -237,11 +205,6 @@ public class GenerateStringsResponseDto {
     // add `type` to the URL query string
     if (getType() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%stype%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getType()))));
-    }
-
-    // add `term` to the URL query string
-    if (getTerm() != null) {
-      joiner.add(getTerm().toUrlQueryString(prefix + "term" + suffix));
     }
 
     // add `strings` to the URL query string

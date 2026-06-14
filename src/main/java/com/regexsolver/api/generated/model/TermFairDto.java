@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.regexsolver.api.generated.model.TermFairMetadataDto;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -34,9 +35,10 @@ import com.regexsolver.api.generated.ApiClient;
  */
 @JsonPropertyOrder({
   TermFairDto.JSON_PROPERTY_TYPE,
-  TermFairDto.JSON_PROPERTY_VALUE
+  TermFairDto.JSON_PROPERTY_VALUE,
+  TermFairDto.JSON_PROPERTY_METADATA
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class TermFairDto {
   /**
    * Gets or Sets type
@@ -79,7 +81,19 @@ public class TermFairDto {
   @jakarta.annotation.Nonnull
   private String value;
 
+  public static final String JSON_PROPERTY_METADATA = "metadata";
+  @jakarta.annotation.Nullable
+  private TermFairMetadataDto metadata;
+
   public TermFairDto() { 
+  }
+
+  @JsonCreator
+  public TermFairDto(
+    @JsonProperty(JSON_PROPERTY_METADATA) TermFairMetadataDto metadata
+  ) {
+  this();
+    this.metadata = metadata;
   }
 
   public TermFairDto type(@jakarta.annotation.Nonnull TypeEnum type) {
@@ -131,6 +145,20 @@ public class TermFairDto {
 
 
   /**
+   * Get metadata
+   * @return metadata
+   */
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_METADATA, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public TermFairMetadataDto getMetadata() {
+    return metadata;
+  }
+
+
+
+
+  /**
    * Return true if this TermFair object is equal to o.
    */
   @Override
@@ -143,12 +171,13 @@ public class TermFairDto {
     }
     TermFairDto termFair = (TermFairDto) o;
     return Objects.equals(this.type, termFair.type) &&
-        Objects.equals(this.value, termFair.value);
+        Objects.equals(this.value, termFair.value) &&
+        Objects.equals(this.metadata, termFair.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, value);
+    return Objects.hash(type, value, metadata);
   }
 
   @Override
@@ -157,6 +186,7 @@ public class TermFairDto {
     sb.append("class TermFairDto {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -209,6 +239,11 @@ public class TermFairDto {
     // add `value` to the URL query string
     if (getValue() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    // add `metadata` to the URL query string
+    if (getMetadata() != null) {
+      joiner.add(getMetadata().toUrlQueryString(prefix + "metadata" + suffix));
     }
 
     return joiner.toString();

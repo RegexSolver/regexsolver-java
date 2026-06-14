@@ -52,7 +52,7 @@ import java.util.function.Consumer;
 
 import java.util.concurrent.CompletableFuture;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class GenerateApi {
   /**
    * Utility class for extending HttpRequest.Builder functionality.
@@ -172,7 +172,7 @@ public class GenerateApi {
 
   /**
    * Strings
-   * Generates up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings.
+   * Generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings. Strings are only guaranteed to be distinct within a single call; pagination across calls is only consistent (no repeats or gaps) if &#x60;term&#x60; is deterministic. Call &#x60;/analyze/deterministic&#x60; to check, and &#x60;/compute/determinize&#x60; first if needed.
    * @param generateStringsRequestDto  (required)
    * @return CompletableFuture&lt;Strings200ResponseDto&gt;
    * @throws ApiException if fails to make API call
@@ -183,7 +183,7 @@ public class GenerateApi {
 
   /**
    * Strings
-   * Generates up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings.
+   * Generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings. Strings are only guaranteed to be distinct within a single call; pagination across calls is only consistent (no repeats or gaps) if &#x60;term&#x60; is deterministic. Call &#x60;/analyze/deterministic&#x60; to check, and &#x60;/compute/determinize&#x60; first if needed.
    * @param generateStringsRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;Strings200ResponseDto&gt;
@@ -201,7 +201,7 @@ public class GenerateApi {
 
   /**
    * Strings
-   * Generates up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings.
+   * Generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings. Strings are only guaranteed to be distinct within a single call; pagination across calls is only consistent (no repeats or gaps) if &#x60;term&#x60; is deterministic. Call &#x60;/analyze/deterministic&#x60; to check, and &#x60;/compute/determinize&#x60; first if needed.
    * @param generateStringsRequestDto  (required)
    * @return CompletableFuture&lt;ApiResponse&lt;Strings200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
@@ -212,7 +212,7 @@ public class GenerateApi {
 
   /**
    * Strings
-   * Generates up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings.
+   * Generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings. Strings are only guaranteed to be distinct within a single call; pagination across calls is only consistent (no repeats or gaps) if &#x60;term&#x60; is deterministic. Call &#x60;/analyze/deterministic&#x60; to check, and &#x60;/compute/determinize&#x60; first if needed.
    * @param generateStringsRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;ApiResponse&lt;Strings200ResponseDto&gt;&gt;

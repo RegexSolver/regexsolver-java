@@ -201,13 +201,13 @@ class ModelsTest {
     @Test
     void testTermIsMatch() {
         Term term = Term.regex("a.b");
-        assertThat(term.isMatch("axb")).isTrue();
-        assertThat(term.isMatch("a\nb")).isTrue(); // DOTALL behavior
-        assertThat(term.isMatch("ab")).isFalse();
-        assertThat(term.isMatch("axxb")).isFalse(); // anchored (fullmatch)
+        assertThat(term.matches("axb")).isTrue();
+        assertThat(term.matches("a\nb")).isTrue(); // DOTALL behavior
+        assertThat(term.matches("ab")).isFalse();
+        assertThat(term.matches("axxb")).isFalse(); // anchored (fullmatch)
 
         Term fairTerm = Term.fair("payload");
-        assertThatThrownBy(() -> fairTerm.isMatch("abc")).isInstanceOf(
+        assertThatThrownBy(() -> fairTerm.matches("abc")).isInstanceOf(
             IllegalStateException.class
         );
     }

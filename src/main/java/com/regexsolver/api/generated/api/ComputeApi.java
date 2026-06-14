@@ -55,7 +55,7 @@ import java.util.function.Consumer;
 
 import java.util.concurrent.CompletableFuture;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class ComputeApi {
   /**
    * Utility class for extending HttpRequest.Builder functionality.
@@ -175,7 +175,7 @@ public class ComputeApi {
 
   /**
    * Complement
-   * Computes the complement of the given term.
+   * Compute the complement of the given term.
    * @param termRequestDto  (required)
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
@@ -186,7 +186,7 @@ public class ComputeApi {
 
   /**
    * Complement
-   * Computes the complement of the given term.
+   * Compute the complement of the given term.
    * @param termRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
@@ -204,7 +204,7 @@ public class ComputeApi {
 
   /**
    * Complement
-   * Computes the complement of the given term.
+   * Compute the complement of the given term.
    * @param termRequestDto  (required)
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
@@ -215,7 +215,7 @@ public class ComputeApi {
 
   /**
    * Complement
-   * Computes the complement of the given term.
+   * Compute the complement of the given term.
    * @param termRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
@@ -438,8 +438,140 @@ public class ComputeApi {
   }
 
   /**
+   * Determinize
+   * Compute a deterministic FAIR.
+   * @param termRequestDto  (required)
+   * @return CompletableFuture&lt;Concat200ResponseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public CompletableFuture<Concat200ResponseDto> determinize(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+    return determinize(termRequestDto, null);
+  }
+
+  /**
+   * Determinize
+   * Compute a deterministic FAIR.
+   * @param termRequestDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CompletableFuture&lt;Concat200ResponseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public CompletableFuture<Concat200ResponseDto> determinize(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+    try {
+      return determinizeWithHttpInfo(termRequestDto, headers)
+          .thenApply(ApiResponse::getData);
+    }
+    catch (ApiException e) {
+      return CompletableFuture.failedFuture(e);
+    }
+  }
+
+  /**
+   * Determinize
+   * Compute a deterministic FAIR.
+   * @param termRequestDto  (required)
+   * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> determinizeWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto) throws ApiException {
+    return determinizeWithHttpInfo(termRequestDto, null);
+  }
+
+  /**
+   * Determinize
+   * Compute a deterministic FAIR.
+   * @param termRequestDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public CompletableFuture<ApiResponse<Concat200ResponseDto>> determinizeWithHttpInfo(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+    try {
+      HttpRequest.Builder localVarRequestBuilder = determinizeRequestBuilder(termRequestDto, headers);
+      return memberVarHttpClient.sendAsync(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream()).thenComposeAsync(localVarResponse -> {
+            if (memberVarAsyncResponseInterceptor != null) {
+              memberVarAsyncResponseInterceptor.accept(localVarResponse);
+            }
+            if (localVarResponse.statusCode()/ 100 != 2) {
+              return CompletableFuture.failedFuture(getApiException("determinize", localVarResponse));
+            }
+            try {
+              InputStream localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+              try {
+                if (localVarResponseBody == null) {
+                  return CompletableFuture.completedFuture(
+                      new ApiResponse<Concat200ResponseDto>(
+                          localVarResponse.statusCode(),
+                          localVarResponse.headers().map(),
+                          null
+                      )
+                  );
+                }
+                
+                
+                String responseBody = new String(localVarResponseBody.readAllBytes());
+                Concat200ResponseDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Concat200ResponseDto>() {});
+                
+                return CompletableFuture.completedFuture(
+                    new ApiResponse<Concat200ResponseDto>(
+                        localVarResponse.statusCode(),
+                        localVarResponse.headers().map(),
+                        responseValue
+                    )
+                );
+              } finally {
+                if (localVarResponseBody != null) {
+                  localVarResponseBody.close();
+                }
+              }
+            } catch (IOException e) {
+              return CompletableFuture.failedFuture(new ApiException(e));
+            }
+        }
+      );
+    }
+    catch (ApiException e) {
+      return CompletableFuture.failedFuture(e);
+    }
+  }
+
+  private HttpRequest.Builder determinizeRequestBuilder(@jakarta.annotation.Nonnull TermRequestDto termRequestDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'termRequestDto' is set
+    if (termRequestDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'termRequestDto' when calling determinize");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/compute/determinize";
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(termRequestDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
    * Difference
-   * Computes the difference between the two provided terms.
+   * Compute the difference between the two given terms.
    * @param twoTermsRequestDto  (required)
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
@@ -450,7 +582,7 @@ public class ComputeApi {
 
   /**
    * Difference
-   * Computes the difference between the two provided terms.
+   * Compute the difference between the two given terms.
    * @param twoTermsRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
@@ -468,7 +600,7 @@ public class ComputeApi {
 
   /**
    * Difference
-   * Computes the difference between the two provided terms.
+   * Compute the difference between the two given terms.
    * @param twoTermsRequestDto  (required)
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
@@ -479,7 +611,7 @@ public class ComputeApi {
 
   /**
    * Difference
-   * Computes the difference between the two provided terms.
+   * Compute the difference between the two given terms.
    * @param twoTermsRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
@@ -571,7 +703,7 @@ public class ComputeApi {
 
   /**
    * Intersection
-   * Computes the intersection of the given terms.
+   * Compute the intersection of the given terms.
    * @param multiTermsRequestDto  (required)
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
@@ -582,7 +714,7 @@ public class ComputeApi {
 
   /**
    * Intersection
-   * Computes the intersection of the given terms.
+   * Compute the intersection of the given terms.
    * @param multiTermsRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
@@ -600,7 +732,7 @@ public class ComputeApi {
 
   /**
    * Intersection
-   * Computes the intersection of the given terms.
+   * Compute the intersection of the given terms.
    * @param multiTermsRequestDto  (required)
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
@@ -611,7 +743,7 @@ public class ComputeApi {
 
   /**
    * Intersection
-   * Computes the intersection of the given terms.
+   * Compute the intersection of the given terms.
    * @param multiTermsRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
@@ -703,7 +835,7 @@ public class ComputeApi {
 
   /**
    * Repeat
-   * Repeat a term between &#39;min&#39; and &#39;max&#39; times.
+   * Repeat a term between &#x60;min&#x60; and &#x60;max&#x60; times.
    * @param repeatRequestDto  (required)
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
@@ -714,7 +846,7 @@ public class ComputeApi {
 
   /**
    * Repeat
-   * Repeat a term between &#39;min&#39; and &#39;max&#39; times.
+   * Repeat a term between &#x60;min&#x60; and &#x60;max&#x60; times.
    * @param repeatRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
@@ -732,7 +864,7 @@ public class ComputeApi {
 
   /**
    * Repeat
-   * Repeat a term between &#39;min&#39; and &#39;max&#39; times.
+   * Repeat a term between &#x60;min&#x60; and &#x60;max&#x60; times.
    * @param repeatRequestDto  (required)
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
@@ -743,7 +875,7 @@ public class ComputeApi {
 
   /**
    * Repeat
-   * Repeat a term between &#39;min&#39; and &#39;max&#39; times.
+   * Repeat a term between &#x60;min&#x60; and &#x60;max&#x60; times.
    * @param repeatRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
@@ -835,7 +967,7 @@ public class ComputeApi {
 
   /**
    * Union
-   * Computes the union of the given terms.
+   * Compute the union of the given terms.
    * @param multiTermsRequestDto  (required)
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
    * @throws ApiException if fails to make API call
@@ -846,7 +978,7 @@ public class ComputeApi {
 
   /**
    * Union
-   * Computes the union of the given terms.
+   * Compute the union of the given terms.
    * @param multiTermsRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;Concat200ResponseDto&gt;
@@ -864,7 +996,7 @@ public class ComputeApi {
 
   /**
    * Union
-   * Computes the union of the given terms.
+   * Compute the union of the given terms.
    * @param multiTermsRequestDto  (required)
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
@@ -875,7 +1007,7 @@ public class ComputeApi {
 
   /**
    * Union
-   * Computes the union of the given terms.
+   * Compute the union of the given terms.
    * @param multiTermsRequestDto  (required)
    * @param headers Optional headers to include in the request
    * @return CompletableFuture&lt;ApiResponse&lt;Concat200ResponseDto&gt;&gt;

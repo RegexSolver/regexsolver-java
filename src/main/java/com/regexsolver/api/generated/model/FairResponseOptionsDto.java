@@ -24,83 +24,52 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.regexsolver.api.generated.model.RequestOptionsDto;
-import com.regexsolver.api.generated.model.TermDto;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 import com.regexsolver.api.generated.ApiClient;
 /**
- * Request carrying a single term.
+ * Options controlling the FAIR output. Only applied when response format is \&quot;fair\&quot;.
  */
 @JsonPropertyOrder({
-  TermRequestDto.JSON_PROPERTY_TERM,
-  TermRequestDto.JSON_PROPERTY_OPTIONS
+  FairResponseOptionsDto.JSON_PROPERTY_DETERMINISTIC
 })
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
-public class TermRequestDto {
-  public static final String JSON_PROPERTY_TERM = "term";
-  @jakarta.annotation.Nonnull
-  private TermDto term;
-
-  public static final String JSON_PROPERTY_OPTIONS = "options";
+public class FairResponseOptionsDto {
+  public static final String JSON_PROPERTY_DETERMINISTIC = "deterministic";
   @jakarta.annotation.Nullable
-  private RequestOptionsDto options;
+  private Boolean deterministic;
 
-  public TermRequestDto() { 
+  public FairResponseOptionsDto() { 
   }
 
-  public TermRequestDto term(@jakarta.annotation.Nonnull TermDto term) {
-    this.term = term;
+  public FairResponseOptionsDto deterministic(@jakarta.annotation.Nullable Boolean deterministic) {
+    this.deterministic = deterministic;
     return this;
   }
 
   /**
-   * Get term
-   * @return term
-   */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(value = JSON_PROPERTY_TERM, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public TermDto getTerm() {
-    return term;
-  }
-
-
-  @JsonProperty(value = JSON_PROPERTY_TERM, required = true)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setTerm(@jakarta.annotation.Nonnull TermDto term) {
-    this.term = term;
-  }
-
-
-  public TermRequestDto options(@jakarta.annotation.Nullable RequestOptionsDto options) {
-    this.options = options;
-    return this;
-  }
-
-  /**
-   * Get options
-   * @return options
+   * When true, the returned FAIR is guaranteed to be a deterministic automaton, suitable for consistent pagination with /generate/strings.
+   * @return deterministic
    */
   @jakarta.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
+  @JsonProperty(value = JSON_PROPERTY_DETERMINISTIC, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public RequestOptionsDto getOptions() {
-    return options;
+  public Boolean getDeterministic() {
+    return deterministic;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_OPTIONS, required = false)
+  @JsonProperty(value = JSON_PROPERTY_DETERMINISTIC, required = false)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setOptions(@jakarta.annotation.Nullable RequestOptionsDto options) {
-    this.options = options;
+  public void setDeterministic(@jakarta.annotation.Nullable Boolean deterministic) {
+    this.deterministic = deterministic;
   }
 
 
   /**
-   * Return true if this TermRequest object is equal to o.
+   * Return true if this FairResponseOptions object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -110,22 +79,20 @@ public class TermRequestDto {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TermRequestDto termRequest = (TermRequestDto) o;
-    return Objects.equals(this.term, termRequest.term) &&
-        Objects.equals(this.options, termRequest.options);
+    FairResponseOptionsDto fairResponseOptions = (FairResponseOptionsDto) o;
+    return Objects.equals(this.deterministic, fairResponseOptions.deterministic);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(term, options);
+    return Objects.hash(deterministic);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TermRequestDto {\n");
-    sb.append("    term: ").append(toIndentedString(term)).append("\n");
-    sb.append("    options: ").append(toIndentedString(options)).append("\n");
+    sb.append("class FairResponseOptionsDto {\n");
+    sb.append("    deterministic: ").append(toIndentedString(deterministic)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -170,14 +137,9 @@ public class TermRequestDto {
 
     StringJoiner joiner = new StringJoiner("&");
 
-    // add `term` to the URL query string
-    if (getTerm() != null) {
-      joiner.add(getTerm().toUrlQueryString(prefix + "term" + suffix));
-    }
-
-    // add `options` to the URL query string
-    if (getOptions() != null) {
-      joiner.add(getOptions().toUrlQueryString(prefix + "options" + suffix));
+    // add `deterministic` to the URL query string
+    if (getDeterministic() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdeterministic%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeterministic()))));
     }
 
     return joiner.toString();

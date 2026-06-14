@@ -22,7 +22,6 @@ public abstract class Term {
     private Boolean total;
     protected String pattern;
     private String dot;
-    private Term stableTerm;
 
     private Pattern compiledRegex;
 
@@ -41,7 +40,7 @@ public abstract class Term {
     }
 
     public static Term fair(String payload) {
-        return new FairTerm(payload);
+        return new FairTerm(payload, Optional.empty());
     }
 
     // --- Shared Behavior ---
@@ -61,7 +60,7 @@ public abstract class Term {
      * @param str The string to test against the term.
      * @return True if matches, false if not. Throws if pattern is not set.
      */
-    public boolean isMatch(String str) {
+    public boolean matches(String str) {
         Optional<String> patternOpt = getPattern();
         if (patternOpt.isEmpty()) {
             throw new IllegalStateException(
@@ -160,14 +159,6 @@ public abstract class Term {
         this.dot = dot;
     }
 
-    Term getCachedStableTerm() {
-        return stableTerm;
-    }
-
-    void setCachedStableTerm(Term stableTerm) {
-        this.stableTerm = stableTerm;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -199,9 +190,7 @@ public abstract class Term {
 
         @Override
         public Optional<String> getFair() {
-            return Optional.ofNullable(getCachedStableTerm()).map(t ->
-                t.getFair().orElse(null)
-            );
+            return Optional.empty();
         }
 
         @Override
@@ -221,8 +210,19 @@ public abstract class Term {
 
     public static final class FairTerm extends Term {
 
-        FairTerm(String value) {
+        private Optional<Boolean> deterministic = Optional.empty();
+
+        FairTerm(String value, Optional<Boolean> deterministic) {
             super(value);
+            this.deterministic = deterministic;
+        }
+
+        Optional<Boolean> getCachedDeterministic() {
+            return this.deterministic;
+        }
+
+        void setCachedDeterministic(Optional<Boolean> deterministic) {
+            this.deterministic = deterministic;
         }
 
         @Override

@@ -68,6 +68,35 @@ class RegexSolverClientTest {
     }
 
     @Test
+    void testSyncClientIsDeterministic() {
+        Term term = Term.fair("payload");
+
+        when(asyncClient.isDeterministic(any())).thenReturn(
+            CompletableFuture.completedFuture(true)
+        );
+
+        boolean result = client.isDeterministic(term);
+
+        assertThat(result).isTrue();
+        verify(asyncClient).isDeterministic(term);
+    }
+
+    @Test
+    void testSyncClientDeterminize() {
+        Term term = Term.regex("a");
+        Term mockResultTerm = Term.fair("fair-payload");
+
+        when(asyncClient.determinize(any())).thenReturn(
+            CompletableFuture.completedFuture(mockResultTerm)
+        );
+
+        Term result = client.determinize(term);
+
+        assertThat(result.getFair()).contains("fair-payload");
+        verify(asyncClient).determinize(term);
+    }
+
+    @Test
     void testSyncClientUnion() {
         Term term1 = Term.regex("a");
         Term term2 = Term.regex("b");

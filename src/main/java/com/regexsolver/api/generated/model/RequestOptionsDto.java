@@ -32,14 +32,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.regexsolver.api.generated.ApiClient;
 /**
- * Change how the engine handle the operation.
+ * Change how the engine handles the operation.
  */
 @JsonPropertyOrder({
   RequestOptionsDto.JSON_PROPERTY_SCHEMA_VERSION,
   RequestOptionsDto.JSON_PROPERTY_RESPONSE,
   RequestOptionsDto.JSON_PROPERTY_EXECUTION
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T21:04:36.007610025+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class RequestOptionsDto {
   public static final String JSON_PROPERTY_SCHEMA_VERSION = "schemaVersion";
   @jakarta.annotation.Nonnull

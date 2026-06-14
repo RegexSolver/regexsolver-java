@@ -412,6 +412,28 @@ class AsyncRegexSolverClientTest {
     }
 
     @Test
+    void testIsDeterministic() {
+        Term term = Term.fair("payload");
+        Empty200ResponseDto responseDto = new Empty200ResponseDto();
+        BooleanDto data = new BooleanDto();
+        data.setValue(true);
+        responseDto.setData(data);
+
+        when(analyzeApi.deterministic(any())).thenReturn(
+            CompletableFuture.completedFuture(responseDto)
+        );
+
+        assertThat(client.isDeterministic(term).join()).isTrue();
+    }
+
+    @Test
+    void testIsDeterministicFalseForRegexTerm() {
+        Term term = Term.regex("a");
+
+        assertThat(client.isDeterministic(term).join()).isFalse();
+    }
+
+    @Test
     void testGetPattern() {
         Term term = Term.regex("a");
         Dot200ResponseDto responseDto = new Dot200ResponseDto();
@@ -502,6 +524,21 @@ class AsyncRegexSolverClientTest {
 
         Term result = client.repeat(term, 2, 3).join();
         assertThat(result.getPattern()).contains("a{2,3}");
+    }
+
+    @Test
+    void testDeterminize() {
+        Term term = Term.regex("a");
+        Concat200ResponseDto responseDto = new Concat200ResponseDto();
+        TermDto data = new TermDto(new TermFairDto().value("fair-payload"));
+        responseDto.setData(data);
+
+        when(computeApi.determinize(any())).thenReturn(
+            CompletableFuture.completedFuture(responseDto)
+        );
+
+        Term result = client.determinize(term).join();
+        assertThat(result.getFair()).contains("fair-payload");
     }
 
     @Test
