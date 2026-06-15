@@ -231,6 +231,14 @@ public final class AsyncRegexSolverClient {
                     errorCode,
                     body
                 );
+                if (
+                    "FairSyntaxError".equals(errorCode)
+                ) return new FairSyntaxException(
+                    message,
+                    code,
+                    errorCode,
+                    body
+                );
                 return new BadRequestException(message, code, errorCode, body);
             case 401:
                 if (

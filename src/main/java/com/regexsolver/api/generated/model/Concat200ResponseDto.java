@@ -37,7 +37,7 @@ import com.regexsolver.api.generated.ApiClient;
   Concat200ResponseDto.JSON_PROPERTY_SUCCESS,
   Concat200ResponseDto.JSON_PROPERTY_DATA
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-15T20:59:02.334941156+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class Concat200ResponseDto {
   public static final String JSON_PROPERTY_SUCCESS = "success";
   @jakarta.annotation.Nonnull

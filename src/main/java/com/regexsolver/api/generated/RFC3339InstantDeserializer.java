@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeFeature;
 import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-14T20:33:08.283718579+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-15T20:59:02.334941156+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class RFC3339InstantDeserializer<T extends Temporal> extends InstantDeserializer<T> {
     private static final long serialVersionUID = 1L;
     private final static boolean DEFAULT_NORMALIZE_ZONE_ID = JavaTimeFeature.NORMALIZE_DESERIALIZED_ZONE_ID.enabledByDefault();
