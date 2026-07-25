@@ -4,6 +4,10 @@ import java.util.Optional;
 
 /**
  * Options for RegexSolver operations.
+ *
+ * <p>Not every option is relevant to every operation: an option is ignored by any operation
+ * it does not apply to. For instance the options describing the returned term have no effect
+ * on an operation that does not return one.
  */
 public class OperationOptions {
 
@@ -25,11 +29,17 @@ public class OperationOptions {
         return new OperationOptions();
     }
 
+    /**
+     * Maximum time, in seconds, the engine may spend on the operation before aborting it.
+     */
     public OperationOptions executionTimeout(Integer timeout) {
         this.executionTimeout = timeout;
         return this;
     }
 
+    /**
+     * Format of the term returned by the operation.
+     */
     public OperationOptions responseFormat(ResponseFormat format) {
         this.responseFormat = format;
         return this;
