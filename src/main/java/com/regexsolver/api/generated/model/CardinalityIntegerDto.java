@@ -36,7 +36,7 @@ import com.regexsolver.api.generated.ApiClient;
   CardinalityIntegerDto.JSON_PROPERTY_TYPE,
   CardinalityIntegerDto.JSON_PROPERTY_VALUE
 })
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-15T20:59:02.334941156+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-25T17:30:56.796219110+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 public class CardinalityIntegerDto {
   /**
    * Gets or Sets type

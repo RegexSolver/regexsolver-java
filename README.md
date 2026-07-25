@@ -134,7 +134,7 @@ Timeout is best effort. The exact time is not guaranteed.
 
 ## API Overview
 
-`RegexSolverClient` and `AsyncRegexSolverClient` expose the following methods. All methods accept an optional `OperationOptions` object as the last parameter.
+`RegexSolverClient` and `AsyncRegexSolverClient` expose the following methods. Every method accepts an optional options object as its last parameter: operations that return a term take `OperationOptions` (`responseFormat`, `deterministic`, `executionTimeout`), while analyze operations and `determinize()` take `ExecutionOptions` (`executionTimeout` only) — the response format is not theirs to choose.
 
 ### Analyze
 

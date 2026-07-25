@@ -58,7 +58,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.regexsolver.api.generated.ApiClient;
 import com.regexsolver.api.generated.JSON;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-06-15T20:59:02.334941156+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-25T17:30:56.796219110+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
 @JsonDeserialize(using = TermDto.TermDtoDeserializer.class)
 @JsonSerialize(using = TermDto.TermDtoSerializer.class)
 public class TermDto extends AbstractOpenApiSchema {

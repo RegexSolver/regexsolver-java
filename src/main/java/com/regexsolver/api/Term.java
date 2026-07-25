@@ -2,6 +2,7 @@ package com.regexsolver.api;
 
 import com.regexsolver.api.generated.model.TermDto;
 import com.regexsolver.api.generated.model.TermFairDto;
+import com.regexsolver.api.generated.model.TermFairMetadataDto;
 import com.regexsolver.api.generated.model.TermRegexDto;
 import java.util.Objects;
 import java.util.Optional;
@@ -11,6 +12,9 @@ import java.util.regex.Pattern;
  * Represents a mathematical term (Regex or FAIR) on which operations can be performed.
  */
 public abstract class Term {
+
+    /** How the engine renders a language that matches no string at all. */
+    private static final String EMPTY_LANGUAGE_PATTERN = "[]";
 
     private final String value;
 
@@ -68,6 +72,12 @@ public abstract class Term {
             );
         }
 
+        // The engine renders the empty language as "[]", which java.util.regex
+        // rejects. By definition it matches nothing.
+        if (EMPTY_LANGUAGE_PATTERN.equals(patternOpt.get())) {
+            return false;
+        }
+
         if (compiledRegex == null) {
             compiledRegex = Pattern.compile(patternOpt.get(), Pattern.DOTALL);
         }
@@ -98,9 +108,13 @@ public abstract class Term {
         Object instance = dto.getActualInstance();
         if (instance instanceof TermRegexDto) {
             return Term.regex(((TermRegexDto) instance).getValue());
-        } else {
-            return Term.fair(((TermFairDto) instance).getValue());
         }
+        TermFairDto fairDto = (TermFairDto) instance;
+        // Keep metadata.deterministic so isDeterministic() does not need a second
+        // round trip for a FAIR the server already told us about.
+        Optional<Boolean> deterministic = Optional.ofNullable(fairDto.getMetadata())
+            .map(TermFairMetadataDto::getDeterministic);
+        return new FairTerm(fairDto.getValue(), deterministic);
     }
 
     // --- Shared Getters/Setters ---
@@ -149,6 +163,10 @@ public abstract class Term {
 
     void setCachedPattern(String pattern) {
         this.pattern = pattern;
+    }
+
+    String getCachedPattern() {
+        return this.pattern;
     }
 
     String getCachedDot() {
@@ -217,7 +235,11 @@ public abstract class Term {
             this.deterministic = deterministic;
         }
 
-        Optional<Boolean> getCachedDeterministic() {
+        /**
+         * Whether this FAIR encodes a deterministic automaton, or
+         * {@link java.util.Optional#empty()} if it is not known yet.
+         */
+        public Optional<Boolean> getCachedDeterministic() {
             return this.deterministic;
         }
 

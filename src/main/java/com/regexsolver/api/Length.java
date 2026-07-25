@@ -38,16 +38,22 @@ public final class Length extends TermPropertiesMixin {
 
     @Override
     public Optional<Boolean> isEmptyString() {
-        return Optional.of(this.min == 0 && this.max == 0);
+        // min/max are null for the empty language and max is null when the length
+        // is unbounded, so these comparisons must not unbox.
+        return Optional.of(isZero(this.min) && isZero(this.max));
     }
 
     @Override
     public Optional<Boolean> isTotal() {
-        if (this.min != 0 || this.max != null) {
+        if (!isZero(this.min) || this.max != null) {
             return Optional.of(false);
         } else {
             return Optional.empty();
         }
+    }
+
+    private static boolean isZero(Integer value) {
+        return value != null && value.intValue() == 0;
     }
 
     @Override
