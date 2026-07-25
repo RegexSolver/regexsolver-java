@@ -5,8 +5,6 @@
 
 ## Installation
 
-Requirements: **Java >= 11**
-
 ### Maven
 
 ```xml
@@ -22,6 +20,8 @@ Requirements: **Java >= 11**
 ```groovy
 implementation "com.regexsolver.api:RegexSolver:1.1.0"
 ```
+
+Requirements: **Java >= 11**
 
 ## Quick Start
 
@@ -93,7 +93,7 @@ The API can handle terms in two formats:
 - `regex`: a regular expression pattern
 - `fair`: FAIR (Fast Automaton Internal Representation), a stable, signed format used internally by the engine
 
-By default, the engine returns whatever the operation produces, with no extra convertion. Override with `OperationOptions`:
+By default, the engine returns whatever the operation produces, with no extra conversion. Override with `OperationOptions`, accepted by the operations that return a term:
 
 ```java
 import com.regexsolver.api.ResponseFormat;
@@ -108,6 +108,8 @@ System.out.println(result1); // regex=(abc)?de
 Term result2 = client.union(term1, term2, new OperationOptions().responseFormat(ResponseFormat.FAIR));
 System.out.println(result2); // fair=...
 ```
+
+If the format does not matter, omit `responseFormat` or set it to `ResponseFormat.ANY`.
 
 Regardless of the format, you can always call `getPattern()` to obtain the regex pattern of a term.
 
@@ -134,7 +136,7 @@ Timeout is best effort. The exact time is not guaranteed.
 
 ## API Overview
 
-`RegexSolverClient` and `AsyncRegexSolverClient` expose the following methods. Every method accepts an optional options object as its last parameter: operations that return a term take `OperationOptions` (`responseFormat`, `deterministic`, `executionTimeout`), while analyze operations and `determinize()` take `ExecutionOptions` (`executionTimeout` only) — the response format is not theirs to choose.
+`RegexSolverClient` and `AsyncRegexSolverClient` expose the following methods. Every method accepts an optional `OperationOptions` as its last parameter (`responseFormat`, `deterministic`, `executionTimeout`). An option that does not apply to an operation is ignored: analyze operations and `determinize()` only honour `executionTimeout` — the response format is not theirs to choose.
 
 ### Analyze
 

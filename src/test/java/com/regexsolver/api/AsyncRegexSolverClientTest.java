@@ -110,8 +110,8 @@ class AsyncRegexSolverClientTest {
 
         Length result = client.getLength(term).join();
 
-        assertThat(result.getMin()).isEqualTo(3);
-        assertThat(result.getMax()).isEqualTo(3);
+        assertThat(result.getMin()).contains(3);
+        assertThat(result.getMax()).contains(3);
     }
 
     @Test

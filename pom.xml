@@ -44,7 +44,8 @@
         <jackson.annotations.version>2.21</jackson.annotations.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <junit.version>5.10.2</junit.version>
-        <mockito.version>5.11.0</mockito.version>
+        <surefire.version>3.2.5</surefire.version>
+        <mockito.version>5.20.0</mockito.version>
         <assertj.version>3.25.3</assertj.version>
     </properties>
 
@@ -130,6 +131,11 @@
                     <source>11</source>
                     <target>11</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

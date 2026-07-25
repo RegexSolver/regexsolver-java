@@ -5,8 +5,8 @@ pom.xml
 git_push.sh
 .travis.yml
 .gitlab-ci.yml
-pyproject.toml
 .github/
+api/
 docs/
 test/
 README.md

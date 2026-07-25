@@ -112,8 +112,8 @@ class ModelsTest {
     @Test
     void testLength() {
         Length length = new Length(1, 5);
-        assertThat(length.getMin()).isEqualTo(1);
-        assertThat(length.getMax()).isEqualTo(5);
+        assertThat(length.getMin()).contains(1);
+        assertThat(length.getMax()).contains(5);
         assertThat(length.isEmpty()).contains(false);
         assertThat(length.isEmptyString()).contains(false);
         assertThat(length.isTotal()).contains(false);
@@ -127,8 +127,8 @@ class ModelsTest {
         genLen.setMax(5);
 
         Length lengthObj = Length.fromDto(genLen);
-        assertThat(lengthObj.getMin()).isEqualTo(1);
-        assertThat(lengthObj.getMax()).isEqualTo(5);
+        assertThat(lengthObj.getMin()).contains(1);
+        assertThat(lengthObj.getMax()).contains(5);
     }
 
     @Test
@@ -192,10 +192,10 @@ class ModelsTest {
         assertThat(deserialized.hashCode()).isEqualTo(term.hashCode());
 
         Term fairTerm = Term.fair("payload");
-        assertThat(Term.deserialize(fairTerm.serialize())).isEqualTo(fairTerm);
+        assertThat(Term.deserialize(fairTerm.serialize())).contains(fairTerm);
 
-        assertThat(Term.deserialize("invalid")).isNull();
-        assertThat(Term.deserialize("unknown=value")).isNull();
+        assertThat(Term.deserialize("invalid")).isEmpty();
+        assertThat(Term.deserialize("unknown=value")).isEmpty();
     }
 
     @Test
@@ -215,6 +215,6 @@ class ModelsTest {
     @Test
     void testTermRepr() {
         Term term = Term.regex("abc");
-        assertThat(term.toString()).isEqualTo("<Term(type=regex, value=abc)>");
+        assertThat(term.toString()).isEqualTo("regex=abc");
     }
 }

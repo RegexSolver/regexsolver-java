@@ -30,7 +30,7 @@ public class OperationOptions {
     }
 
     /**
-     * Maximum time, in seconds, the engine may spend on the operation before aborting it.
+     * Maximum time, in milliseconds, the engine may spend on the operation before aborting it.
      */
     public OperationOptions executionTimeout(Integer timeout) {
         this.executionTimeout = timeout;
