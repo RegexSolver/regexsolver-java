@@ -82,18 +82,6 @@ public final class AsyncRegexSolverClient {
 
     // --- INTERNAL HELPERS ---
 
-    private RequestOptionsDto buildOptions(ExecutionOptions options) {
-        RequestOptionsDto dto = new RequestOptionsDto().schemaVersion(1);
-        if (options != null) {
-            options
-                .getExecutionTimeout()
-                .ifPresent(timeout ->
-                    dto.execution(new ExecutionOptionsDto().timeout(timeout))
-                );
-        }
-        return dto;
-    }
-
     private RequestOptionsDto buildOptions(OperationOptions options) {
         RequestOptionsDto dto = new RequestOptionsDto().schemaVersion(1);
         if (options != null) {
@@ -328,7 +316,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
      */
     public CompletableFuture<Cardinality> getCardinality(Term term) {
-        return getCardinality(term, (ExecutionOptions) null);
+        return getCardinality(term, (OperationOptions) null);
     }
 
     /**
@@ -340,7 +328,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<Cardinality> getCardinality(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         if (term.getCachedCardinality() != null) {
             return CompletableFuture.completedFuture(
@@ -366,7 +354,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a Length object with `min` and `max` integers. Limits are null if unbounded or undefined.
      */
     public CompletableFuture<Length> getLength(Term term) {
-        return getLength(term, (ExecutionOptions) null);
+        return getLength(term, (OperationOptions) null);
     }
 
     /**
@@ -378,7 +366,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<Length> getLength(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         if (term.getCachedLength() != null) {
             return CompletableFuture.completedFuture(term.getCachedLength());
@@ -402,7 +390,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if the language is completely empty, false otherwise.
      */
     public CompletableFuture<Boolean> isEmpty(Term term) {
-        return isEmpty(term, (ExecutionOptions) null);
+        return isEmpty(term, (OperationOptions) null);
     }
 
     /**
@@ -414,7 +402,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<Boolean> isEmpty(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         if (term.getCachedEmpty() != null) {
             return CompletableFuture.completedFuture(term.getCachedEmpty());
@@ -442,7 +430,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if the term strictly matches the empty string ("") and nothing else.
      */
     public CompletableFuture<Boolean> isEmptyString(Term term) {
-        return isEmptyString(term, (ExecutionOptions) null);
+        return isEmptyString(term, (OperationOptions) null);
     }
 
     /**
@@ -454,7 +442,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<Boolean> isEmptyString(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         if (term.getCachedEmptyString() != null) {
             return CompletableFuture.completedFuture(
@@ -485,7 +473,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if the term matches every possible string.
      */
     public CompletableFuture<Boolean> isTotal(Term term) {
-        return isTotal(term, (ExecutionOptions) null);
+        return isTotal(term, (OperationOptions) null);
     }
 
     /**
@@ -497,7 +485,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<Boolean> isTotal(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         if (term.getCachedTotal() != null) {
             return CompletableFuture.completedFuture(term.getCachedTotal());
@@ -527,7 +515,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if the term's automaton is deterministic.
      */
     public CompletableFuture<Boolean> isDeterministic(Term term) {
-        return isDeterministic(term, (ExecutionOptions) null);
+        return isDeterministic(term, (OperationOptions) null);
     }
 
     /**
@@ -540,7 +528,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<Boolean> isDeterministic(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         if (!(term instanceof Term.FairTerm)) {
             return CompletableFuture.completedFuture(false);
@@ -569,7 +557,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a valid regular expression string representing the language.
      */
     public CompletableFuture<String> getPattern(Term term) {
-        return getPattern(term, (ExecutionOptions) null);
+        return getPattern(term, (OperationOptions) null);
     }
 
     /**
@@ -581,7 +569,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<String> getPattern(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         if (term.getCachedPattern() != null) {
             return CompletableFuture.completedFuture(term.getCachedPattern());
@@ -605,7 +593,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing the raw DOT syntax for Graphviz compilation.
      */
     public CompletableFuture<String> getDot(Term term) {
-        return getDot(term, (ExecutionOptions) null);
+        return getDot(term, (OperationOptions) null);
     }
 
     /**
@@ -617,7 +605,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<String> getDot(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         if (term.getCachedDot() != null) {
             return CompletableFuture.completedFuture(term.getCachedDot());
@@ -642,7 +630,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if they are entirely equivalent, false otherwise.
      */
     public CompletableFuture<Boolean> equivalent(Term term1, Term term2) {
-        return equivalent(term1, term2, (ExecutionOptions) null);
+        return equivalent(term1, term2, (OperationOptions) null);
     }
 
     /**
@@ -656,7 +644,7 @@ public final class AsyncRegexSolverClient {
     public CompletableFuture<Boolean> equivalent(
         Term term1,
         Term term2,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         TwoTermsRequestDto request = new TwoTermsRequestDto()
             .addTermsItem(term1.toDto())
@@ -675,7 +663,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing true if every string matched by subset is also matched by superset.
      */
     public CompletableFuture<Boolean> subset(Term subset, Term superset) {
-        return subset(subset, superset, (ExecutionOptions) null);
+        return subset(subset, superset, (OperationOptions) null);
     }
 
     /**
@@ -689,7 +677,7 @@ public final class AsyncRegexSolverClient {
     public CompletableFuture<Boolean> subset(
         Term subset,
         Term superset,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         TwoTermsRequestDto request = new TwoTermsRequestDto()
             .addTermsItem(subset.toDto())
@@ -928,7 +916,7 @@ public final class AsyncRegexSolverClient {
      * @return A CompletableFuture containing a deterministic FAIR.
      */
     public CompletableFuture<Term> determinize(Term term) {
-        return determinize(term, (ExecutionOptions) null);
+        return determinize(term, (OperationOptions) null);
     }
 
     /**
@@ -943,7 +931,7 @@ public final class AsyncRegexSolverClient {
      */
     public CompletableFuture<Term> determinize(
         Term term,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         TermRequestDto request = new TermRequestDto()
             .term(term.toDto())

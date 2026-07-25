@@ -10,7 +10,7 @@ public enum ResponseFormat {
     REGEX,
     FAIR;
 
-    public FormatEnum toDto() {
+    FormatEnum toDto() {
         switch (this) {
             case ANY:
                 return FormatEnum.ANY;

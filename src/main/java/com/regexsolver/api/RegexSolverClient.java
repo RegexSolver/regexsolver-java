@@ -48,7 +48,7 @@ public final class RegexSolverClient {
      * @return Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
      */
     public Cardinality getCardinality(Term term) {
-        return getCardinality(term, (ExecutionOptions) null);
+        return getCardinality(term, (OperationOptions) null);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return Cardinality object representing either an exact Integer, a BigInteger, or Infinite cardinality.
      */
-    public Cardinality getCardinality(Term term, ExecutionOptions options) {
+    public Cardinality getCardinality(Term term, OperationOptions options) {
         try {
             return asyncClient.getCardinality(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
@@ -77,7 +77,7 @@ public final class RegexSolverClient {
      * @return Length object with `min` and `max` integers. Limits are null if unbounded or undefined.
      */
     public Length getLength(Term term) {
-        return getLength(term, (ExecutionOptions) null);
+        return getLength(term, (OperationOptions) null);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return Length object with `min` and `max` integers. Limits are null if unbounded or undefined.
      */
-    public Length getLength(Term term, ExecutionOptions options) {
+    public Length getLength(Term term, OperationOptions options) {
         try {
             return asyncClient.getLength(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
@@ -106,7 +106,7 @@ public final class RegexSolverClient {
      * @return true if the language is completely empty, false otherwise.
      */
     public boolean isEmpty(Term term) {
-        return isEmpty(term, (ExecutionOptions) null);
+        return isEmpty(term, (OperationOptions) null);
     }
 
     /**
@@ -116,7 +116,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return true if the language is completely empty, false otherwise.
      */
-    public boolean isEmpty(Term term, ExecutionOptions options) {
+    public boolean isEmpty(Term term, OperationOptions options) {
         try {
             return asyncClient.isEmpty(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
@@ -135,7 +135,7 @@ public final class RegexSolverClient {
      * @return true if the term strictly matches the empty string ("") and nothing else.
      */
     public boolean isEmptyString(Term term) {
-        return isEmptyString(term, (ExecutionOptions) null);
+        return isEmptyString(term, (OperationOptions) null);
     }
 
     /**
@@ -145,7 +145,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return true if the term strictly matches the empty string ("") and nothing else.
      */
-    public boolean isEmptyString(Term term, ExecutionOptions options) {
+    public boolean isEmptyString(Term term, OperationOptions options) {
         try {
             return asyncClient.isEmptyString(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
@@ -164,7 +164,7 @@ public final class RegexSolverClient {
      * @return true if the term matches every possible string.
      */
     public boolean isTotal(Term term) {
-        return isTotal(term, (ExecutionOptions) null);
+        return isTotal(term, (OperationOptions) null);
     }
 
     /**
@@ -174,7 +174,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return true if the term matches every possible string.
      */
-    public boolean isTotal(Term term, ExecutionOptions options) {
+    public boolean isTotal(Term term, OperationOptions options) {
         try {
             return asyncClient.isTotal(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
@@ -194,7 +194,7 @@ public final class RegexSolverClient {
      * @return true if the term's automaton is deterministic.
      */
     public boolean isDeterministic(Term term) {
-        return isDeterministic(term, (ExecutionOptions) null);
+        return isDeterministic(term, (OperationOptions) null);
     }
 
     /**
@@ -205,7 +205,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return true if the term's automaton is deterministic.
      */
-    public boolean isDeterministic(Term term, ExecutionOptions options) {
+    public boolean isDeterministic(Term term, OperationOptions options) {
         try {
             return asyncClient.isDeterministic(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
@@ -224,7 +224,7 @@ public final class RegexSolverClient {
      * @return A valid regular expression string representing the language.
      */
     public String getPattern(Term term) {
-        return getPattern(term, (ExecutionOptions) null);
+        return getPattern(term, (OperationOptions) null);
     }
 
     /**
@@ -234,7 +234,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return A valid regular expression string representing the language.
      */
-    public String getPattern(Term term, ExecutionOptions options) {
+    public String getPattern(Term term, OperationOptions options) {
         try {
             return asyncClient.getPattern(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
@@ -253,7 +253,7 @@ public final class RegexSolverClient {
      * @return The raw DOT syntax for Graphviz compilation.
      */
     public String getDot(Term term) {
-        return getDot(term, (ExecutionOptions) null);
+        return getDot(term, (OperationOptions) null);
     }
 
     /**
@@ -263,7 +263,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return The raw DOT syntax for Graphviz compilation.
      */
-    public String getDot(Term term, ExecutionOptions options) {
+    public String getDot(Term term, OperationOptions options) {
         try {
             return asyncClient.getDot(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
@@ -283,7 +283,7 @@ public final class RegexSolverClient {
      * @return true if they are entirely equivalent, false otherwise.
      */
     public boolean equivalent(Term term1, Term term2) {
-        return equivalent(term1, term2, (ExecutionOptions) null);
+        return equivalent(term1, term2, (OperationOptions) null);
     }
 
     /**
@@ -297,7 +297,7 @@ public final class RegexSolverClient {
     public boolean equivalent(
         Term term1,
         Term term2,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         try {
             return asyncClient.equivalent(term1, term2, options).join();
@@ -318,7 +318,7 @@ public final class RegexSolverClient {
      * @return true if every string matched by subset is also matched by superset.
      */
     public boolean subset(Term subset, Term superset) {
-        return subset(subset, superset, (ExecutionOptions) null);
+        return subset(subset, superset, (OperationOptions) null);
     }
 
     /**
@@ -332,7 +332,7 @@ public final class RegexSolverClient {
     public boolean subset(
         Term subset,
         Term superset,
-        ExecutionOptions options
+        OperationOptions options
     ) {
         try {
             return asyncClient.subset(subset, superset, options).join();
@@ -596,7 +596,7 @@ public final class RegexSolverClient {
      * @return A deterministic FAIR.
      */
     public Term determinize(Term term) {
-        return determinize(term, (ExecutionOptions) null);
+        return determinize(term, (OperationOptions) null);
     }
 
     /**
@@ -609,7 +609,7 @@ public final class RegexSolverClient {
      * @param options Options for the operation.
      * @return A deterministic FAIR.
      */
-    public Term determinize(Term term, ExecutionOptions options) {
+    public Term determinize(Term term, OperationOptions options) {
         try {
             return asyncClient.determinize(term, options).join();
         } catch (java.util.concurrent.CompletionException e) {
