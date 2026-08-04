@@ -24,53 +24,82 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.regexsolver.api.generated.model.AccountLimitsDto;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 import com.regexsolver.api.generated.ApiClient;
 /**
- * Change how the engine executes the operation.
+ * Limits200ResponseDto
  */
 @JsonPropertyOrder({
-  ExecutionOptionsDto.JSON_PROPERTY_TIMEOUT
+  Limits200ResponseDto.JSON_PROPERTY_SUCCESS,
+  Limits200ResponseDto.JSON_PROPERTY_DATA
 })
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-08-04T20:54:20.558114023+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
-public class ExecutionOptionsDto {
-  public static final String JSON_PROPERTY_TIMEOUT = "timeout";
-  @jakarta.annotation.Nullable
-  private Integer timeout;
+public class Limits200ResponseDto {
+  public static final String JSON_PROPERTY_SUCCESS = "success";
+  @jakarta.annotation.Nonnull
+  private Boolean success;
 
-  public ExecutionOptionsDto() { 
+  public static final String JSON_PROPERTY_DATA = "data";
+  @jakarta.annotation.Nonnull
+  private AccountLimitsDto data;
+
+  public Limits200ResponseDto() { 
   }
 
-  public ExecutionOptionsDto timeout(@jakarta.annotation.Nullable Integer timeout) {
-    this.timeout = timeout;
+  public Limits200ResponseDto success(@jakarta.annotation.Nonnull Boolean success) {
+    this.success = success;
     return this;
   }
 
   /**
-   * Timeout in milliseconds for the operation.
-   * minimum: 1
-   * @return timeout
+   * Get success
+   * @return success
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(value = JSON_PROPERTY_TIMEOUT, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public Integer getTimeout() {
-    return timeout;
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_SUCCESS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public Boolean getSuccess() {
+    return success;
   }
 
 
-  @JsonProperty(value = JSON_PROPERTY_TIMEOUT, required = false)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTimeout(@jakarta.annotation.Nullable Integer timeout) {
-    this.timeout = timeout;
+  @JsonProperty(value = JSON_PROPERTY_SUCCESS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setSuccess(@jakarta.annotation.Nonnull Boolean success) {
+    this.success = success;
+  }
+
+
+  public Limits200ResponseDto data(@jakarta.annotation.Nonnull AccountLimitsDto data) {
+    this.data = data;
+    return this;
+  }
+
+  /**
+   * Get data
+   * @return data
+   */
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public AccountLimitsDto getData() {
+    return data;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_DATA, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setData(@jakarta.annotation.Nonnull AccountLimitsDto data) {
+    this.data = data;
   }
 
 
   /**
-   * Return true if this ExecutionOptions object is equal to o.
+   * Return true if this limits_200_response object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -80,20 +109,22 @@ public class ExecutionOptionsDto {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ExecutionOptionsDto executionOptions = (ExecutionOptionsDto) o;
-    return Objects.equals(this.timeout, executionOptions.timeout);
+    Limits200ResponseDto limits200Response = (Limits200ResponseDto) o;
+    return Objects.equals(this.success, limits200Response.success) &&
+        Objects.equals(this.data, limits200Response.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(timeout);
+    return Objects.hash(success, data);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ExecutionOptionsDto {\n");
-    sb.append("    timeout: ").append(toIndentedString(timeout)).append("\n");
+    sb.append("class Limits200ResponseDto {\n");
+    sb.append("    success: ").append(toIndentedString(success)).append("\n");
+    sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -138,9 +169,14 @@ public class ExecutionOptionsDto {
 
     StringJoiner joiner = new StringJoiner("&");
 
-    // add `timeout` to the URL query string
-    if (getTimeout() != null) {
-      joiner.add(String.format(java.util.Locale.ROOT, "%stimeout%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTimeout()))));
+    // add `success` to the URL query string
+    if (getSuccess() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssuccess%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSuccess()))));
+    }
+
+    // add `data` to the URL query string
+    if (getData() != null) {
+      joiner.add(getData().toUrlQueryString(prefix + "data" + suffix));
     }
 
     return joiner.toString();

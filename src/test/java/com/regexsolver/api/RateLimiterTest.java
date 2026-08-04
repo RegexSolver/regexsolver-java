@@ -57,6 +57,45 @@ class RateLimiterTest {
     }
 
     @Test
+    void testRateLimiterDeadlineExtendedWhileWaiting() throws Exception {
+        RateLimiter rl = RateLimiter.getInstance("test-token-4");
+
+        rl.trigger(0.1);
+        long start = System.currentTimeMillis();
+        java.util.concurrent.CompletableFuture<Void> waiter =
+            rl.waitIfNecessary();
+
+        Thread.sleep(50);
+        rl.trigger(0.25);
+
+        waiter.join();
+        long duration = System.currentTimeMillis() - start;
+        // The waiter woke at the original deadline, re-checked, and waited
+        // again until the extended one (~50ms + 250ms from the second trigger).
+        assertThat(duration).isGreaterThanOrEqualTo(250);
+    }
+
+    @Test
+    void testWaitIfNecessaryDoesNotBlockCaller() {
+        RateLimiter rl = RateLimiter.getInstance("test-token-5");
+
+        rl.trigger(0.2);
+        long start = System.currentTimeMillis();
+        java.util.concurrent.CompletableFuture<Void> waiter =
+            rl.waitIfNecessary();
+        long returned = System.currentTimeMillis();
+
+        // The call returns immediately with a pending future; no thread is
+        // parked on behalf of the caller.
+        assertThat(returned - start).isLessThan(50);
+        assertThat(waiter).isNotDone();
+        waiter.join();
+        assertThat(System.currentTimeMillis() - start).isGreaterThanOrEqualTo(
+            150
+        );
+    }
+
+    @Test
     void testGetInstanceReturnsSameInstanceForSameToken() {
         RateLimiter rl1 = RateLimiter.getInstance("tokenA");
         RateLimiter rl2 = RateLimiter.getInstance("tokenA");

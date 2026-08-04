@@ -34,8 +34,51 @@ public final class RegexSolverClient {
             return this;
         }
 
+        /**
+         * When true (the default), calls to concat/intersection/union
+         * carrying more terms than the account's per-request limit are
+         * transparently split into several requests and folded back into one
+         * result. Each constituent request counts against the monthly quota.
+         */
+        public Builder autoBatch(boolean autoBatch) {
+            asyncBuilder.autoBatch(autoBatch);
+            return this;
+        }
+
+        /**
+         * Upper bound (>= 2) on the number of terms sent in a single request,
+         * overriding the limit fetched from the API when smaller.
+         */
+        public Builder maxTermsPerRequest(Integer maxTermsPerRequest) {
+            asyncBuilder.maxTermsPerRequest(maxTermsPerRequest);
+            return this;
+        }
+
         public RegexSolverClient build() {
             return new RegexSolverClient(this);
+        }
+    }
+
+    // --- ACCOUNT OPERATIONS ---
+
+    /**
+     * Fetches the plan limits applying to the account.
+     *
+     * The call never consumes request quota (it is only rate-limited) and the
+     * result is cached on the client, so calling it again is free. The cached
+     * maxTermsCount also drives auto-batching.
+     *
+     * @return The five plan limits.
+     */
+    public AccountLimits getAccountLimits() {
+        try {
+            return asyncClient.getAccountLimits().join();
+        } catch (java.util.concurrent.CompletionException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+
+            throw e;
         }
     }
 

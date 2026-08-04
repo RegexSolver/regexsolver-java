@@ -4,15 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.regexsolver.api.exceptions.*;
 import com.regexsolver.api.generated.ApiClient;
 import com.regexsolver.api.generated.ApiException;
+import com.regexsolver.api.generated.api.AccountApi;
 import com.regexsolver.api.generated.api.AnalyzeApi;
 import com.regexsolver.api.generated.api.ComputeApi;
 import com.regexsolver.api.generated.api.GenerateApi;
 import com.regexsolver.api.generated.model.*;
 import java.net.http.HttpHeaders;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -24,18 +29,36 @@ import java.util.stream.Collectors;
 public final class AsyncRegexSolverClient {
 
     private static final String VERSION = "1.1.0";
+
+    // Retry policy for 429 responses: retry as long as the total wait stays
+    // within the budget, adding full jitter on top of `Retry-After` so
+    // concurrent waiters do not re-collide as a single burst. The values are
+    // shared across all the official clients — change them together.
+    private static final long RETRY_BUDGET_MS = 300_000;
+    private static final double JITTER_BASE_S = 0.25;
+    private static final double JITTER_CAP_S = 2.0;
+    private static final double DEFAULT_RETRY_AFTER_S = 1.0;
+
     private final String apiToken;
     private final String baseUrl;
     private final RateLimiter rateLimiter;
+    private final AccountApi accountApi;
     private final AnalyzeApi analyzeApi;
     private final ComputeApi computeApi;
     private final GenerateApi generateApi;
     private final ObjectMapper objectMapper;
+    private final boolean autoBatch;
+    private final Integer maxTermsPerRequest;
+    private final AtomicReference<CompletableFuture<AccountLimits>> limitsFuture =
+        new AtomicReference<>();
+    private volatile Integer serverMaxTerms;
 
     private AsyncRegexSolverClient(Builder builder) {
         this.apiToken = builder.apiToken;
         this.baseUrl = builder.baseUrl;
         this.rateLimiter = RateLimiter.getInstance(this.apiToken);
+        this.autoBatch = builder.autoBatch;
+        this.maxTermsPerRequest = builder.maxTermsPerRequest;
 
         ApiClient apiClient = new ApiClient();
         apiClient.updateBaseUri(this.baseUrl);
@@ -47,6 +70,7 @@ public final class AsyncRegexSolverClient {
             requestBuilder.header("Authorization", "Bearer " + this.apiToken);
         });
 
+        this.accountApi = new AccountApi(apiClient);
         this.analyzeApi = new AnalyzeApi(apiClient);
         this.computeApi = new ComputeApi(apiClient);
         this.generateApi = new GenerateApi(apiClient);
@@ -61,6 +85,8 @@ public final class AsyncRegexSolverClient {
 
         private String apiToken;
         private String baseUrl = "https://api.regexsolver.com/v1";
+        private boolean autoBatch = true;
+        private Integer maxTermsPerRequest;
 
         public Builder apiToken(String apiToken) {
             this.apiToken = apiToken;
@@ -72,9 +98,34 @@ public final class AsyncRegexSolverClient {
             return this;
         }
 
+        /**
+         * When true (the default), calls to concat/intersection/union
+         * carrying more terms than the account's per-request limit are
+         * transparently split into several requests and folded back into one
+         * result. Each constituent request counts against the monthly quota.
+         */
+        public Builder autoBatch(boolean autoBatch) {
+            this.autoBatch = autoBatch;
+            return this;
+        }
+
+        /**
+         * Upper bound (>= 2) on the number of terms sent in a single request,
+         * overriding the limit fetched from the API when smaller.
+         */
+        public Builder maxTermsPerRequest(Integer maxTermsPerRequest) {
+            this.maxTermsPerRequest = maxTermsPerRequest;
+            return this;
+        }
+
         public AsyncRegexSolverClient build() {
             if (apiToken == null || apiToken.isEmpty()) {
                 throw new IllegalArgumentException("apiToken is required");
+            }
+            if (maxTermsPerRequest != null && maxTermsPerRequest < 2) {
+                throw new IllegalArgumentException(
+                    "maxTermsPerRequest must be at least 2"
+                );
             }
             return new AsyncRegexSolverClient(this);
         }
@@ -121,31 +172,63 @@ public final class AsyncRegexSolverClient {
     private <T> CompletableFuture<T> executeWithRetry(
         Supplier<CompletableFuture<T>> apiCall
     ) {
-        return executeWithRetry(apiCall, 0);
+        return executeWithRetry(apiCall, 0, null);
     }
 
     private <T> CompletableFuture<T> executeWithRetry(
         Supplier<CompletableFuture<T>> apiCall,
-        int attempt
+        int attempt,
+        Long firstFailureAtMillis
     ) {
-        return rateLimiter
-            .waitIfNecessary()
+        CompletableFuture<Void> gate = rateLimiter.waitIfNecessary();
+        if (attempt > 0) {
+            long jitterMillis = (long) (ThreadLocalRandom.current().nextDouble() *
+                Math.min(JITTER_BASE_S * Math.pow(2, attempt), JITTER_CAP_S) *
+                1000);
+            gate = gate.thenCompose(v ->
+                CompletableFuture.runAsync(
+                    () -> {},
+                    CompletableFuture.delayedExecutor(
+                        Math.max(jitterMillis, 1),
+                        java.util.concurrent.TimeUnit.MILLISECONDS
+                    )
+                )
+            );
+        }
+        return gate
             .thenCompose(v -> apiCall.get())
             .exceptionallyCompose(ex -> {
                 Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
                 if (cause instanceof ApiException) {
                     ApiException apiEx = (ApiException) cause;
-                    if (apiEx.getCode() == 429 && attempt < 5) {
-                        double retryAfter = 1.0;
+                    if (apiEx.getCode() == 429) {
+                        double retryAfter = DEFAULT_RETRY_AFTER_S;
                         HttpHeaders headers = apiEx.getResponseHeaders();
                         if (headers != null) {
-                            retryAfter = headers
-                                .firstValue("Retry-After")
-                                .map(Double::parseDouble)
-                                .orElse(1.0);
+                            try {
+                                retryAfter = headers
+                                    .firstValue("Retry-After")
+                                    .map(Double::parseDouble)
+                                    .orElse(DEFAULT_RETRY_AFTER_S);
+                            } catch (NumberFormatException ignored) {}
                         }
-                        rateLimiter.trigger(retryAfter);
-                        return executeWithRetry(apiCall, attempt + 1);
+                        long now = System.currentTimeMillis();
+                        long firstFailureAt = firstFailureAtMillis != null
+                            ? firstFailureAtMillis
+                            : now;
+                        if (
+                            now -
+                                firstFailureAt +
+                                (long) (retryAfter * 1000) <=
+                            RETRY_BUDGET_MS
+                        ) {
+                            rateLimiter.trigger(retryAfter);
+                            return executeWithRetry(
+                                apiCall,
+                                attempt + 1,
+                                firstFailureAt
+                            );
+                        }
                     }
                     throw mapException(apiEx);
                 }
@@ -305,6 +388,162 @@ public final class AsyncRegexSolverClient {
                     body
                 );
         }
+    }
+
+    // --- ACCOUNT OPERATIONS ---
+
+    /**
+     * Fetches the plan limits applying to the account asynchronously.
+     *
+     * The call never consumes request quota (it is only rate-limited) and the
+     * result is cached on the client, so calling it again is free. The cached
+     * maxTermsCount also drives auto-batching.
+     *
+     * @return A CompletableFuture containing the five plan limits.
+     */
+    public CompletableFuture<AccountLimits> getAccountLimits() {
+        CompletableFuture<AccountLimits> existing = limitsFuture.get();
+        if (existing != null) {
+            return existing;
+        }
+        CompletableFuture<AccountLimits> created = executeWithRetry(() ->
+            accountApi.limits()
+        ).thenApply(resp -> {
+            AccountLimits limits = AccountLimits.fromDto(resp.getData());
+            serverMaxTerms = (int) Math.min(
+                limits.getMaxTermsCount(),
+                Integer.MAX_VALUE
+            );
+            return limits;
+        });
+        if (!limitsFuture.compareAndSet(null, created)) {
+            return limitsFuture.get();
+        }
+        created.whenComplete((limits, error) -> {
+            if (error != null) {
+                // Cleared on failure so a later call can retry the fetch.
+                limitsFuture.compareAndSet(created, null);
+            }
+        });
+        return created;
+    }
+
+    // --- AUTO-BATCHING ---
+
+    /** The largest term count to send in one request, when known. */
+    private Integer effectiveMaxTerms() {
+        Integer serverMax = serverMaxTerms;
+        if (maxTermsPerRequest != null) {
+            return serverMax != null
+                ? Math.min(maxTermsPerRequest, serverMax)
+                : maxTermsPerRequest;
+        }
+        return serverMax;
+    }
+
+    /**
+     * Run an n-ary operation (concat/intersection/union), transparently
+     * splitting the terms into several requests when they exceed the
+     * account's terms-per-request limit (auto-batching).
+     */
+    private CompletableFuture<Term> runNary(
+        List<Term> terms,
+        OperationOptions options,
+        Function<MultiTermsRequestDto, CompletableFuture<TermDto>> op
+    ) {
+        Integer maxTerms = autoBatch ? effectiveMaxTerms() : null;
+        if (maxTerms != null && terms.size() > maxTerms) {
+            return fold(op, terms, options, maxTerms);
+        }
+        boolean limitWasKnown = maxTerms != null;
+        return naryCall(op, terms, options, true).exceptionallyCompose(ex -> {
+            Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+            if (
+                !autoBatch ||
+                limitWasKnown ||
+                !(cause instanceof TooManyTermsException)
+            ) {
+                return CompletableFuture.failedFuture(cause);
+            }
+            return getAccountLimits()
+                .handle((limits, fetchError) ->
+                    // A failed fetch falls back to surfacing the original
+                    // TooManyTerms, never worse than without batching.
+                    fetchError != null ? null : effectiveMaxTerms()
+                )
+                .thenCompose(newMax -> {
+                    if (
+                        newMax == null || newMax < 2 || terms.size() <= newMax
+                    ) {
+                        return CompletableFuture.failedFuture(cause);
+                    }
+                    return fold(op, terms, options, newMax);
+                });
+        });
+    }
+
+    private CompletableFuture<Term> naryCall(
+        Function<MultiTermsRequestDto, CompletableFuture<TermDto>> op,
+        List<Term> batch,
+        OperationOptions options,
+        boolean isFinal
+    ) {
+        // Intermediate results are fed straight back into the next request,
+        // so only the final call carries the caller's response options;
+        // executionTimeout bounds every constituent request.
+        OperationOptions effective = isFinal
+            ? options
+            : intermediateOptions(options);
+        MultiTermsRequestDto request = new MultiTermsRequestDto()
+            .terms(batch.stream().map(Term::toDto).collect(Collectors.toList()))
+            .options(buildOptions(effective));
+        return op.apply(request).thenApply(Term::fromDto);
+    }
+
+    private static OperationOptions intermediateOptions(
+        OperationOptions options
+    ) {
+        if (options == null) {
+            return null;
+        }
+        return options
+            .getExecutionTimeout()
+            .map(timeout -> OperationOptions.builder().executionTimeout(timeout))
+            .orElse(null);
+    }
+
+    /**
+     * Left fold: combine the first {@code maxTerms} terms, then keep feeding
+     * the accumulated result back with the next {@code maxTerms - 1} terms.
+     * Left-associative, so concat order is preserved; union and intersection
+     * are commutative and unaffected.
+     */
+    private CompletableFuture<Term> fold(
+        Function<MultiTermsRequestDto, CompletableFuture<TermDto>> op,
+        List<Term> terms,
+        OperationOptions options,
+        int maxTerms
+    ) {
+        CompletableFuture<Term> acc = naryCall(
+            op,
+            terms.subList(0, maxTerms),
+            options,
+            false
+        );
+        int index = maxTerms;
+        while (index < terms.size()) {
+            int end = Math.min(index + maxTerms - 1, terms.size());
+            final List<Term> chunk = terms.subList(index, end);
+            final boolean isFinal = end >= terms.size();
+            acc = acc.thenCompose(accTerm -> {
+                List<Term> batch = new ArrayList<>();
+                batch.add(accTerm);
+                batch.addAll(chunk);
+                return naryCall(op, batch, options, isFinal);
+            });
+            index = end;
+        }
+        return acc;
     }
 
     // --- ANALYZE OPERATIONS ---
@@ -721,11 +960,10 @@ public final class AsyncRegexSolverClient {
         List<Term> terms,
         OperationOptions options
     ) {
-        MultiTermsRequestDto request = new MultiTermsRequestDto()
-            .terms(terms.stream().map(Term::toDto).collect(Collectors.toList()))
-            .options(buildOptions(options));
-        return executeWithRetry(() -> computeApi.concat(request)).thenApply(
-            resp -> Term.fromDto(resp.getData())
+        return runNary(terms, options, request ->
+            executeWithRetry(() -> computeApi.concat(request)).thenApply(
+                Concat200ResponseDto::getData
+            )
         );
     }
 
@@ -760,12 +998,11 @@ public final class AsyncRegexSolverClient {
         List<Term> terms,
         OperationOptions options
     ) {
-        MultiTermsRequestDto request = new MultiTermsRequestDto()
-            .terms(terms.stream().map(Term::toDto).collect(Collectors.toList()))
-            .options(buildOptions(options));
-        return executeWithRetry(() ->
-            computeApi.intersection(request)
-        ).thenApply(resp -> Term.fromDto(resp.getData()));
+        return runNary(terms, options, request ->
+            executeWithRetry(() -> computeApi.intersection(request)).thenApply(
+                Concat200ResponseDto::getData
+            )
+        );
     }
 
     /**
@@ -799,11 +1036,10 @@ public final class AsyncRegexSolverClient {
         List<Term> terms,
         OperationOptions options
     ) {
-        MultiTermsRequestDto request = new MultiTermsRequestDto()
-            .terms(terms.stream().map(Term::toDto).collect(Collectors.toList()))
-            .options(buildOptions(options));
-        return executeWithRetry(() -> computeApi.union(request)).thenApply(
-            resp -> Term.fromDto(resp.getData())
+        return runNary(terms, options, request ->
+            executeWithRetry(() -> computeApi.union(request)).thenApply(
+                Concat200ResponseDto::getData
+            )
         );
     }
 
@@ -965,7 +1201,8 @@ public final class AsyncRegexSolverClient {
      * @param term    The term to sample generated strings from.
      * @param limit   The maximum number of unique strings to return.
      * @param offset  Number of matched strings to skip before starting to collect the results. Used for pagination.
-     * @param options Options for the operation.
+     * @param options Options for the operation. Pass a {@link GenerateStringsOptions}
+     *                to control ordering, seed, length bounds and charset.
      * @return A CompletableFuture containing a list of strings that match the term.
      */
     public CompletableFuture<List<String>> generateStrings(
@@ -979,6 +1216,21 @@ public final class AsyncRegexSolverClient {
             .limit(limit)
             .offset(offset)
             .options(buildOptions(options));
+
+        if (options instanceof GenerateStringsOptions) {
+            GenerateStringsOptions generateOptions =
+                (GenerateStringsOptions) options;
+            generateOptions
+                .getPathOrder()
+                .ifPresent(value -> request.pathOrder(value.toDto()));
+            generateOptions
+                .getCharacterOrder()
+                .ifPresent(value -> request.characterOrder(value.toDto()));
+            generateOptions.getSeed().ifPresent(request::seed);
+            generateOptions.getMinLength().ifPresent(request::minLength);
+            generateOptions.getMaxLength().ifPresent(request::maxLength);
+            generateOptions.getCharset().ifPresent(request::charset);
+        }
 
         return executeWithRetry(() -> generateApi.strings(request)).thenApply(
             resp -> resp.getData().getStrings().getValue()

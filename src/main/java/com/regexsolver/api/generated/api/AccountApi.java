@@ -18,12 +18,9 @@ import com.regexsolver.api.generated.ApiResponse;
 import com.regexsolver.api.generated.Configuration;
 import com.regexsolver.api.generated.Pair;
 
-import com.regexsolver.api.generated.model.ErrorResponse400Dto;
 import com.regexsolver.api.generated.model.ErrorResponse401Dto;
-import com.regexsolver.api.generated.model.ErrorResponse403Dto;
 import com.regexsolver.api.generated.model.ErrorResponseDto;
-import com.regexsolver.api.generated.model.GenerateStringsRequestDto;
-import com.regexsolver.api.generated.model.Strings200ResponseDto;
+import com.regexsolver.api.generated.model.Limits200ResponseDto;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +50,7 @@ import java.util.function.Consumer;
 import java.util.concurrent.CompletableFuture;
 
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-08-04T20:54:20.558114023+02:00[Europe/Zurich]", comments = "Generator version: 7.21.0")
-public class GenerateApi {
+public class AccountApi {
   /**
    * Utility class for extending HttpRequest.Builder functionality.
    */
@@ -82,11 +79,11 @@ public class GenerateApi {
   private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
   private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
 
-  public GenerateApi() {
+  public AccountApi() {
     this(Configuration.getDefaultApiClient());
   }
 
-  public GenerateApi(ApiClient apiClient) {
+  public AccountApi(ApiClient apiClient) {
     memberVarHttpClient = apiClient.getHttpClient();
     memberVarObjectMapper = apiClient.getObjectMapper();
     memberVarBaseUri = apiClient.getBaseUri();
@@ -171,27 +168,25 @@ public class GenerateApi {
   }
 
   /**
-   * Strings
-   * Generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings, scheduling the paths of the language in &#x60;pathOrder&#x60;, producing the strings within each path in &#x60;characterOrder&#x60;, confined to lengths between &#x60;minLength&#x60; and &#x60;maxLength&#x60; and to the characters of &#x60;charset&#x60;. Strings are only guaranteed to be distinct within a single call; pagination across calls is only consistent (no repeats or gaps) if &#x60;term&#x60; is deterministic. Call &#x60;/analyze/deterministic&#x60; to check, and &#x60;/compute/determinize&#x60; first if needed.
-   * @param generateStringsRequestDto  (required)
-   * @return CompletableFuture&lt;Strings200ResponseDto&gt;
+   * Limits
+   * Return the plan limits applying to the account.
+   * @return CompletableFuture&lt;Limits200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Strings200ResponseDto> strings(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto) throws ApiException {
-    return strings(generateStringsRequestDto, null);
+  public CompletableFuture<Limits200ResponseDto> limits() throws ApiException {
+    return limits(null);
   }
 
   /**
-   * Strings
-   * Generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings, scheduling the paths of the language in &#x60;pathOrder&#x60;, producing the strings within each path in &#x60;characterOrder&#x60;, confined to lengths between &#x60;minLength&#x60; and &#x60;maxLength&#x60; and to the characters of &#x60;charset&#x60;. Strings are only guaranteed to be distinct within a single call; pagination across calls is only consistent (no repeats or gaps) if &#x60;term&#x60; is deterministic. Call &#x60;/analyze/deterministic&#x60; to check, and &#x60;/compute/determinize&#x60; first if needed.
-   * @param generateStringsRequestDto  (required)
+   * Limits
+   * Return the plan limits applying to the account.
    * @param headers Optional headers to include in the request
-   * @return CompletableFuture&lt;Strings200ResponseDto&gt;
+   * @return CompletableFuture&lt;Limits200ResponseDto&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<Strings200ResponseDto> strings(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<Limits200ResponseDto> limits(Map<String, String> headers) throws ApiException {
     try {
-      return stringsWithHttpInfo(generateStringsRequestDto, headers)
+      return limitsWithHttpInfo(headers)
           .thenApply(ApiResponse::getData);
     }
     catch (ApiException e) {
@@ -200,27 +195,25 @@ public class GenerateApi {
   }
 
   /**
-   * Strings
-   * Generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings, scheduling the paths of the language in &#x60;pathOrder&#x60;, producing the strings within each path in &#x60;characterOrder&#x60;, confined to lengths between &#x60;minLength&#x60; and &#x60;maxLength&#x60; and to the characters of &#x60;charset&#x60;. Strings are only guaranteed to be distinct within a single call; pagination across calls is only consistent (no repeats or gaps) if &#x60;term&#x60; is deterministic. Call &#x60;/analyze/deterministic&#x60; to check, and &#x60;/compute/determinize&#x60; first if needed.
-   * @param generateStringsRequestDto  (required)
-   * @return CompletableFuture&lt;ApiResponse&lt;Strings200ResponseDto&gt;&gt;
+   * Limits
+   * Return the plan limits applying to the account.
+   * @return CompletableFuture&lt;ApiResponse&lt;Limits200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Strings200ResponseDto>> stringsWithHttpInfo(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto) throws ApiException {
-    return stringsWithHttpInfo(generateStringsRequestDto, null);
+  public CompletableFuture<ApiResponse<Limits200ResponseDto>> limitsWithHttpInfo() throws ApiException {
+    return limitsWithHttpInfo(null);
   }
 
   /**
-   * Strings
-   * Generate up to &#x60;limit&#x60; distinct strings matched by &#x60;term&#x60;, skipping the first &#x60;offset&#x60; strings, scheduling the paths of the language in &#x60;pathOrder&#x60;, producing the strings within each path in &#x60;characterOrder&#x60;, confined to lengths between &#x60;minLength&#x60; and &#x60;maxLength&#x60; and to the characters of &#x60;charset&#x60;. Strings are only guaranteed to be distinct within a single call; pagination across calls is only consistent (no repeats or gaps) if &#x60;term&#x60; is deterministic. Call &#x60;/analyze/deterministic&#x60; to check, and &#x60;/compute/determinize&#x60; first if needed.
-   * @param generateStringsRequestDto  (required)
+   * Limits
+   * Return the plan limits applying to the account.
    * @param headers Optional headers to include in the request
-   * @return CompletableFuture&lt;ApiResponse&lt;Strings200ResponseDto&gt;&gt;
+   * @return CompletableFuture&lt;ApiResponse&lt;Limits200ResponseDto&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public CompletableFuture<ApiResponse<Strings200ResponseDto>> stringsWithHttpInfo(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
+  public CompletableFuture<ApiResponse<Limits200ResponseDto>> limitsWithHttpInfo(Map<String, String> headers) throws ApiException {
     try {
-      HttpRequest.Builder localVarRequestBuilder = stringsRequestBuilder(generateStringsRequestDto, headers);
+      HttpRequest.Builder localVarRequestBuilder = limitsRequestBuilder(headers);
       return memberVarHttpClient.sendAsync(
           localVarRequestBuilder.build(),
           HttpResponse.BodyHandlers.ofInputStream()).thenComposeAsync(localVarResponse -> {
@@ -228,14 +221,14 @@ public class GenerateApi {
               memberVarAsyncResponseInterceptor.accept(localVarResponse);
             }
             if (localVarResponse.statusCode()/ 100 != 2) {
-              return CompletableFuture.failedFuture(getApiException("strings", localVarResponse));
+              return CompletableFuture.failedFuture(getApiException("limits", localVarResponse));
             }
             try {
               InputStream localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
               try {
                 if (localVarResponseBody == null) {
                   return CompletableFuture.completedFuture(
-                      new ApiResponse<Strings200ResponseDto>(
+                      new ApiResponse<Limits200ResponseDto>(
                           localVarResponse.statusCode(),
                           localVarResponse.headers().map(),
                           null
@@ -245,10 +238,10 @@ public class GenerateApi {
                 
                 
                 String responseBody = new String(localVarResponseBody.readAllBytes());
-                Strings200ResponseDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Strings200ResponseDto>() {});
+                Limits200ResponseDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Limits200ResponseDto>() {});
                 
                 return CompletableFuture.completedFuture(
-                    new ApiResponse<Strings200ResponseDto>(
+                    new ApiResponse<Limits200ResponseDto>(
                         localVarResponse.statusCode(),
                         localVarResponse.headers().map(),
                         responseValue
@@ -270,27 +263,17 @@ public class GenerateApi {
     }
   }
 
-  private HttpRequest.Builder stringsRequestBuilder(@jakarta.annotation.Nonnull GenerateStringsRequestDto generateStringsRequestDto, Map<String, String> headers) throws ApiException {
-    // verify the required parameter 'generateStringsRequestDto' is set
-    if (generateStringsRequestDto == null) {
-      throw new ApiException(400, "Missing the required parameter 'generateStringsRequestDto' when calling strings");
-    }
+  private HttpRequest.Builder limitsRequestBuilder(Map<String, String> headers) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-    String localVarPath = "/generate/strings";
+    String localVarPath = "/account/limits";
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(generateStringsRequestDto);
-      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
     if (memberVarReadTimeout != null) {
       localVarRequestBuilder.timeout(memberVarReadTimeout);
     }

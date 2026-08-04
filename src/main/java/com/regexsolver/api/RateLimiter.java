@@ -4,10 +4,16 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Global rate limiter shared by apiToken.
+ *
+ * Holds a single deadline. {@code trigger} keeps the later of the current and
+ * the new deadline; {@code waitIfNecessary} schedules a non-blocking delay
+ * (no thread is ever parked) and re-checks the deadline after every wake, so
+ * a deadline extended by a concurrent 429 is honored.
  */
 class RateLimiter {
 
@@ -28,19 +34,14 @@ class RateLimiter {
         Instant now = Instant.now();
         Instant retryAt = retryAfter.get();
 
-        if (retryAt.isAfter(now)) {
-            long delay = Duration.between(now, retryAt).toMillis();
-            if (delay > 0) {
-                return CompletableFuture.runAsync(() -> {
-                    try {
-                        Thread.sleep(delay);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                });
-            }
+        if (!retryAt.isAfter(now)) {
+            return CompletableFuture.completedFuture(null);
         }
-        return CompletableFuture.completedFuture(null);
+        long delay = Math.max(Duration.between(now, retryAt).toMillis(), 1);
+        return CompletableFuture.runAsync(
+            () -> {},
+            CompletableFuture.delayedExecutor(delay, TimeUnit.MILLISECONDS)
+        ).thenCompose(v -> waitIfNecessary());
     }
 
     public void trigger(double seconds) {

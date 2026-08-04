@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import com.regexsolver.api.exceptions.*;
 import com.regexsolver.api.generated.ApiException;
+import com.regexsolver.api.generated.api.AccountApi;
 import com.regexsolver.api.generated.api.AnalyzeApi;
 import com.regexsolver.api.generated.api.ComputeApi;
 import com.regexsolver.api.generated.api.GenerateApi;
@@ -19,11 +20,15 @@ import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class AsyncRegexSolverClientTest {
+
+    @Mock
+    private AccountApi accountApi;
 
     @Mock
     private AnalyzeApi analyzeApi;
@@ -44,9 +49,14 @@ class AsyncRegexSolverClientTest {
             .build();
 
         // Use reflection to inject the mocks into the final class fields
-        injectMock(client, "analyzeApi", analyzeApi);
-        injectMock(client, "computeApi", computeApi);
-        injectMock(client, "generateApi", generateApi);
+        injectMocks(client);
+    }
+
+    private void injectMocks(AsyncRegexSolverClient target) throws Exception {
+        injectMock(target, "accountApi", accountApi);
+        injectMock(target, "analyzeApi", analyzeApi);
+        injectMock(target, "computeApi", computeApi);
+        injectMock(target, "generateApi", generateApi);
     }
 
     private void injectMock(Object target, String fieldName, Object mock)
@@ -573,5 +583,327 @@ class AsyncRegexSolverClientTest {
 
         List<String> result = client.generateStrings(term, 3, 0).join();
         assertThat(result).containsExactly("", "a", "aa");
+    }
+
+    @Test
+    void testGenerateStringsWithOptions() {
+        Term term = Term.regex("[a-z]{2}");
+        Strings200ResponseDto responseDto = new Strings200ResponseDto();
+        StringsDto stringsDto = new StringsDto();
+        stringsDto.setValue(List.of("xy"));
+        GenerateStringsResponseDto generateStrings =
+            new GenerateStringsResponseDto();
+        generateStrings.setStrings(stringsDto);
+        responseDto.setData(generateStrings);
+
+        when(generateApi.strings(any())).thenReturn(
+            CompletableFuture.completedFuture(responseDto)
+        );
+
+        GenerateStringsOptions options = GenerateStringsOptions.builder()
+            .pathOrder(PathOrder.INTERLEAVE)
+            .characterOrder(CharacterOrder.SHUFFLED)
+            .seed(42L)
+            .minLength(1)
+            .maxLength(10)
+            .charset("[a-z]");
+        List<String> result = client
+            .generateStrings(term, 5, 0, options)
+            .join();
+        assertThat(result).containsExactly("xy");
+
+        ArgumentCaptor<GenerateStringsRequestDto> captor =
+            ArgumentCaptor.forClass(GenerateStringsRequestDto.class);
+        verify(generateApi).strings(captor.capture());
+        GenerateStringsRequestDto request = captor.getValue();
+        assertThat(request.getPathOrder()).isEqualTo(
+            GenerateStringsPathOrderDto.INTERLEAVE
+        );
+        assertThat(request.getCharacterOrder()).isEqualTo(
+            GenerateStringsCharacterOrderDto.SHUFFLED
+        );
+        assertThat(request.getSeed()).isEqualTo(42L);
+        assertThat(request.getMinLength()).isEqualTo(1);
+        assertThat(request.getMaxLength()).isEqualTo(10);
+        assertThat(request.getCharset()).isEqualTo("[a-z]");
+    }
+
+    @Test
+    void testGenerateStringsOmitsUnsetOptions() {
+        Term term = Term.regex("a");
+        Strings200ResponseDto responseDto = new Strings200ResponseDto();
+        StringsDto stringsDto = new StringsDto();
+        stringsDto.setValue(List.of("a"));
+        GenerateStringsResponseDto generateStrings =
+            new GenerateStringsResponseDto();
+        generateStrings.setStrings(stringsDto);
+        responseDto.setData(generateStrings);
+
+        when(generateApi.strings(any())).thenReturn(
+            CompletableFuture.completedFuture(responseDto)
+        );
+
+        client.generateStrings(term, 1, 0).join();
+
+        ArgumentCaptor<GenerateStringsRequestDto> captor =
+            ArgumentCaptor.forClass(GenerateStringsRequestDto.class);
+        verify(generateApi).strings(captor.capture());
+        GenerateStringsRequestDto request = captor.getValue();
+        // Omitted options fall back to the spec defaults baked into the DTO.
+        assertThat(request.getPathOrder()).isNull();
+        assertThat(request.getCharacterOrder()).isNull();
+        assertThat(request.getSeed()).isEqualTo(0L);
+        assertThat(request.getMinLength()).isEqualTo(0);
+        assertThat(request.getMaxLength()).isEqualTo(100);
+        assertThat(request.getCharset()).isNull();
+    }
+
+    // --- ACCOUNT LIMITS & AUTO-BATCHING ---
+
+    private static Concat200ResponseDto termResponse(String value) {
+        Concat200ResponseDto responseDto = new Concat200ResponseDto();
+        responseDto.setData(new TermDto(new TermRegexDto().value(value)));
+        return responseDto;
+    }
+
+    private static Limits200ResponseDto limitsResponse(long maxTerms) {
+        AccountLimitsDto limits = new AccountLimitsDto()
+            .type(AccountLimitsDto.TypeEnum.ACCOUNT_LIMITS)
+            .maxRequestsCount(1000L)
+            .maxRequestsRate(10L)
+            .maxTermsCount(maxTerms)
+            .maxTimeout(60000L)
+            .maxStatesCount(8192L);
+        return new Limits200ResponseDto().data(limits);
+    }
+
+    private static ApiException tooManyTermsError(int provided, int allowed) {
+        return new ApiException(
+            400,
+            "Bad Request",
+            null,
+            "{\"success\":false,\"error\":\"" +
+            provided +
+            " terms provided. Maximum allowed is " +
+            allowed +
+            ".\",\"errorCode\":\"TooManyTerms\"}"
+        );
+    }
+
+    private static List<String> termValues(MultiTermsRequestDto request) {
+        return request
+            .getTerms()
+            .stream()
+            .map(t -> {
+                Object instance = t.getActualInstance();
+                return instance instanceof TermRegexDto
+                    ? ((TermRegexDto) instance).getValue()
+                    : instance.toString();
+            })
+            .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Test
+    void testGetAccountLimitsMemoized() {
+        when(accountApi.limits()).thenReturn(
+            CompletableFuture.completedFuture(limitsResponse(4L))
+        );
+
+        AccountLimits limits = client.getAccountLimits().join();
+        assertThat(limits.getMaxRequestsCount()).isEqualTo(1000L);
+        assertThat(limits.getMaxRequestsRate()).isEqualTo(10L);
+        assertThat(limits.getMaxTermsCount()).isEqualTo(4L);
+        assertThat(limits.getMaxTimeout()).isEqualTo(60000L);
+        assertThat(limits.getMaxStatesCount()).isEqualTo(8192L);
+
+        client.getAccountLimits().join();
+        verify(accountApi, times(1)).limits();
+    }
+
+    @Test
+    void testProactiveBatchingWithOverride() throws Exception {
+        AsyncRegexSolverClient batchClient = AsyncRegexSolverClient.builder()
+            .apiToken("batch-token")
+            .maxTermsPerRequest(3)
+            .build();
+        injectMocks(batchClient);
+
+        when(computeApi.concat(any()))
+            .thenReturn(CompletableFuture.completedFuture(termResponse("r0")))
+            .thenReturn(CompletableFuture.completedFuture(termResponse("r1")))
+            .thenReturn(CompletableFuture.completedFuture(termResponse("r2")))
+            .thenReturn(CompletableFuture.completedFuture(termResponse("r3")));
+
+        List<Term> terms = new java.util.ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            terms.add(Term.regex("t" + i));
+        }
+        Term result = batchClient
+            .concat(
+                terms,
+                OperationOptions.builder().responseFormat(ResponseFormat.REGEX)
+            )
+            .join();
+        assertThat(result.getPattern()).contains("r3");
+
+        ArgumentCaptor<MultiTermsRequestDto> captor = ArgumentCaptor.forClass(
+            MultiTermsRequestDto.class
+        );
+        verify(computeApi, times(4)).concat(captor.capture());
+        List<MultiTermsRequestDto> requests = captor.getAllValues();
+        // Left fold preserves concat order: contiguous chunks, accumulator first.
+        assertThat(termValues(requests.get(0))).containsExactly(
+            "t0",
+            "t1",
+            "t2"
+        );
+        assertThat(termValues(requests.get(1))).containsExactly(
+            "r0",
+            "t3",
+            "t4"
+        );
+        assertThat(termValues(requests.get(2))).containsExactly(
+            "r1",
+            "t5",
+            "t6"
+        );
+        assertThat(termValues(requests.get(3))).containsExactly("r2", "t7");
+        // Only the final request carries the caller's response options.
+        assertThat(requests.get(0).getOptions().getResponse()).isNull();
+        assertThat(requests.get(1).getOptions().getResponse()).isNull();
+        assertThat(requests.get(2).getOptions().getResponse()).isNull();
+        assertThat(requests.get(3).getOptions().getResponse()).isNotNull();
+        // The limit was known up front, so no limits fetch happened.
+        verify(accountApi, never()).limits();
+    }
+
+    @Test
+    void testReactiveBatchingFetchesLimits() {
+        when(accountApi.limits()).thenReturn(
+            CompletableFuture.completedFuture(limitsResponse(4L))
+        );
+        when(computeApi.union(any()))
+            .thenReturn(CompletableFuture.failedFuture(tooManyTermsError(9, 4)))
+            .thenReturn(CompletableFuture.completedFuture(termResponse("r0")))
+            .thenReturn(CompletableFuture.completedFuture(termResponse("r1")))
+            .thenReturn(CompletableFuture.completedFuture(termResponse("r2")));
+
+        List<Term> terms = new java.util.ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            terms.add(Term.regex("t" + i));
+        }
+        Term result = client.union(terms).join();
+        assertThat(result.getPattern()).contains("r2");
+
+        ArgumentCaptor<MultiTermsRequestDto> captor = ArgumentCaptor.forClass(
+            MultiTermsRequestDto.class
+        );
+        verify(computeApi, times(4)).union(captor.capture());
+        List<MultiTermsRequestDto> requests = captor.getAllValues();
+        assertThat(termValues(requests.get(1))).containsExactly(
+            "t0",
+            "t1",
+            "t2",
+            "t3"
+        );
+        assertThat(termValues(requests.get(2))).containsExactly(
+            "r0",
+            "t4",
+            "t5",
+            "t6"
+        );
+        assertThat(termValues(requests.get(3))).containsExactly(
+            "r1",
+            "t7",
+            "t8"
+        );
+        verify(accountApi, times(1)).limits();
+    }
+
+    @Test
+    void testAutoBatchOptOut() throws Exception {
+        AsyncRegexSolverClient noBatchClient = AsyncRegexSolverClient.builder()
+            .apiToken("no-batch-token")
+            .autoBatch(false)
+            .build();
+        injectMocks(noBatchClient);
+
+        when(computeApi.union(any())).thenReturn(
+            CompletableFuture.failedFuture(tooManyTermsError(9, 4))
+        );
+
+        List<Term> terms = new java.util.ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            terms.add(Term.regex("t" + i));
+        }
+        assertThatThrownBy(() -> noBatchClient.union(terms).join())
+            .hasCauseInstanceOf(TooManyTermsException.class);
+        verify(accountApi, never()).limits();
+    }
+
+    @Test
+    void testLimitsFetchFailureRethrowsOriginal() {
+        when(accountApi.limits()).thenReturn(
+            CompletableFuture.failedFuture(
+                new ApiException(500, "Internal Server Error", null, null)
+            )
+        );
+        when(computeApi.union(any())).thenReturn(
+            CompletableFuture.failedFuture(tooManyTermsError(9, 4))
+        );
+
+        List<Term> terms = new java.util.ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            terms.add(Term.regex("t" + i));
+        }
+        assertThatThrownBy(() -> client.union(terms).join())
+            .hasCauseInstanceOf(TooManyTermsException.class);
+        verify(accountApi, times(1)).limits();
+    }
+
+    @Test
+    void testRetrySurvivesManyConsecutive429s() {
+        Term term = Term.regex("abc");
+
+        HttpHeaders mockHeaders = mock(HttpHeaders.class);
+        when(mockHeaders.firstValue("Retry-After")).thenReturn(
+            Optional.of("0.01")
+        );
+        ApiException error429 = new ApiException(
+            429,
+            "Too Many Requests",
+            mockHeaders,
+            null
+        );
+
+        Empty200ResponseDto successResponse = new Empty200ResponseDto();
+        BooleanDto data = new BooleanDto();
+        data.setValue(true);
+        successResponse.setData(data);
+
+        // Six consecutive 429s exceed the old cap of five attempts.
+        when(analyzeApi.empty(any()))
+            .thenReturn(CompletableFuture.failedFuture(error429))
+            .thenReturn(CompletableFuture.failedFuture(error429))
+            .thenReturn(CompletableFuture.failedFuture(error429))
+            .thenReturn(CompletableFuture.failedFuture(error429))
+            .thenReturn(CompletableFuture.failedFuture(error429))
+            .thenReturn(CompletableFuture.failedFuture(error429))
+            .thenReturn(CompletableFuture.completedFuture(successResponse));
+
+        Boolean result = client.isEmpty(term).join();
+
+        assertThat(result).isTrue();
+        verify(analyzeApi, times(7)).empty(any());
+    }
+
+    @Test
+    void testBuilderRejectsInvalidMaxTermsPerRequest() {
+        assertThatThrownBy(() ->
+            AsyncRegexSolverClient.builder()
+                .apiToken("test-token")
+                .maxTermsPerRequest(1)
+                .build()
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 }
