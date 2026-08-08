@@ -1,217 +1,180 @@
 package com.regexsolver.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.regexsolver.api.Request.MultiTermsRequest;
-import com.regexsolver.api.dto.Details;
-import com.regexsolver.api.exception.ApiError;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.regexsolver.api.generated.model.TermDto;
+import com.regexsolver.api.generated.model.TermFairDto;
+import com.regexsolver.api.generated.model.TermFairMetadataDto;
+import com.regexsolver.api.generated.model.TermRegexDto;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
- * This abstract class represents a term on which it is possible to perform operations.
+ * Represents a mathematical term (Regex or FAIR) on which operations can be performed.
  */
-public abstract class Term implements ResponseContent {
-    @JsonIgnore
-    private final static String REGEX_PREFIX = "regex";
-    @JsonIgnore
-    private final static String FAIR_PREFIX = "fair";
-    @JsonIgnore
-    private final static String UNKNOWN_PREFIX = "unknown";
+public abstract class Term {
+
+    /** How the engine renders a language that matches no string at all. */
+    private static final String EMPTY_LANGUAGE_PATTERN = "[]";
 
     private final String value;
 
-    @JsonIgnore
-    private transient String serialized = null;
+    // Shared Cache (Internal)
+    private Cardinality cardinality;
+    private Length length;
+    private Boolean empty;
+    private Boolean emptyString;
+    private Boolean total;
+    protected String pattern;
+    private String dot;
 
-    @JsonIgnore
-    private transient Details details;
+    private Pattern compiledRegex;
 
-    /**
-     * Create a new instance.
-     *
-     * @param value The value of the term.
-     */
     protected Term(String value) {
         this.value = value;
     }
 
-    /**
-     * Create a new instance of {@link Term.Regex}.
-     *
-     * @param regex The regular expression pattern.
-     * @return The created instance.
-     */
-    public static Term.Regex regex(String regex) {
-        return new Term.Regex(regex);
+    public abstract Optional<String> getPattern();
+
+    public abstract Optional<String> getFair();
+
+    abstract TermDto toDto();
+
+    public static Term regex(String pattern) {
+        return new RegexTerm(pattern);
     }
 
-    /**
-     * Create a new instance of {@link Term.Fair}.
-     *
-     * @param fair The FAIR.
-     * @return The created instance.
-     */
-    public static Term.Fair fair(String fair) {
-        return new Term.Fair(fair);
+    public static Term fair(String payload) {
+        return new FairTerm(payload, Optional.empty());
     }
 
-    String getValue() {
+    // --- Shared Behavior ---
+
+    public String getValue() {
         return value;
     }
 
+    void setPropertiesMixin(TermPropertiesMixin propertiesMixin) {
+        propertiesMixin.isEmpty().ifPresent(this::setCachedEmpty);
+        propertiesMixin.isEmptyString().ifPresent(this::setCachedEmptyString);
+        propertiesMixin.isTotal().ifPresent(this::setCachedTotal);
+    }
+
     /**
-     * Get the details of this term.
-     * Cache the result to avoid calling the API again if this method is called multiple times.
-     *
-     * @return The details of this term.
-     * @throws IOException In case of issues requesting the API server.
-     * @throws ApiError    In case of error returned by the API.
+     * Client-side matching implementation.
+     * @param str The string to test against the term.
+     * @return True if matches, false if not. Throws if pattern is not set.
      */
-    @JsonIgnore
-    public Details getDetails() throws IOException, ApiError {
-        if (details != null) {
-            return details;
+    public boolean matches(String str) {
+        Optional<String> patternOpt = getPattern();
+        if (patternOpt.isEmpty()) {
+            throw new IllegalStateException(
+                "The regex pattern of this term is not defined yet, call getPattern() on the client to set it."
+            );
         }
-        details = RegexSolverApiWrapper.getInstance().getDetails(this);
-        return details;
-    }
 
-    /**
-     * Generate the given number of unique strings matched by this term.
-     *
-     * @param count The number of unique strings to generate.
-     * @return A list of unique strings matched by this term.
-     * @throws IOException In case of issues requesting the API server.
-     * @throws ApiError    In case of error returned by the API.
-     */
-    @JsonIgnore
-    public List<String> generateStrings(int count) throws IOException, ApiError {
-        return RegexSolverApiWrapper.getInstance().generateStrings(this, count);
-    }
-
-    @JsonIgnore
-    private List<Term> getArgs(Term... terms) {
-        ArrayList<Term> args = new ArrayList<>();
-        args.add(this);
-        args.addAll(List.of(terms));
-        return args;
-    }
-
-    /**
-     * Compute the intersection with the given terms and return the resulting term.
-     *
-     * @param terms The terms to compute an intersection with.
-     * @return The resulting term
-     * @throws IOException In case of issues requesting the API server.
-     * @throws ApiError    In case of error returned by the API.
-     */
-    @JsonIgnore
-    public Term intersection(Term... terms) throws IOException, ApiError {
-        return RegexSolverApiWrapper.getInstance()
-                .computeIntersection(new MultiTermsRequest(getArgs(terms)));
-    }
-
-    /**
-     * Compute the union with the given terms and return the resulting term.
-     *
-     * @param terms The terms to compute a union with.
-     * @return The resulting term
-     * @throws IOException In case of issues requesting the API server.
-     * @throws ApiError    In case of error returned by the API.
-     */
-    @JsonIgnore
-    public Term union(Term... terms) throws IOException, ApiError {
-        return RegexSolverApiWrapper.getInstance()
-                .computeUnion(new MultiTermsRequest(getArgs(terms)));
-    }
-
-    /**
-     * Compute the subtraction with the given term and return the resulting term.
-     *
-     * @param term The term to subtract.
-     * @return The resulting term
-     * @throws IOException In case of issues requesting the API server.
-     * @throws ApiError    In case of error returned by the API.
-     */
-    @JsonIgnore
-    public Term subtraction(Term term) throws IOException, ApiError {
-        return RegexSolverApiWrapper.getInstance()
-                .computeSubtraction(new MultiTermsRequest(getArgs(term)));
-    }
-
-    /**
-     * Check equivalence with the given term.
-     *
-     * @param term The term to check equivalence with.
-     * @return true if the terms are equivalent, false otherwise.
-     * @throws IOException In case of issues requesting the API server.
-     * @throws ApiError    In case of error returned by the API.
-     */
-    @JsonIgnore
-    public boolean isEquivalentTo(Term term) throws IOException, ApiError {
-        return RegexSolverApiWrapper.getInstance()
-                .equivalence(new MultiTermsRequest(getArgs(term)));
-    }
-
-    /**
-     * Check if is a subset of the given term.
-     *
-     * @param term The term to check if is the superset of this.
-     * @return true if this is a subset, false otherwise.
-     * @throws IOException In case of issues requesting the API server.
-     * @throws ApiError    In case of error returned by the API.
-     */
-    @JsonIgnore
-    public boolean isSubsetOf(Term term) throws IOException, ApiError {
-        return RegexSolverApiWrapper.getInstance()
-                .subset(new MultiTermsRequest(getArgs(term)));
-    }
-
-    /**
-     * Generate a string representation that can be parsed by {@link #deserialize(String)}.
-     *
-     * @return A string representation of this term.
-     */
-    public String serialize() {
-        if (serialized != null) {
-            return serialized;
+        // The engine renders the empty language as "[]", which java.util.regex
+        // rejects. By definition it matches nothing.
+        if (EMPTY_LANGUAGE_PATTERN.equals(patternOpt.get())) {
+            return false;
         }
-        String prefix;
-        if (this instanceof Regex) {
-            prefix = REGEX_PREFIX;
-        } else if (this instanceof Fair) {
-            prefix = FAIR_PREFIX;
-        } else {
-            prefix = UNKNOWN_PREFIX;
+
+        if (compiledRegex == null) {
+            compiledRegex = Pattern.compile(patternOpt.get(), Pattern.DOTALL);
         }
-        serialized = String.format("%s=%s", prefix, value);
-        return serialized;
+
+        return compiledRegex.matcher(str).matches();
     }
 
-    /**
-     * Parse a string representation of a {@link Term} produced by {@link #serialize()}.
-     *
-     * @param string A string representation produced by {@link #serialize()}.
-     * @return The parsed term, or empty if the method was not able to parse.
-     */
-    @JsonIgnore
-    public static Optional<Term> deserialize(String string) {
-        if (string == null) {
+    public abstract String serialize();
+
+    public static Optional<Term> deserialize(String serialized) {
+        if (serialized == null || !serialized.contains("=")) {
             return Optional.empty();
         }
 
-        if (string.startsWith(REGEX_PREFIX)) {
-            return Optional.of(regex(string.substring(REGEX_PREFIX.length() + 1)));
-        } else if (string.startsWith(FAIR_PREFIX)) {
-            return Optional.of(fair(string.substring(FAIR_PREFIX.length() + 1)));
-        } else {
-            return Optional.empty();
+        int index = serialized.indexOf("=");
+        String typeStr = serialized.substring(0, index);
+        String val = serialized.substring(index + 1);
+
+        if ("regex".equalsIgnoreCase(typeStr)) {
+            return Optional.of(regex(val));
+        } else if ("fair".equalsIgnoreCase(typeStr)) {
+            return Optional.of(fair(val));
         }
+        return Optional.empty();
+    }
+
+    static Term fromDto(TermDto dto) {
+        Object instance = dto.getActualInstance();
+        if (instance instanceof TermRegexDto) {
+            return Term.regex(((TermRegexDto) instance).getValue());
+        }
+        TermFairDto fairDto = (TermFairDto) instance;
+        // Keep metadata.deterministic so isDeterministic() does not need a second
+        // round trip for a FAIR the server already told us about.
+        Optional<Boolean> deterministic = Optional.ofNullable(fairDto.getMetadata())
+            .map(TermFairMetadataDto::getDeterministic);
+        return new FairTerm(fairDto.getValue(), deterministic);
+    }
+
+    // --- Shared Getters/Setters ---
+
+    Cardinality getCachedCardinality() {
+        return cardinality;
+    }
+
+    void setCachedCardinality(Cardinality cardinality) {
+        setPropertiesMixin(cardinality);
+        this.cardinality = cardinality;
+    }
+
+    Length getCachedLength() {
+        return length;
+    }
+
+    void setCachedLength(Length length) {
+        setPropertiesMixin(length);
+        this.length = length;
+    }
+
+    Boolean getCachedEmpty() {
+        return empty;
+    }
+
+    void setCachedEmpty(Boolean empty) {
+        this.empty = empty;
+    }
+
+    Boolean getCachedEmptyString() {
+        return emptyString;
+    }
+
+    void setCachedEmptyString(Boolean emptyString) {
+        this.emptyString = emptyString;
+    }
+
+    Boolean getCachedTotal() {
+        return total;
+    }
+
+    void setCachedTotal(Boolean total) {
+        this.total = total;
+    }
+
+    void setCachedPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    String getCachedPattern() {
+        return this.pattern;
+    }
+
+    String getCachedDot() {
+        return dot;
+    }
+
+    void setCachedDot(String dot) {
+        this.dot = dot;
     }
 
     @Override
@@ -219,12 +182,12 @@ public abstract class Term implements ResponseContent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Term term = (Term) o;
-        return Objects.equals(term.serialize(), serialize());
+        return Objects.equals(serialize(), term.serialize());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(serialize());
+        return serialize().hashCode();
     }
 
     @Override
@@ -232,58 +195,82 @@ public abstract class Term implements ResponseContent {
         return serialize();
     }
 
-    /**
-     * This term represents a Fast Automaton Internal Representation (FAIR).
-     * <p>
-     * You can learn more about FAIR in our <a href="https://docs.regexsolver.com/" target="_blank">documentation</a>.
-     * </p>
-     */
-    public static final class Fair extends Term {
-        /**
-         * Create a new instance.
-         *
-         * @param fair The FAIR.
-         */
-        public Fair(@JsonProperty("value") String fair) {
-            super(fair);
+    public static final class RegexTerm extends Term {
+
+        RegexTerm(String value) {
+            super(value);
         }
 
-        /**
-         * Return the Fast Automaton Internal Representation (FAIR).
-         *
-         * @return The FAIR.
-         */
-        @JsonProperty("value")
-        public String getFair() {
-            return getValue();
+        @Override
+        public Optional<String> getPattern() {
+            return Optional.of(getValue());
+        }
+
+        @Override
+        public Optional<String> getFair() {
+            return Optional.empty();
+        }
+
+        @Override
+        TermDto toDto() {
+            return new TermDto(
+                new TermRegexDto()
+                    .type(TermRegexDto.TypeEnum.REGEX)
+                    .value(getValue())
+            );
+        }
+
+        @Override
+        public String serialize() {
+            return "regex=" + getValue();
         }
     }
 
+    public static final class FairTerm extends Term {
 
-    /**
-     * This term represents a regular expression.
-     * <p>
-     * You can learn more about regular expression in our <a href="https://docs.regexsolver.com/" target="_blank">documentation</a>
-     * </p>
-     */
-    public static final class Regex extends Term {
-        /**
-         * Create a new instance.
-         *
-         * @param regex The regular expression pattern.
-         */
-        public Regex(@JsonProperty("value") String regex) {
-            super(regex);
+        private Optional<Boolean> deterministic = Optional.empty();
+
+        FairTerm(String value, Optional<Boolean> deterministic) {
+            super(value);
+            this.deterministic = deterministic;
         }
 
         /**
-         * Return the regular expression pattern.
+         * Whether this FAIR encodes a deterministic automaton, or
+         * {@link java.util.Optional#empty()} if it is not known yet.
          *
-         * @return The regular expression pattern.
+         * @return the cached determinism flag, if known
          */
-        @JsonProperty("value")
-        public String getPattern() {
-            return getValue();
+        public Optional<Boolean> getCachedDeterministic() {
+            return this.deterministic;
+        }
+
+        void setCachedDeterministic(Optional<Boolean> deterministic) {
+            this.deterministic = deterministic;
+        }
+
+        @Override
+        public Optional<String> getPattern() {
+            return Optional.ofNullable(this.pattern);
+        }
+
+        @Override
+        public Optional<String> getFair() {
+            return Optional.of(getValue());
+        }
+
+        @Override
+        TermDto toDto() {
+            return new TermDto(
+                new TermFairDto()
+                    .type(TermFairDto.TypeEnum.FAIR)
+                    .value(getValue())
+            );
+        }
+
+        @Override
+        public String serialize() {
+            return "fair=" + getValue();
         }
     }
 }
