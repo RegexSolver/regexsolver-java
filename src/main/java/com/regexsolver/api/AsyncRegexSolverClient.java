@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -195,9 +196,9 @@ public final class AsyncRegexSolverClient {
                 )
             );
         }
-        return gate
-            .thenCompose(v -> apiCall.get())
-            .exceptionallyCompose(ex -> {
+        return exceptionallyCompose(
+            gate.thenCompose(v -> apiCall.get()),
+            ex -> {
                 Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
                 if (cause instanceof ApiException) {
                     ApiException apiEx = (ApiException) cause;
@@ -236,7 +237,25 @@ public final class AsyncRegexSolverClient {
                     cause instanceof RuntimeException
                 ) throw (RuntimeException) cause;
                 throw new RuntimeException(cause);
-            });
+            }
+        );
+    }
+
+    /**
+     * `CompletableFuture.exceptionallyCompose` equivalent; that method is
+     * only available from Java 12 onwards and this SDK targets Java 11.
+     */
+    private static <T> CompletableFuture<T> exceptionallyCompose(
+        CompletableFuture<T> future,
+        Function<Throwable, CompletionStage<T>> fallback
+    ) {
+        CompletableFuture<CompletionStage<T>> composed = future.handle(
+            (value, ex) ->
+                ex == null
+                    ? CompletableFuture.completedFuture(value)
+                    : fallback.apply(ex)
+        );
+        return composed.thenCompose(stage -> stage);
     }
 
     private RegexSolverException mapException(ApiException ex) {
@@ -456,30 +475,35 @@ public final class AsyncRegexSolverClient {
             return fold(op, terms, options, maxTerms);
         }
         boolean limitWasKnown = maxTerms != null;
-        return naryCall(op, terms, options, true).exceptionallyCompose(ex -> {
-            Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
-            if (
-                !autoBatch ||
-                limitWasKnown ||
-                !(cause instanceof TooManyTermsException)
-            ) {
-                return CompletableFuture.failedFuture(cause);
+        return exceptionallyCompose(
+            naryCall(op, terms, options, true),
+            ex -> {
+                Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                if (
+                    !autoBatch ||
+                    limitWasKnown ||
+                    !(cause instanceof TooManyTermsException)
+                ) {
+                    return CompletableFuture.failedFuture(cause);
+                }
+                return getAccountLimits()
+                    .handle((limits, fetchError) ->
+                        // A failed fetch falls back to surfacing the original
+                        // TooManyTerms, never worse than without batching.
+                        fetchError != null ? null : effectiveMaxTerms()
+                    )
+                    .thenCompose(newMax -> {
+                        if (
+                            newMax == null ||
+                            newMax < 2 ||
+                            terms.size() <= newMax
+                        ) {
+                            return CompletableFuture.failedFuture(cause);
+                        }
+                        return fold(op, terms, options, newMax);
+                    });
             }
-            return getAccountLimits()
-                .handle((limits, fetchError) ->
-                    // A failed fetch falls back to surfacing the original
-                    // TooManyTerms, never worse than without batching.
-                    fetchError != null ? null : effectiveMaxTerms()
-                )
-                .thenCompose(newMax -> {
-                    if (
-                        newMax == null || newMax < 2 || terms.size() <= newMax
-                    ) {
-                        return CompletableFuture.failedFuture(cause);
-                    }
-                    return fold(op, terms, options, newMax);
-                });
-        });
+        );
     }
 
     private CompletableFuture<Term> naryCall(
