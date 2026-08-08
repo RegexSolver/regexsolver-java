@@ -30,6 +30,9 @@ public final class GenerateStringsOptions extends OperationOptions {
     /**
      * Order in which the paths (shapes) of the language are scheduled.
      * Defaults to {@link PathOrder#SWEEP}.
+     *
+     * @param pathOrder the path order
+     * @return these options
      */
     public GenerateStringsOptions pathOrder(PathOrder pathOrder) {
         this.pathOrder = pathOrder;
@@ -39,6 +42,9 @@ public final class GenerateStringsOptions extends OperationOptions {
     /**
      * Order in which the strings within each path are produced. Defaults to
      * {@link CharacterOrder#ASCENDING}.
+     *
+     * @param characterOrder the character order
+     * @return these options
      */
     public GenerateStringsOptions characterOrder(CharacterOrder characterOrder) {
         this.characterOrder = characterOrder;
@@ -49,6 +55,9 @@ public final class GenerateStringsOptions extends OperationOptions {
      * Seed behind the shuffled modes. The default seed is fixed, so two calls
      * sharing a seed generate the same strings and {@code offset} pages
      * through them consistently.
+     *
+     * @param seed the seed
+     * @return these options
      */
     public GenerateStringsOptions seed(Long seed) {
         this.seed = seed;
@@ -58,6 +67,9 @@ public final class GenerateStringsOptions extends OperationOptions {
     /**
      * Shortest string to generate. Shorter strings are left out of the
      * enumeration entirely, {@code offset} never counting them.
+     *
+     * @param minLength the minimum length
+     * @return these options
      */
     public GenerateStringsOptions minLength(Integer minLength) {
         this.minLength = minLength;
@@ -66,6 +78,9 @@ public final class GenerateStringsOptions extends OperationOptions {
 
     /**
      * Longest string to generate.
+     *
+     * @param maxLength the maximum length
+     * @return these options
      */
     public GenerateStringsOptions maxLength(Integer maxLength) {
         this.maxLength = maxLength;
@@ -75,6 +90,9 @@ public final class GenerateStringsOptions extends OperationOptions {
     /**
      * Restricts generation to the given characters, e.g. {@code [a-z]}. Paths
      * requiring a character outside it are dropped.
+     *
+     * @param charset the allowed characters
+     * @return these options
      */
     public GenerateStringsOptions charset(String charset) {
         this.charset = charset;

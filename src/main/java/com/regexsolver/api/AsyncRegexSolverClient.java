@@ -104,6 +104,9 @@ public final class AsyncRegexSolverClient {
          * carrying more terms than the account's per-request limit are
          * transparently split into several requests and folded back into one
          * result. Each constituent request counts against the monthly quota.
+         *
+         * @param autoBatch whether to enable auto-batching
+         * @return this builder
          */
         public Builder autoBatch(boolean autoBatch) {
             this.autoBatch = autoBatch;
@@ -111,8 +114,11 @@ public final class AsyncRegexSolverClient {
         }
 
         /**
-         * Upper bound (>= 2) on the number of terms sent in a single request,
-         * overriding the limit fetched from the API when smaller.
+         * Upper bound (&gt;= 2) on the number of terms sent in a single
+         * request, overriding the limit fetched from the API when smaller.
+         *
+         * @param maxTermsPerRequest the cap, or null to use the account limit
+         * @return this builder
          */
         public Builder maxTermsPerRequest(Integer maxTermsPerRequest) {
             this.maxTermsPerRequest = maxTermsPerRequest;

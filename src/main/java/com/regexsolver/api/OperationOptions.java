@@ -31,6 +31,9 @@ public class OperationOptions {
 
     /**
      * Maximum time, in milliseconds, the engine may spend on the operation before aborting it.
+     *
+     * @param timeout the timeout in milliseconds
+     * @return these options
      */
     public OperationOptions executionTimeout(Integer timeout) {
         this.executionTimeout = timeout;
@@ -39,6 +42,9 @@ public class OperationOptions {
 
     /**
      * Format of the term returned by the operation.
+     *
+     * @param format the requested response format
+     * @return these options
      */
     public OperationOptions responseFormat(ResponseFormat format) {
         this.responseFormat = format;
@@ -49,6 +55,9 @@ public class OperationOptions {
      * When true, guarantees the returned FAIR encodes a deterministic automaton.
      * Only valid with responseFormat = ResponseFormat.FAIR or when responseFormat is
      * unset (in which case it defaults to ResponseFormat.FAIR). Throws otherwise.
+     *
+     * @param deterministic whether the returned FAIR must be deterministic
+     * @return these options
      */
     public OperationOptions deterministic(Boolean deterministic) {
         this.deterministic = deterministic;

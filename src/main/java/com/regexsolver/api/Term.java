@@ -238,6 +238,8 @@ public abstract class Term {
         /**
          * Whether this FAIR encodes a deterministic automaton, or
          * {@link java.util.Optional#empty()} if it is not known yet.
+         *
+         * @return the cached determinism flag, if known
          */
         public Optional<Boolean> getCachedDeterministic() {
             return this.deterministic;

@@ -38,27 +38,27 @@ public final class AccountLimits {
         );
     }
 
-    /** Maximum number of requests allowed per billing period. */
+    /** @return Maximum number of requests allowed per billing period. */
     public long getMaxRequestsCount() {
         return maxRequestsCount;
     }
 
-    /** Maximum number of requests allowed per second. 0 means no rate limit is enforced. */
+    /** @return Maximum number of requests allowed per second. 0 means no rate limit is enforced. */
     public long getMaxRequestsRate() {
         return maxRequestsRate;
     }
 
-    /** Maximum number of terms accepted in a single request. */
+    /** @return Maximum number of terms accepted in a single request. */
     public long getMaxTermsCount() {
         return maxTermsCount;
     }
 
-    /** Maximum execution timeout per request, in milliseconds. */
+    /** @return Maximum execution timeout per request, in milliseconds. */
     public long getMaxTimeout() {
         return maxTimeout;
     }
 
-    /** Maximum number of automaton states an operation may build. */
+    /** @return Maximum number of automaton states an operation may build. */
     public long getMaxStatesCount() {
         return maxStatesCount;
     }

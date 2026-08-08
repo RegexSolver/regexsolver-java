@@ -21,12 +21,12 @@ public final class Length extends TermPropertiesMixin {
         return new Length(len.getMin(), len.getMax());
     }
 
-    /** The shortest possible matched string length, or {@link java.util.Optional#empty()} if the language is empty. */
+    /** @return The shortest possible matched string length, or {@link java.util.Optional#empty()} if the language is empty. */
     public Optional<Integer> getMin() {
         return Optional.ofNullable(min);
     }
 
-    /** The longest possible matched string length, or {@link java.util.Optional#empty()} if the length is unbounded. */
+    /** @return The longest possible matched string length, or {@link java.util.Optional#empty()} if the length is unbounded. */
     public Optional<Integer> getMax() {
         return Optional.ofNullable(max);
     }
