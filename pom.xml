@@ -10,6 +10,7 @@
     <artifactId>RegexSolver</artifactId>
     <version>1.1.0</version>
 
+    <name>RegexSolver</name>
     <url>https://regexsolver.com</url>
     <organization>
         <name>RegexSolver</name>
@@ -17,6 +18,8 @@
     </organization>
     <scm>
         <url>https://github.com/RegexSolver/regexsolver-java</url>
+        <connection>scm:git:https://github.com/RegexSolver/regexsolver-java.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/RegexSolver/regexsolver-java.git</developerConnection>
     </scm>
     <description>
         RegexSolver is a powerful toolkit for building, combining, and analyzing regular expressions.
