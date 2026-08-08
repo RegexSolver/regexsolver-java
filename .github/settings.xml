@@ -18,6 +18,6 @@
         </profile>
     </profiles>
     <activeProfiles>
-        <activeProfile>release</activeProfile>
+        <activeProfile>ossrh</activeProfile>
     </activeProfiles>
 </settings>

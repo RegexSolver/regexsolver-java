@@ -40,13 +40,13 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <jackson.version>2.21.1</jackson.version>
+        <jackson.version>2.21.5</jackson.version>
         <jackson.annotations.version>2.21</jackson.annotations.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <junit.version>5.10.2</junit.version>
         <surefire.version>3.2.5</surefire.version>
         <mockito.version>5.20.0</mockito.version>
-        <assertj.version>3.25.3</assertj.version>
+        <assertj.version>3.27.7</assertj.version>
     </properties>
 
     <dependencies>
@@ -192,6 +192,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
                 </configuration>
             </plugin>
         </plugins>
