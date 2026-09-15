@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Jackson moves from 2.21.5 to 2.22.2, with `jackson-annotations` from 2.21 to 2.22, the version the 2.22.2 bill of materials pairs it with.
+- `jakarta.annotation-api` moves from 2.1.1 to 3.0.0. The major bump is on the specification, not on anything the SDK relies on: 3.0.0 is still compiled for Java 11, and the only class it drops, `jakarta.annotation.ManagedBean`, is not one the generated code annotates with. The Java 11 baseline and the published API are unchanged.
+
 ## [1.1.0] - 2026-08-08
 
 The static `RegexSolver` becomes an instantiable `RegexSolverClient`, with `AsyncRegexSolverClient` beside it, every operation moves from `Term` onto the client, and the SDK covers the whole API rather than the seven endpoints it knew about. See *Compatibility* below.
