@@ -1,4 +1,10 @@
 # RegexSolver Java API Client
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.regexsolver.api/RegexSolver)](https://central.sonatype.com/artifact/com.regexsolver.api/RegexSolver)
+[![Java versions](https://img.shields.io/badge/java-%3E%3D%2011-blue)](https://central.sonatype.com/artifact/com.regexsolver.api/RegexSolver)
+[![CI](https://github.com/RegexSolver/regexsolver-java/actions/workflows/ci.yml/badge.svg)](https://github.com/RegexSolver/regexsolver-java/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 [Homepage](https://regexsolver.com) | [Online Demo](https://regexsolver.com/demo) | [Documentation](https://docs.regexsolver.com) | [Developer Console](https://console.regexsolver.com)
 
 **RegexSolver** is a powerful toolkit for building, combining, and analyzing regular expressions. It is designed for constraint solvers, test generators, and other systems that need advanced regex operations.
@@ -176,6 +182,8 @@ Timeout is best effort. The exact time is not guaranteed.
 | `client.generateStrings(term, limit, offset, options?)` | `List<String>` | Generates up to `limit` unique strings matched by `term`, skipping the first `offset` strings. Pass a `GenerateStringsOptions` to control `pathOrder`, `characterOrder`, `seed`, `minLength`, `maxLength` and `charset`. |
 
 *Note: For `AsyncRegexSolverClient`, this method returns `CompletableFuture<List<String>>`.*
+
+See [CHANGELOG.md](CHANGELOG.md) for notable changes.
 
 ## Cross-Language Support
 
